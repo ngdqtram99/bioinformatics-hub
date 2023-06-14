@@ -33,11 +33,5 @@ def get_result(pattern, sequence, backward = True):
             pos += shift_table[substring[length_pattern-1]]
         else: pos += length_pattern
     
-    return {'comparsions_result':comparsion,
+    return {'comparsions_count':comparsion,
             'results': results}
-
-#Example
-h1 = get_result("ATC","ATCATCAT")
-print(h1)
-h2 = get_result("ATC","ATCATCAT",False)
-print(h2)
