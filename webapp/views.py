@@ -15,7 +15,7 @@ def horspool_view(request):
             selected_direction = form.cleaned_data['direction']
             backward = selected_direction == 'backward'
             results = horspool.get_result(pattern, sequence, backward)
-            comparsions_count = results['comparsions_result']
+            comparsions_count = results['comparsions_count']
             results_count = len(results['results'])
             file_content = f'Es wurden {comparsions_count} Vergleiche gemacht\nEs sind {results_count} Treffer an folgenden Positionen gefunden:\n'+' '.join(str(result) for result in results['results'])
             results = results['results'][:100]
