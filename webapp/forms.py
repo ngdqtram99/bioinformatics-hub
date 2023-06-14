@@ -17,12 +17,11 @@ class HorspoolForm(forms.Form):
             pattern_valid = re.match(r'^[A-Za-z]+$', pattern)
             sequence_valid = re.match(r'^[A-Za-z]+$', sequence)
 
-            if len(pattern) > len(sequence):
-                 self.add_error('pattern', 'Pattern darf nicht kürzer als Sequenz sein')
-
             if not pattern_valid:
                 self.add_error('pattern', 'Nur lateinische Buchstaben sind erlaubt.')
             if not sequence_valid:
                 self.add_error('sequence', 'Nur lateinische Buchstaben sind erlaubt.')
-
+            if len(pattern) > len(sequence):
+                 pattern_valid = False
+                 self.add_error('pattern', 'Pattern darf nicht länger als Sequenz sein')
             return valid and pattern_valid and sequence_valid
