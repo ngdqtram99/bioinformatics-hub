@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webapp.views import simple_search_view
+from webapp.views import dotplot_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('simple_search/', simple_search_view, name='simple_search')
+    path('dotplot/', dotplot_view, name='dotplot')
 ]
 
