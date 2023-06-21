@@ -22,7 +22,7 @@ def simple_search_view(request):
                 'form': form,
                 'results': results,             
                 'file_content': file_content, 
-                'resuts_count' : results_count,             
+                'results_count' : results_count,             
                 'comparsions_count' : comparsions_count
             }
             return render(request, 'simple_search.html', context)
