@@ -15,7 +15,7 @@ def get_result(pattern, sequence, backward = True):
                 comparsion += 1
                 if (pattern[i] != substring[i]): return False
         else:
-            for i in range(length_pattern-1):
+            for i in range(length_pattern):
                 comparsion += 1
                 if (pattern[i] != substring[i]): return False
         return True
