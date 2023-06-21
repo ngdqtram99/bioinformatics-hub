@@ -1,24 +1,22 @@
 from django import forms
 import re
-class SimpleSearchForm(forms.Form):
-    pattern = forms.CharField(label='Muster')
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea)
+
+class DotplotForm(forms.Form):
+    sequence1 = forms.CharField()
+    sequence2 = forms.CharField()
 
     def is_valid(self):
-            valid = super().is_valid()
+        valid = self.is_valid()
 
-            pattern = self.cleaned_data.get('pattern', '')
-            sequence = self.cleaned_data.get('sequence', '')
+        sequence1 = self.cleaned_data.get('sequence1', '')
+        sequence2 = self.cleaned_data.get('sequence2', '')
 
-            pattern_valid = re.match(r'^[A-Za-z]+$', pattern)
-            sequence_valid = re.match(r'^[A-Za-z]+$', sequence)
+        sequence1_valid = re.match(r'^[A-Za-z]+$', sequence1)
+        sequence2_valid = re.match(r'^[A-Za-z]+$', sequence2)
 
-            if not pattern_valid:
-                self.add_error('pattern', 'Nur lateinische Buchstaben sind erlaubt.')
-            if not sequence_valid:
-                self.add_error('sequence', 'Nur lateinische Buchstaben sind erlaubt.')
-            if len(pattern) > len(sequence):
-                 pattern_valid = False
-                 self.add_error('pattern', 'Pattern kann nicht länger als Sequenz sein')
+        if not sequence1_valid:
+            self.add_error('sequence1', 'Nur lateinische Buchstaben sind erlaubt.')
+        if not sequence2_valid:
+            self.add_error('sequence2', 'Nur lateinische Buchstaben sind erlaubt.')
 
-            return valid and pattern_valid and sequence_valid
+        return valid and sequence1_valid and sequence2_valid
