@@ -23,6 +23,7 @@ def horspool_view(request):
             context = {
                 'form': form,
                 'results': results,
+                'results_count' : results_count,
                 'file_content': file_content,
                 'comparsions_count' : comparsions_count
             }
