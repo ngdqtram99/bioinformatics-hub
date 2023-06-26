@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Dot plot</title>
+</head>
+<style>
+    .main_output {
+      background-color: #f2f3f1;    
+      text-align: left;
+      max-width: 600px;
+      overflow: auto;
+      display: block;
+      
+    
+    }
+    table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
+<body>
+    <h1>Dot plot</h1>
+    <form method="POST" action="{% url 'dotplot' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Ausführen</button>
+    </form>
+
+    {% if results is not None %}
+        <h2>Ergebnisse:</h2>
+        <div class = "main_output">
+          <table class = "calculation">
+                <tr>
+                    <th> </th>
+                     <!-- for each input in sequence 1-->
+                     {% for symbol in results.0.1 %} 
+                    <th>
+                      {{symbol}}
+                    </th>
+                   {% endfor %}
+                </tr>
+                {% for row in results.1 %}
+                <tr>
+                    <th>{{ row.0 }}</th>
+                    {% for value in row.1 %}
+                    {% if value == 1 %}
+                       <td style = "background-color: lightgreen;">{{value}}</td>
+                    {% else %}
+                       <td> {{value}}</td>
+                    {% endif %}
+                {% endfor %}
+                </tr>
+               
+                {% endfor %}
+            
+          </table>
+        </div>
+        <p>
+            <a href="data:text/plain;charset=utf-8,{{ results }}" download="results.txt">Tabelle herunterladen</a>
+        </p>
+    {% endif %}
+</body>
+</html>
