@@ -6,7 +6,7 @@ class DotplotForm(forms.Form):
     sequence2 = forms.CharField()
 
     def is_valid(self):
-        valid = self.is_valid()
+        valid = super().is_valid()
 
         sequence1 = self.cleaned_data.get('sequence1', '')
         sequence2 = self.cleaned_data.get('sequence2', '')
