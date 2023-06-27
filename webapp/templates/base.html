@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <a href="#" class="menu-item">Home</a>
+        <div class="accordion">
+            <button class="accordion-btn" onclick="toggleAccordion()">Alignment <i class="fa fa-caret-down"></i></button>
+            <div class="accordion-content">
+                <a href="#" class="menu-item">Needleman-Wunsch</a>
+                <a href="#" class="menu-item">Smith-Waterman</a>
+                <a href="#" class="menu-item">Lokales Alignment</a>
+            </div>
+        </div>
+        <a href="/dotplot" class="menu-item">Dotplot</a>
+        <div class="accordion">
+            <button class="accordion-btn" onclick="toggleAccordion()">Exaktes Pattternmatching <i class="fa fa-caret-down"></i></button>
+            <div class="accordion-content">
+                <a href="/simple_search" class="menu-item">Simple Search</a>
+                <a href="/horspool" class="menu-item">Horspool</a>
+            </div>
+        </div>
+        <div class="accordion">
+            <button class="accordion-btn" onclick="toggleAccordion()">Phylogenie <i class="fa fa-caret-down"></i></button>
+            <div class="accordion-content">
+                <a href="#" class="menu-item">UPGMA</a>
+                <a href="#" class="menu-item">Neighbour Joining</a>
+            </div>
+        </div>        
+        <div class="accordion">
+            <button class="accordion-btn" onclick="toggleAccordion()">String Indizes <i class="fa fa-caret-down"></i></button>
+            <div class="accordion-content">
+                <a href="#" class="menu-item">Suffixtrie</a>
+                <a href="#" class="menu-item">Suffixtree</a>
+                <a href="#" class="menu-item">Suffixarray</a>
+            </div>
+        </div>
+        <a href="#" class="menu-item">Vitebri</a>
+        
+        
+    </div>
+
+    <div class="content">
+        {% block content %}
+        
+        {% endblock %}
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var accordionBtns = document.getElementsByClassName("accordion-btn");
+          
+            for (var i = 0; i < accordionBtns.length; i++) {
+              accordionBtns[i].addEventListener("click", toggleAccordion);
+            }
+          });
+          
+          function toggleAccordion() {
+            var accordionContent = this.nextElementSibling;
+            var accordionBtn = this;
+          
+            $(accordionContent).slideToggle();
+            $(accordionBtn).toggleClass("active");
+          }
+    </script>
+</body>
+</html>
