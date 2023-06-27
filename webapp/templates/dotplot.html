@@ -3,19 +3,43 @@
     <title>Dot plot</title>
 </head>
 <style>
+  .filled{
+    background-color: rgb(0, 123, 255);
+  }
     .main_output {
       background-color: #f2f3f1;    
       text-align: left;
-      max-width: 600px;
+      max-width: 100%;
+      height: 600px;
+      max-height: 100%;
       overflow: auto;
-      display: block;
-      
-    
+      display: block;   
     }
     table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+    text-align: center;
+    width: 20px;
+    height:20px;
+    table-layout: fixed;
+    border: 1px solid rgb(0,0,0,10%);       
 }
+.calculation th:first-child,
+  .calculation td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 0;
+    background-color: #f2f3f1;
+  }
+  thead {
+    font-weight: normal;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #f2f3f1;
+  }
+  table {
+    border-collapse: inherit;
+    border-spacing: 0px;
+  }
 </style>
 <body>
     <h1>Dot plot</h1>
@@ -30,40 +54,31 @@
         <div class = "main_output">
           <table class = "calculation">
             <thead>
-                <tr>
-                     <!-- for each input in sequence 1-->
-                     {% for symbol in results.0 %} 
-                    <th>
-                      {{symbol}}
-                    </th>
-                   {% endfor %}
-                </tr>
+              <tr>
+                
+                {% for item in results.0 %}
+                  <th>{{ item }}</th>
+                {% endfor %}
+              </tr>
             </thead>
             <tbody>
-                {% for rows in results %}
-                {% if forloop.counter > 1 %}
+              {% for row in results %}
+              {% if forloop.first %} 
+              {% else %}
                 <tr>
-                       <th>
-                        {{ rows.0}}
-                        </th>
-                        
-                        {% for n in results|length %}
-                        <td>
-                            {{rows.n}}
-                        </td>
-                        {% endfor %}
-                
-                  
-                {% endif %}
-                {% endfor %} 
+                  {% for item in row %}
+                    
+                      <td{% if item == 1 %} class="filled"{% endif %}>{% if item != 1 and item != 0%}{{ item }}{% endif %}</td>
+                    
+                  {% endfor %}
                 </tr>
-                
-                
-            </tbody>   
+                {% endif %}
+              {% endfor %}
+            </tbody>
           </table>
         </div>
         <p>
-            <a href="data:text/plain;charset=utf-8,{{ results }}" download="results.txt">Tabelle herunterladen</a>
+            <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Tabelle herunterladen</a>
         </p>
     {% endif %}
 </body>
