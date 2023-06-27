@@ -29,29 +29,37 @@
         <h2>Ergebnisse:</h2>
         <div class = "main_output">
           <table class = "calculation">
+            <thead>
                 <tr>
-                    <th> </th>
                      <!-- for each input in sequence 1-->
-                     {% for symbol in results.0.1 %} 
+                     {% for symbol in results.0 %} 
                     <th>
                       {{symbol}}
                     </th>
                    {% endfor %}
                 </tr>
-                {% for row in results.1 %}
+            </thead>
+            <tbody>
+                {% for rows in results %}
+                {% if forloop.counter > 1 %}
                 <tr>
-                    <th>{{ row.0 }}</th>
-                    {% for value in row.1 %}
-                    {% if value == 1 %}
-                       <td style = "background-color: lightgreen;">{{value}}</td>
-                    {% else %}
-                       <td> {{value}}</td>
-                    {% endif %}
-                {% endfor %}
+                       <th>
+                        {{ rows.0}}
+                        </th>
+                        
+                        {% for n in results|length %}
+                        <td>
+                            {{rows.n}}
+                        </td>
+                        {% endfor %}
+                
+                  
+                {% endif %}
+                {% endfor %} 
                 </tr>
-               
-                {% endfor %}
-            
+                
+                
+            </tbody>   
           </table>
         </div>
         <p>

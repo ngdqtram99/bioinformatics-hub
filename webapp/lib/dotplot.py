@@ -18,7 +18,7 @@ def get_result(seq1, seq2):
         for j in range(length2):
             if seq1[i] == seq2[j]:
                 # write matches with 1 in result
-                result[i+1][j+1] = 1
+                result[j+1][i+1] = 1
 
     return result
 
