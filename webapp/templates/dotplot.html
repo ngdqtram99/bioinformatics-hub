@@ -42,7 +42,7 @@
   }
 </style>
 <body>
-    <h1>Dot plot</h1>
+    <h1>Dotplot</h1>
     <form method="POST" action="{% url 'dotplot' %}">
         {% csrf_token %}
         {{ form.as_p }}
@@ -54,8 +54,7 @@
         <div class = "main_output">
           <table class = "calculation">
             <thead>
-              <tr>
-                
+              <tr>                
                 {% for item in results.0 %}
                   <th>{{ item }}</th>
                 {% endfor %}
