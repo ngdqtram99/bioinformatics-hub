@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from forms import DotplotForm
+from .forms import DotplotForm
 from .lib import dotplot
 
 def dotplot_view(request):
