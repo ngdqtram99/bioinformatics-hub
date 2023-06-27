@@ -6,7 +6,7 @@ def get_result(seq1, seq2):
     result = [[0] * (length1 + 1) for _ in range(length2 + 1)]
 
     # prepare the result list for output
-    result[0][0] = ','
+    result[0][0] = ' '
     result[0][1:] = [*seq1]
     dum = 1
     for x in [*seq2]:

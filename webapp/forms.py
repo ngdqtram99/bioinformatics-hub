@@ -2,8 +2,8 @@ from django import forms
 import re
 
 class DotplotForm(forms.Form):
-    sequence1 = forms.CharField()
-    sequence2 = forms.CharField()
+    sequence1 = forms.CharField(max_length=200)
+    sequence2 = forms.CharField(max_length=200)
 
     def is_valid(self):
         valid = super().is_valid()
