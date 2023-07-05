@@ -30,7 +30,7 @@ def get_result(pattern, sequence):
     return {'comparsions_count':comparsion,
             'results':result}
 
-res = get_result("","ATA")
-print(res)
+#res = get_result("","ATA")
+#print(res)
 #res2 = get_result("ATC","ATCAATC")
 #print(res2)
