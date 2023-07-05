@@ -8,6 +8,11 @@ def get_result(pattern, sequence, backward = True):
     length_sequence = len(sequence)
     results = list() #Liste der Positionen der Treffer
 
+    #Falls die Sequenz oder der Pattern nicht eingegeben ist
+    if length_pattern == 0 or length_sequence == 0:
+        return {'comparsions_count':0,
+                'result':[]}
+    
     def match(substring):
         global comparsion
         if backward:
@@ -35,3 +40,5 @@ def get_result(pattern, sequence, backward = True):
     
     return {'comparsions_count':comparsion,
             'results': results}
+
+print(get_result("",""))
