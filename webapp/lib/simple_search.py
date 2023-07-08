@@ -3,9 +3,15 @@ comparsion = 0 #Anzahl der Vergleiche
 def get_result(pattern, sequence):
     global comparsion
     comparsion = 0 # Null setzen, weil der Wert von comparsion nach einem Vergleich geändert ist. (!= 0)
+    
     length_pattern = len(pattern)
     length_sequence = len(sequence)
     result = list() #Liste der Positionen der Treffer
+
+    # Falls Pattern oder Sequenz ist nicht eingegeben
+    if length_pattern == 0 or length_sequence == 0:
+        return {'comparsions_count':0,
+                'result':[]}
 
     def match(substring):
 
@@ -24,7 +30,7 @@ def get_result(pattern, sequence):
     return {'comparsions_count':comparsion,
             'results':result}
 
-res = get_result("ATC","ATCAATC")
-print(res,comparsion)
-res2 = get_result("ATC","ATCAATC")
-print(res2)
+#res = get_result("","ATA")
+#print(res)
+#res2 = get_result("ATC","ATCAATC")
+#print(res2)
