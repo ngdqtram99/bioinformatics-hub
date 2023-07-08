@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>Dotplot</title>
+</head>
+<style>
+  .filled{
+    background-color: rgb(0, 123, 255);
+  }
+    .main_output {
+      width: fit-content;
+      background-color: #f2f3f1;    
+      text-align: left;
+      max-width: 95%;
+      max-height: 90%;
+      overflow: auto;
+      display: block;   
+    }
+    table, th, td {
+    text-align: center;
+    width: 20px;
+    height:20px;
+    table-layout: fixed;
+    border: 1px solid rgb(0,0,0,10%);       
+}
+.calculation th:first-child,
+  .calculation td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 0;
+    background-color: #f2f3f1;
+  }
+  thead {
+    font-weight: normal;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #f2f3f1;
+  }
+  table {
+    font-weight: bold;
+    border-collapse: inherit;
+    border-spacing: 0px;
+  }
+</style>
+<body>
+    <h1>Dotplot</h1>
+    <p>
+      Beim Dotplot wird die Ähnlichkeit von zwei Sequenzen betrachtet. Die erste Sequenz ist oben in der Matrix und die zweite links.
+      Jeder Buchstabe der ersten Sequenz wird mit jedem Buchstaben der zweiten Sequenz verglichen. Wenn die Buchstaben gleich sind, wird die entsperchende Zelle der Matrix makiert.
+      Die Sequenzen können maximal 200 Zeichen lang sein. Als Eingabe für die Sequenzen sind nur lateinsche Buchstaben erlaubt.
+      Die Ausgabe ist die dp-Matrix.
+    </p>
+    <form method="POST" action="{% url 'dotplot' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Ausführen</button>
+    </form>
+
+    {% if results is not None %}
+        <h2>Ergebnisse:</h2>
+        <div class = "main_output">
+          <table class = "calculation">
+            <thead>
+              <tr>                
+                {% for item in results.0 %}
+                  <th>{{ item }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in results %}
+              {% if forloop.first %} 
+              {% else %}
+                <tr>
+                  {% for item in row %}
+                    
+                      <td{% if item == 1 %} class="filled"{% endif %}>{% if item != 1 and item != 0%}{{ item }}{% endif %}</td>
+                    
+                  {% endfor %}
+                </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p>
+            <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Tabelle herunterladen</a>
+        </p>
+    {% endif %}
+</body>
+</html>

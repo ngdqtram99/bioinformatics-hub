@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>Simple search</title>
+</head>
+<body>
+    <h1>Simple search</h1>
+    <form method="POST" action="{% url 'simple_search' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Suchen</button>
+    </form>
+
+    {% if results is not None %}
+        <h2>Ergebnisse:</h2>
+        <p>Es wurden {{comparsions_count}} Vergleiche geamacht </p>
+        <p>Das Muster wurde an folgenden Positionen gefunden:</p>
+        <p>
+            {% for position in results %}
+                {{ position }}
+            {% endfor %}
+            {% if results_count > 100 %}
+            <p>
+                Das vollständige Ergebnis ist zu lang und kann nicht angezeigt werden, es steht aber zum Download bereit
+            </p>
+            
+            {% endif %}
+        </p>
+
+        <p>
+            <a href="data:text/plain;charset=utf-8,{{ file_content }}" download="results.txt">Alle Ergebnisse herunterladen</a>
+        </p>
+    {% endif %}
+</body>
+</html>
