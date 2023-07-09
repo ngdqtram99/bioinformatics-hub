@@ -1,0 +1,44 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if sequence and states %}
+        <h3>Zustand \ Zustand</h3>
+        <table>
+            <tr>
+                <th></th>
+                {% for state in states %}
+                    <th>{{ state }}</th>
+                {% endfor %}
+            </tr>
+            {% for state, probabilities in state_probabilities %}
+                <tr>
+                    <td>{{ state }}</td>
+                    {% for probability in probabilities %}
+                        <td><input type="number" step="any" name="state_probabilities" value="{{ probability }}"></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Zustand \ Symbol</h3>
+        <table>
+            <tr>
+                <th></th>
+                {% for symbol in symbols %}
+                    <th>{{ symbol }}</th>
+                {% endfor %}
+            </tr>
+            {% for state, probabilities in symbol_probabilities %}
+                <tr>
+                    <td>{{ state }}</td>
+                    {% for probability in probabilities %}
+                        <td><input type="number" step="any" name="symbol_probabilities" value="{{ probability }}"></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <button type="submit">Submit</button>
+</form>
