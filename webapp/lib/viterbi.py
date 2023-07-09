@@ -2,6 +2,7 @@
 # outputs: matrix, path, state 
 
 from pandas import DataFrame
+import numpy as np
 
 # convert django-defined matrix to dataframe
 ## Achtung: Matrix wird transponiert, use DataFrame.transpose to get right matrix
@@ -13,9 +14,21 @@ def to_dataframe(matrix):
     todf = DataFrame(todict, index=todict[' ']) # set headline as index
     return todf.iloc[:,1:].transpose()
 
-# convert dataframe to 2D-matrix 
-def to_matrix(df):
-    return 0
+# convert dataframe to a nested list
+def to_nestedlist(df : DataFrame):
+    nestedlist = [[' ']]
+    # add headline
+    nestedlist[0] += list(df.columns)
+    # add first row
+    for i in df.index: nestedlist.append([i])
+
+    # add values
+    for i in range(1,len(nestedlist)):
+        for j in range(1,len(nestedlist[0])):
+            nestedlist[i].append(df.iloc[i-1,j-1])
+    
+    #for i in nestedlist: print(i)
+    return nestedlist
 
 def get_results(seq, transition, emission):
     # Check conditions
@@ -70,7 +83,6 @@ def get_results(seq, transition, emission):
     # Calculating
     # ---------------
     for i_symbol in range(1,len(seq)):
-        print(f"turn {i_symbol}")
         symbol = pro_df.columns[i_symbol]
         # first symbol: calculate the prohibility from start state
         if i_symbol == 1:
@@ -81,7 +93,6 @@ def get_results(seq, transition, emission):
         # other symbol: calculate the prohibility from pre-symbol's prohibility
         else:    
             for state in pro_df.index[1:]:
-                print(trans_df.loc[state][state_path[-1]])
                 pro_df.loc[state][i_symbol] = path[-1] * trans_df.loc[state][state_path[-1]] * em_df.loc[state][symbol]
             #print(pro_df)
         
@@ -92,24 +103,39 @@ def get_results(seq, transition, emission):
         #print(state_path)
         
     assert len(state_path) == len(seq[1:]) # check, if there are enough states for each symbol in the seq (just for sure)
+    # add state in state_df
     state_df.loc['Zustand'] = state_path
 
+    # create log prohibility matrix and log path following the prohibility matrix and path
+    logpro_df = np.log(pro_df)
+    logpath = [np.log(p) for p in path]
+    
+    '''
     print(pro_df)
+    print(logpro_df)
     print('path',path)
-    print('len state path',len(state_path))
+    print('logpath',logpath)
     print(state_df)
+    '''
 
+    return {'prohibility': to_nestedlist(pro_df), 'log_prohibility': to_nestedlist(logpro_df),
+            'path':path, 'log_path':logpath,
+            'path_matrix': to_nestedlist(state_df)}
+    
 
 # Example
 trans = [(' ',['+','-']),
       ('start',[0.5,0.5]),
       ('+',[0.4,0.6]),
       ('-',[0.7,0.3])]
-#print(to_dataframe(trans))
+
+df = to_dataframe(trans)
+#print(df)
+#print(to_nestedlist(df))
 
 em = [(' ',[*'ATGC']),
       ('+',[0.25,0.25,0.25,0.25]),
       ('-',[0.125,0.125,0.375,0.375])]
 
 seq = 'TGTACAA'
-get_results(seq,trans,em)
+#get_results(seq,trans,em)
