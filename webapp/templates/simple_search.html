@@ -6,9 +6,9 @@
     <h1>Simple search</h1>
     <p>
         Simple search ist ein Stringvergleich. Es werden alle Vorkommen des Musters in der Sequenz gesucht. 
-        Dabei wird, bei jedem Abbrechen des Vergleichs von dem Muster und einem gleich langem Teil der Sequenz, das Suchfenster um eins nach vorne verschoben. 
+        Dabei wird bei jedem Abbrechen des Vergleichs von dem Muster und einem gleich langem Teil der Sequenz, das Suchfenster um eins nach vorne verschoben. 
         Der Vergleich wird abgebrochen, wenn entweder das Muster gefunden wurde oder zwei Buchstaben nicht übereinstimmen.
-        Die maximale Länge von Sequenz und Muster ist 500.000. Als Eingabe für Sequenz und Muster sind alle Zeichen erlaubt.
+        Die maximale Länge von Sequenz und Muster ist 500.000. Als Eingabe für Sequenz und Muster sind alle Zeichen erlaubt. 
         Die Ausgabe liefert sowohl die Stellen an denen das Muster in der Sequenz vorkommt, als auch die Anzahl aller Vergleiche.
     </p>
     <form method="POST" action="{% url 'simple_search' %}">
