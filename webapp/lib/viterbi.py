@@ -52,7 +52,7 @@ def get_results(seq, transition, emission):
     #check 2: all symbols in seq
     for s in emission[0][1]: assert s in seq, "Die Wahrscheinlichkeit des Symbols {s} fehlt"
 
-    # check probility for both matrixes: value in [0,1]
+    # check probability for both matrixes: value in [0,1]
     for tup in transition[1:]: # except headline 
         for pro in tup[1]: 
             assert pro >= 0 and pro <= 1, "Die Wahrscheinlichkeit von {pro} in der Übergangsmatrix ist unpassend"
@@ -70,11 +70,11 @@ def get_results(seq, transition, emission):
     em_df = to_dataframe(emission)
 
 
-    # prohibility matrix (dataframe), states matrix and path
+    # probability matrix (dataframe), states matrix and path
     pro_df = DataFrame(0.0, index= trans_states, columns= [*seq])
     pro_df.loc['start','s'] = 1 
-    path = [] # save max prohibility in each column. 1 presents for the start state
-    state_path = [] # save state with max prohibility in each column
+    path = [] # save max probability in each column. 1 presents for the start state
+    state_path = [] # save state with max probability in each column
 
     state_df = DataFrame(index=['Zustand'],columns=[*seq[1:]])
     print(em_df)
@@ -84,16 +84,16 @@ def get_results(seq, transition, emission):
     # ---------------
     for i_symbol in range(1,len(seq)):
         symbol = pro_df.columns[i_symbol]
-        # first symbol: calculate the prohibility from start state
+        # first symbol: calculate the probability from start state
         if i_symbol == 1:
             for state in pro_df.index[1:]:
                 pro_df.loc[state][i_symbol] = pro_df.loc['start']['s'] * trans_df.loc['start'][state] * em_df.loc[state][symbol]
             #print(pro_df)
 
-        # other symbol: calculate the prohibility from pre-symbol's prohibility
+        # other symbol: calculate the probability from pre-symbol's probability
         else:    
             for state in pro_df.index[1:]:
-                pro_df.loc[state][i_symbol] = path[-1] * trans_df.loc[state][state_path[-1]] * em_df.loc[state][symbol]
+                pro_df.loc[state][i_symbol] = path[-1] * trans_df.loc[state_path[-1]][state] * em_df.loc[state][symbol]
             #print(pro_df)
         
         # add max and state of max of the present symbol in the path and state_path
@@ -106,7 +106,7 @@ def get_results(seq, transition, emission):
     # add state in state_df
     state_df.loc['Zustand'] = state_path
 
-    # create log prohibility matrix and log path following the prohibility matrix and path
+    # create log probability matrix and log path following the probability matrix and path
     logpro_df = np.log(pro_df)
     logpath = [np.log(p) for p in path]
     
@@ -118,16 +118,16 @@ def get_results(seq, transition, emission):
     print(state_df)
     '''
 
-    return {'prohibility': to_nestedlist(pro_df), 'log_prohibility': to_nestedlist(logpro_df),
-            'path':path, 'log_path':logpath,
+    return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
+            'path':path, 'log_path': logpath,
             'path_matrix': to_nestedlist(state_df)}
     
 
 # Example
 trans = [(' ',['+','-']),
       ('start',[0.5,0.5]),
-      ('+',[0.4,0.6]),
-      ('-',[0.7,0.3])]
+      ('+',[0.9,0.1]),
+      ('-',[0.02,0.98])]
 
 df = to_dataframe(trans)
 #print(df)
