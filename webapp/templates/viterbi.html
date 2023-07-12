@@ -3,12 +3,16 @@
     {{ form.as_p }}
 
     {% if sequence and states %}
-        <h3>Zustand \ Zustand</h3>
+        <h3>Übergangsmatrix</h3>
         <table>
             <tr>
                 <th></th>
                 {% for state in states %}
-                    <th>{{ state }}</th>
+                    {% if state != "Start" %}
+                    <th> 
+                            {{ state }} 
+                    </th>
+                    {% endif %}
                 {% endfor %}
             </tr>
             {% for state, probabilities in state_probabilities %}
@@ -21,7 +25,7 @@
             {% endfor %}
         </table>
 
-        <h3>Zustand \ Symbol</h3>
+        <h3>Emissionsmatrix</h3>
         <table>
             <tr>
                 <th></th>
@@ -31,7 +35,9 @@
             </tr>
             {% for state, probabilities in symbol_probabilities %}
                 <tr>
-                    <td>{{ state }}</td>
+                    <td>
+                        {{ state }} 
+                    </td>
                     {% for probability in probabilities %}
                         <td><input type="number" step="any" name="symbol_probabilities" value="{{ probability }}"></td>
                     {% endfor %}
