@@ -4,9 +4,15 @@
 <head>
     <title>Horspool</title>
 </head>
+<style>
+    .input-container {
+  display: flex;
+  flex-direction: column;
+}
+</style>
 <body>
     <h1>Horspool</h1>
-    <p>"Der Boyer-Moore-Horspool-Algorithmus oder Horspool-Algorithmus ist ein Algorithmus zum Finden von Teilzeichenfolgen in Zeichenfolgen. Es wurde 1980 von Nigel Horspool veröffentlicht. In der Bioinformatik, wird er angewendet, um Muster in Sequenzen zu finden. Diese Muster können beispielsweise Transkriptionsfaktorbindestellen, Tranksriptionsstart, Translationsinitiationssignal, … sein.</p>
+    <p>Der Boyer-Moore-Horspool-Algorithmus oder Horspool-Algorithmus ist ein Algorithmus zum Finden von Teilzeichenfolgen in Zeichenfolgen. Es wurde 1980 von Nigel Horspool veröffentlicht. In der Bioinformatik, wird er angewendet, um Muster in Sequenzen zu finden. Diese Muster können beispielsweise Transkriptionsfaktorbindestellen, Tranksriptionsstart, Translationsinitiationssignal, usw. sein.</p>
 
 <p>Richtung der Vergleiche:</p>
 
@@ -22,7 +28,24 @@
 
     <form method="POST" action="{% url 'horspool' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <!-- {{ form.as_p }}  -->
+        <div class="form-group">
+            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+            <div class="input-container">
+              {{ form.pattern }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
+            <div class="input-container">
+              {{ form.sequence }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.direction.id_for_label }}">Richtung:</label>
+            {{ form.direction }}
+          </div>
+        
         <button type="submit">Suchen</button>
     </form>
 
