@@ -10,15 +10,7 @@ def viterbi_view(request):
 
         if form.is_valid():
             sequence = form.cleaned_data['sequence']
-            states = form.cleaned_data['states'].split(';')
-            states_to_remove = []
-            for state in states:
-                if state.lower() == 'start':
-                    states_to_remove.append(state)
-
-            for state in states_to_remove:
-                states.remove(state)
-
+            states = form.cleaned_data['states']
             states.insert(0, 'Start')
             state_probabilities = []
             symbol_probabilities = []

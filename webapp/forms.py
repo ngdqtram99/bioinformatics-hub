@@ -4,6 +4,22 @@ class ViterbiForm(forms.Form):
     sequence = forms.CharField(label='Sequenz')
     states = forms.CharField(label='Zustände')
 
+    def clean(self):
+        cleaned_data = super().clean()
+        states = cleaned_data.get('states')
+        states = states.split(';')
+        states_to_remove = []
+        for state in states:
+            if state.lower() == 'start':
+                states_to_remove.append(state)
+
+        for state in states_to_remove:
+            states.remove(state)    
+        modified_states = states  
+
+        cleaned_data['states'] = modified_states
+        return cleaned_data
+
     def is_valid(self):
         valid = super().is_valid()
         if valid:
@@ -15,7 +31,8 @@ class ViterbiForm(forms.Form):
                     valid = False
             states = self.cleaned_data.get('states', '')
             if states:
-                if len(states.split(';')) > 10 or len(states.split(';')) < 2:
-                    self.add_error('states', "Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein")
+                states_count = len(states)
+                if states_count > 10 or states_count < 2:
+                    self.add_error('states', "Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener 'Start'-Zustand wird nicht berücksichtigt.")
                     valid = False
         return valid
