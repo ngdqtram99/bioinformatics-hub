@@ -38,17 +38,17 @@ def get_results(seq, transition, emission):
     assert len(seq) > 0, "Die Sequenz muss mindestens einen Buchstabe haben"
     
     # transition
-    # check 1: 'start' state exists
+    # check 1: 'Start' state exists
     trans_states = [tup[0] for tup in transition if tup[0] != ' '] # ' ' belongs to headline and is not a state
-    assert 'start' in trans_states, "Der Start-Zustand fehlt"
-    # check 2: min. 2 states (except 'start' state)
+    assert 'Start' in trans_states, "Der Start-Zustand fehlt"
+    # check 2: min. 2 states (except 'Start' state)
     assert len(trans_states) >= 2, "Mindestens 2 Zustände eingegeben werden, außer Start-Zustand"
     
 
     # emission
-    # check 1: no 'start' state ### "somehow it's nonsence, but maybe form or view has bug :)"
+    # check 1: no 'Start' state ### "somehow it's nonsence, but maybe form or view has bug :)"
     em_states = [tup[0] for tup in emission]
-    assert 'start' not in em_states, "Der Start-Zustand sollte nicht da sein"
+    assert 'Start' not in em_states, "Der Start-Zustand sollte nicht da sein"
     #check 2: all symbols in seq
     for s in emission[0][1]: assert s in seq, "Die Wahrscheinlichkeit des Symbols {s} fehlt"
 
@@ -73,8 +73,8 @@ def get_results(seq, transition, emission):
     # probability matrix (dataframe), states matrix and path
     pro_df = DataFrame(0.0, index= trans_states, columns= [*seq])
     pro_df.loc['start','s'] = 1 
-    path = [] # save max probability in each column. 1 presents for the start state
-    state_path = [] # save state with max probability in each column
+    path = [] # save max prohibility in each column. 1 presents for the start state
+    state_path = [] # save state with max prohibility in each column
 
     state_df = DataFrame(index=['Zustand'],columns=[*seq[1:]])
     print(em_df)
@@ -87,7 +87,7 @@ def get_results(seq, transition, emission):
         # first symbol: calculate the probability from start state
         if i_symbol == 1:
             for state in pro_df.index[1:]:
-                pro_df.loc[state][i_symbol] = pro_df.loc['start']['s'] * trans_df.loc['start'][state] * em_df.loc[state][symbol]
+                pro_df.loc[state][i_symbol] = pro_df.loc['Start']['s'] * trans_df.loc['Start'][state] * em_df.loc[state][symbol]
             #print(pro_df)
 
         # other symbol: calculate the probability from pre-symbol's probability
@@ -118,16 +118,16 @@ def get_results(seq, transition, emission):
     print(state_df)
     '''
 
-    return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
-            'path':path, 'log_path': logpath,
+    return {'prohibility': to_nestedlist(pro_df), 'log_prohibility': to_nestedlist(logpro_df),
+            'path':path, 'log_path':logpath,
             'path_matrix': to_nestedlist(state_df)}
     
 
 # Example
 trans = [(' ',['+','-']),
       ('start',[0.5,0.5]),
-      ('+',[0.9,0.1]),
-      ('-',[0.02,0.98])]
+      ('+',[0.4,0.6]),
+      ('-',[0.7,0.3])]
 
 df = to_dataframe(trans)
 #print(df)
@@ -138,4 +138,4 @@ em = [(' ',[*'ATGC']),
       ('-',[0.125,0.125,0.375,0.375])]
 
 seq = 'TGTACAA'
-#get_results(seq,trans,em)
+#print(get_results(seq,trans,em))
