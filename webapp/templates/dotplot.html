@@ -48,7 +48,7 @@
       Beim Dotplot wird die Ähnlichkeit von zwei Sequenzen betrachtet. Die erste Sequenz ist oben in der Matrix und die zweite links.
       Jeder Buchstabe der ersten Sequenz wird mit jedem Buchstaben der zweiten Sequenz verglichen. Wenn die Buchstaben gleich sind, wird die entsperchende Zelle der Matrix makiert.
       Die Sequenzen können maximal 200 Zeichen lang sein. Als Eingabe für die Sequenzen sind nur lateinsche Buchstaben erlaubt.
-      Die Ausgabe ist die dp-Matrix.
+      Die Ausgabe ist die Dotplot-Matrix.
     </p>
     <form method="POST" action="{% url 'dotplot' %}">
         {% csrf_token %}
