@@ -12,7 +12,13 @@
 
 <ul>
   <li>Rückwärts: Wenn die letzte Position gleich ist, werden die Buchstaben von rechts nach links verglichen.</li>
-  <li>Vorwärts: Wenn die letzte Position gleich ist, werden die Buchstaben
+  <li>Vorwärts: Wenn die letzte Position gleich ist, werden die Buchstaben  von links nach rechts verglichen. </li>
+
+  </ul>
+  <p>
+    Wenn das letzte Zeichen des Vergleichsstrings im Pattern vorkommt, wird die Vergleichsposition um m Positionen nach rechts verschoben. Andernfalls kann die Anzahl der verschobenen Positionen anhand der Shift-Tabelle, abhängig von der Anzahl der Vorkommen dieses Zeichens, berechnet werden. 
+ 
+  </p>
 
     <form method="POST" action="{% url 'horspool' %}">
         {% csrf_token %}
