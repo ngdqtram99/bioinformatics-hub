@@ -62,7 +62,7 @@ def get_results(seq, transition, emission):
     
     # Initilization
     #----------------
-    # seq: add start symbol
+    # seq: add Start symbol
     seq = 's' + seq
     
     # transition and emision: convert to dataFrame 
@@ -72,9 +72,9 @@ def get_results(seq, transition, emission):
 
     # probability matrix (dataframe), states matrix and path
     pro_df = DataFrame(0.0, index= trans_states, columns= [*seq])
-    pro_df.loc['start','s'] = 1 
-    path = [] # save max prohibility in each column. 1 presents for the start state
-    state_path = [] # save state with max prohibility in each column
+    pro_df.loc['Start','s'] = 1 
+    path = [] # save max probability in each column. 1 presents for the Start state
+    state_path = [] # save state with max probability in each column
 
     state_df = DataFrame(index=['Zustand'],columns=[*seq[1:]])
     print(em_df)
@@ -84,7 +84,7 @@ def get_results(seq, transition, emission):
     # ---------------
     for i_symbol in range(1,len(seq)):
         symbol = pro_df.columns[i_symbol]
-        # first symbol: calculate the probability from start state
+        # first symbol: calculate the probability from Start state
         if i_symbol == 1:
             for state in pro_df.index[1:]:
                 pro_df.loc[state][i_symbol] = pro_df.loc['Start']['s'] * trans_df.loc['Start'][state] * em_df.loc[state][symbol]
@@ -118,14 +118,14 @@ def get_results(seq, transition, emission):
     print(state_df)
     '''
 
-    return {'prohibility': to_nestedlist(pro_df), 'log_prohibility': to_nestedlist(logpro_df),
+    return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
             'path':path, 'log_path':logpath,
             'path_matrix': to_nestedlist(state_df)}
     
 
 # Example
 trans = [(' ',['+','-']),
-      ('start',[0.5,0.5]),
+      ('Start',[0.5,0.5]),
       ('+',[0.4,0.6]),
       ('-',[0.7,0.3])]
 
