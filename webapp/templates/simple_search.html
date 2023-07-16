@@ -1,4 +1,7 @@
+{% extends 'base.html' %}
+
 <html>
+    {% block content %}
 <head>
     <title>Simple search</title>
 </head>
@@ -13,7 +16,22 @@
     </p>
     <form method="POST" action="{% url 'simple_search' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group">
+            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+            <div class="input-container">
+              {{ form.pattern }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
+            <div class="input-container">
+              {{ form.sequence }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.direction.id_for_label }}">Richtung:</label>
+            {{ form.direction }}
+          </div>
         <button type="submit">Suchen</button>
     </form>
 
@@ -41,4 +59,5 @@
     </p>
 {% endif %}
 </body>
+{% endblock %}
 </html>
