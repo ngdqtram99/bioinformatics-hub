@@ -1,8 +1,9 @@
-comparsion = 0 #Anzahl der Vergleiche
+comparsion = 0 # Anzahl der Vergleiche als ein globale Variable
 
+# Simple Search Algorithmus
 def get_result(pattern, sequence):
     global comparsion
-    comparsion = 0 # Null setzen, weil der Wert von comparsion nach einem Vergleich geändert ist. (!= 0)
+    comparsion = 0 # Setzt Null, weil der Wert von comparsion nach einem anderen Vergleich geändert ist. (!= 0)
     
     length_pattern = len(pattern)
     length_sequence = len(sequence)
@@ -13,8 +14,8 @@ def get_result(pattern, sequence):
         return {'comparsions_count':0,
                 'result':[]}
 
+    # Methode zum Vergleichen
     def match(substring):
-
         for i in range(length_pattern):
             global comparsion 
             comparsion += 1

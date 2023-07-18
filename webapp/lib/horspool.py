@@ -1,25 +1,27 @@
-comparsion = 0 #Anzahl der Vergleiche
+comparsion = 0 # Anzahl der Vergleiche als eine globale Variable
 
+# Horspool Algorithmus
 def get_result(pattern, sequence, backward = True):
     global comparsion
     comparsion = 0 #Setzen den Wert immer 0, falls er nach einer vorherigen Suche geändert ist
-    shift_table = dict()
+    shift_table = dict() # Schift-Tabelle, die die Schiebung der Leserahme speichert, wenn die letzte Position einen Buchstabe trifft
     length_pattern = len(pattern)
     length_sequence = len(sequence)
-    results = list() #Liste der Positionen der Treffer
+    results = list() # Liste der Positionen der Treffer
 
-    #Falls die Sequenz oder der Pattern nicht eingegeben ist
+    # Falls die Sequenz oder der Pattern nicht eingegeben ist
     if length_pattern == 0 or length_sequence == 0:
         return {'comparsions_count':0,
                 'result':[]}
     
+    # Methode zum Vergleichen
     def match(substring):
         global comparsion
-        if backward:
+        if backward: # Verglicht rückwärts
             for i in range(length_pattern-1,-1,-1):
                 comparsion += 1
                 if (pattern[i] != substring[i]): return False
-        else:
+        else: # Verglicht vorwärts
             for i in range(length_pattern):
                 comparsion += 1
                 if (pattern[i] != substring[i]): return False
@@ -30,6 +32,8 @@ def get_result(pattern, sequence, backward = True):
         shift_table[pattern[i]] = length_pattern-i-1 #Weil i von 0...length_pattern-2 ist
 
     pos = 0
+
+    # Durchfürung entlang der Sequenz
     while pos < length_sequence-length_pattern+1:
         substring = sequence[pos:pos+length_pattern] #Leserahme
         if match(substring): results.append(pos)
