@@ -93,3 +93,33 @@ def dotplot_view(request):
 
 def base_view(request):
     return render(request, 'base.html')
+
+def needleman_wunsch_view(request):
+    return render(request, 'needleman_wunsch.html')
+
+def smith_waterman_view(request):
+    return render(request, 'smith_waterman.html')
+
+def glocal_alignment_view(request):
+    return render(request, 'glocal_alignment.html')
+
+def overlap_view(request):
+    return render(request, 'overlap.html')
+
+def upgma_view(request):
+    return render(request, 'upgma.html')
+
+def neighbour_joining_view(request):
+    return render(request, 'neighbour_joining.html')
+
+def suffix_tree_view(request):
+    return render(request, 'suffix_tree.html')    
+
+def suffix_trie_view(request):
+    return render(request, 'suffix_trie.html')  
+
+def suffix_array_view(request):
+    return render(request, 'suffix_array.html')      
+
+def homepage_view(request):
+    return render(request, 'homepage.html') 
