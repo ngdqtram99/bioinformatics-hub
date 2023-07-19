@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from .forms import DotplotForm
-from .forms import SimpleSearchForm
-from .forms import HorspoolForm
+from .forms import *
 from .lib import dotplot
 from .lib import simple_search
 from .lib import horspool
+from .lib import overlap
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -104,7 +103,36 @@ def glocal_alignment_view(request):
     return render(request, 'glocal_alignment.html')
 
 def overlap_view(request):
-    return render(request, 'overlap.html')
+    form = OverlapForm()
+
+    if request.method == 'POST':
+        form = OverlapForm(request.POST)
+
+        if form.is_valid():
+            seq1 = form.cleaned_data['sequence1']
+            seq2 = form.cleaned_data['sequence2']
+            match = form.cleaned_data['match']
+            mismatch = form.cleaned_data['mismatch']
+            gap_penalty = form.cleaned_data['gap_penalty']
+            result = overlap.get_result(seq1, seq2, match, mismatch, gap_penalty)
+            if result is not None:
+
+                context = {
+                    'form': form,
+                    'matrix': result['matrix'],
+                    'alignments' : result['alignments'],
+                    'score' : result['score']
+                }
+            else:
+                context = {
+                    'form' : form,
+                    'error' : True
+                }
+            return render(request, 'overlap.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'overlap.html', context)
 
 def upgma_view(request):
     return render(request, 'upgma.html')
