@@ -69,3 +69,27 @@ class SimpleSearchForm(forms.Form):
                  self.add_error('pattern', 'Pattern kann nicht länger als Sequenz sein')
 
             return valid and pattern_valid and sequence_valid
+    
+class OverlapForm(forms.Form):
+    sequence1 = forms.CharField(label='Sequenz 1')
+    sequence2 = forms.CharField(label='Sequenz 2')
+    match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=1)
+    mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=-1)
+    gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=100, initial=-1)
+
+    def is_valid(self):
+            valid = super().is_valid()
+
+            sequence1 = self.cleaned_data.get('sequence1', '')
+            sequence2 = self.cleaned_data.get('sequence2', '')
+
+            sequence1_valid = re.match(r'^[A-Za-z]+$', sequence1)
+            sequence2_valid = re.match(r'^[A-Za-z]+$', sequence2)
+
+            if not sequence1_valid:
+                self.add_error('sequence1', 'Nur lateinische Buchstaben sind erlaubt.')
+            if not sequence2_valid:
+                self.add_error('sequence2', 'Nur lateinische Buchstaben sind erlaubt.')
+            
+
+            return valid and sequence1_valid and sequence2_valid
