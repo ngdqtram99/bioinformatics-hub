@@ -40,6 +40,10 @@
               {% endif %}
             </div>
           </div>
+          <div class="form-group">
+            <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren:</label>            
+                {{ form.ignore_case_choice }}            
+        </div>          
         <button type="submit">Suchen</button>
     </form>
 
