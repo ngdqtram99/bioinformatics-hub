@@ -14,23 +14,23 @@ def viterbi_view(request):
             states.insert(0, 'Start')
             state_probabilities = []
             symbol_probabilities = []
-            sum_is_valid = False
+            sum_is_valid = True
             state_input_values = request.POST.getlist('state_probabilities')
-            symbol_input_values = request.POST.getlist('symbol_probabilities')           
-            
-            if len(state_input_values) == 0 or len(state_input_values) != (len(states)-1)*len(states):
+            symbol_input_values = request.POST.getlist('symbol_probabilities')         
+            if len(state_input_values) == 0 or (len(state_input_values) != (len(states)-1)*len(states)):
+                print('True')
                 for state in states:
                     state_probabilities.append((state, [0.0] * (len(states)-1)))
             else:
                 for i in range(len(states)):
                     start_position = i * (len(states) - 1)
                     values = [float(state_input_values[start_position + j]) for j in range(len(states) - 1)]
-                    if sum(values) == 1:
+                    if sum(values) != 1:
                         sum_is_valid = True
                     state_probabilities.append((states[i], values))
             symbols = list(set(list(sequence)))
 
-            if len(symbol_input_values) == 0 :
+            if len(symbol_input_values) == 0 or (len(symbol_input_values) != (len(states)-1)*len(symbols)):
                 for state in states:
                     if state != 'Start':
                         symbol_probabilities.append((state, [0.0] * len(symbols)))
@@ -38,8 +38,8 @@ def viterbi_view(request):
                 for i in range(len(states)-1):
                     start_position = i * (len(symbols) )
                     values = [float(symbol_input_values[start_position + j]) for j in range(len(symbols))]
-                    if sum(values) == 1:
-                        sum_is_valid = True
+                    if sum(values) != 1:
+                        sum_is_valid = False
                     symbol_probabilities.append((states[i+1], values))
             if sum_is_valid:
                 transition_matrix = state_probabilities.copy()

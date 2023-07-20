@@ -48,3 +48,61 @@
 
     <button type="submit">Submit</button>
 </form>
+    {% if not sum_is_valid%}
+    <p>
+        Die Summe der Wahscheinlichkeiten in jeder Zeile soll 1 betragen, bitte überprüfen Sie die Eingaben in der Übergangs- und Emissionsmatrix
+    </p>
+    {% endif%}
+
+    {% if sum_is_valid %}
+
+    <input type="checkbox" id="logCheckbox" onclick="toggleTableVisibility()"> Logarithmische Skala
+
+    <table border="1" id="probabilityMatrixTable">
+        {% for row in probability_matrix_result %}
+        <tr>
+            {% for cell in row %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <table border="1" id="logProbabilityMatrixTable" style="display: none;">
+        {% for row in log_probability_matrix_result %}
+        <tr>
+            {% for cell in row %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+<br>
+<table border="1">
+    {% for row in path_matrix_result %}
+    <tr>
+        {% for cell in row %}
+        <td>{{ cell }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+    {% endif%}
+
+<script>
+    function toggleTableVisibility() {
+        var checkbox = document.getElementById("logCheckbox");
+        var probabilityMatrixTable = document.getElementById("probabilityMatrixTable");
+        var logProbabilityMatrixTable = document.getElementById("logProbabilityMatrixTable");
+
+        if (checkbox.checked) {
+            probabilityMatrixTable.style.display = "none";
+            logProbabilityMatrixTable.style.display = "table";
+        } else {
+            probabilityMatrixTable.style.display = "table";
+            logProbabilityMatrixTable.style.display = "none";
+        }
+    }
+</script>
