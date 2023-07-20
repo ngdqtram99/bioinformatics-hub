@@ -1,31 +1,36 @@
 from django import forms
 import re
 class HorspoolForm(forms.Form):
-    pattern = forms.CharField(label='Muster')
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea)
+    pattern = forms.CharField(label='Muster', strip=False)
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea, strip=False)
     direction = forms.ChoiceField(
         label='Richtung',
         choices=[('forward', 'Vorwärts'), ('backward', 'Rückwärts')],
         widget=forms.RadioSelect
     )
+    ignore_case_choice = forms.BooleanField(label='Groß-/Kleinschreibung ignorieren', required=False, initial=False, widget=forms.CheckboxInput())
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        pattern = cleaned_data.get('pattern','')
+        sequence = cleaned_data.get('sequence','')
+        ignore_case_choice = cleaned_data.get('ignore_case_choice')
+        if ignore_case_choice:
+             cleaned_data['pattern'] = pattern.lower()
+             cleaned_data['sequence'] = sequence.lower()
+        return cleaned_data
+
     def is_valid(self):
-            valid = super().is_valid()
+        valid = super().is_valid()
 
-            pattern = self.cleaned_data.get('pattern', '')
-            sequence = self.cleaned_data.get('sequence', '')
+        pattern = self.cleaned_data.get('pattern', '')
+        sequence = self.cleaned_data.get('sequence', '')
 
-            pattern_valid = re.match(r'^[A-Za-z]+$', pattern)
-            sequence_valid = re.match(r'^[A-Za-z]+$', sequence)
+        if len(pattern) > len(sequence):
+                valid = False
+                self.add_error('pattern', 'Pattern kann nicht länger als Sequenz sein')
 
-            if not pattern_valid:
-                self.add_error('pattern', 'Nur lateinische Buchstaben sind erlaubt.')
-            if not sequence_valid:
-                self.add_error('sequence', 'Nur lateinische Buchstaben sind erlaubt.')
-            if len(pattern) > len(sequence):
-                 pattern_valid = False
-                 self.add_error('pattern', 'Pattern darf nicht länger als Sequenz sein')
-            return valid and pattern_valid and sequence_valid
-import re
+        return valid 
 
 class DotplotForm(forms.Form):
     sequence1 = forms.CharField(max_length=200)
@@ -48,27 +53,31 @@ class DotplotForm(forms.Form):
         return valid and sequence1_valid and sequence2_valid
     
 class SimpleSearchForm(forms.Form):
-    pattern = forms.CharField(label='Muster')
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea)
-
+    pattern = forms.CharField(label='Muster', strip=False)
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea, strip=False)
+    ignore_case_choice = forms.BooleanField(label='Groß-/Kleinschreibung ignorieren', required=False, initial=False, widget=forms.CheckboxInput())
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        pattern = cleaned_data.get('pattern','')
+        sequence = cleaned_data.get('sequence','')
+        ignore_case_choice = cleaned_data.get('ignore_case_choice')
+        if ignore_case_choice:
+             cleaned_data['pattern'] = pattern.lower()
+             cleaned_data['sequence'] = sequence.lower()
+        return cleaned_data
+    
     def is_valid(self):
-            valid = super().is_valid()
+        valid = super().is_valid()
 
-            pattern = self.cleaned_data.get('pattern', '')
-            sequence = self.cleaned_data.get('sequence', '')
+        pattern = self.cleaned_data.get('pattern', '')
+        sequence = self.cleaned_data.get('sequence', '')
 
-            pattern_valid = re.match(r'^[A-Za-z]+$', pattern)
-            sequence_valid = re.match(r'^[A-Za-z]+$', sequence)
+        if len(pattern) > len(sequence):
+                valid = False
+                self.add_error('pattern', 'Pattern kann nicht länger als Sequenz sein')
 
-            if not pattern_valid:
-                self.add_error('pattern', 'Nur lateinische Buchstaben sind erlaubt.')
-            if not sequence_valid:
-                self.add_error('sequence', 'Nur lateinische Buchstaben sind erlaubt.')
-            if len(pattern) > len(sequence):
-                 pattern_valid = False
-                 self.add_error('pattern', 'Pattern kann nicht länger als Sequenz sein')
-
-            return valid and pattern_valid and sequence_valid
+        return valid 
     
 class OverlapForm(forms.Form):
     sequence1 = forms.CharField(label='Sequenz 1')
