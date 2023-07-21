@@ -79,12 +79,12 @@ def get_results(seq, transition, emission):
     # Wahrscheinlichkeitsmatrix (DataFrame), Traceback-Pfad und Zustand-Pfad
     pro_df = DataFrame(0.0, index= trans_states, columns= [*seq])
     pro_df.loc['Start','s'] = 1 
-    path = [] ### Gleich wie Wahrscheinlichkeitsmatrix aber speichert Traceback-Pfad
+    path = DataFrame(None, index=[' '], columns=[*seq[1:]]) # Traceback-Pfad
     state_path = [] # Speichert die Zustände jedes Symbols
 
     state_df = DataFrame(index=['Zustand'],columns=[*seq[1:]])
-    print(em_df)
-    print(trans_df)
+    #print(em_df)
+    #print(trans_df)
 
     # Berechnen
     # ---------------
@@ -92,19 +92,23 @@ def get_results(seq, transition, emission):
         symbol = pro_df.columns[i_symbol]
         # Beim ersten Symbol wird die Wahrscheinlichkeit von Start-Zustand gerechnet
         if i_symbol == 1:
+            # Addiert Traceback (i_symbol-1, weil kein s Symbol in den Zeilenamen von path ist))
+            path.iloc[0][i_symbol-1] = 'Start'
+
             for state in pro_df.index[1:]:
                 pro_df.loc[state][i_symbol] = pro_df.loc['Start']['s'] * trans_df.loc['Start'][state] * em_df.loc[state][symbol]
             #print(pro_df)
 
         # Beim übrige Symbole werden ihre Wahrscheinlichkeit von die maximalen vorangegangenen gerechnet werden
-        else:    
+        else:   
+            # Addiert Traceback (i_symbol-1, weil kein s Symbol in den Zeilenamen von path ist)
+            path.iloc[0][i_symbol-1] = pre_state = pro_df.iloc[:,i_symbol-1].idxmax()
+
             for state in pro_df.index[1:]:
-                pro_df.loc[state][i_symbol] = path[-1] * trans_df.loc[state_path[-1]][state] * em_df.loc[state][symbol]
+                pro_df.loc[state][i_symbol] = pro_df.loc[pre_state][i_symbol-1] * trans_df.loc[pre_state][state] * em_df.loc[state][symbol]
             #print(pro_df)
         
-        ### add max and state of max of the present symbol in the path and state_path
-        path.append(pro_df.iloc[:,i_symbol].max())
-        #print(path)
+        ### state of max of the present symbol in the path and state_path
         state_path.append(pro_df.iloc[:,i_symbol].idxmax())
         #print(state_path)
         
@@ -112,20 +116,19 @@ def get_results(seq, transition, emission):
     # add state in state_df
     state_df.loc['Zustand'] = state_path
 
-    # Erzeugt die log-Wahrscheinlichkeitsmatrix ### keine log-Pfad benötigt??
+    # Erzeugt die log-Wahrscheinlichkeitsmatrix
     logpro_df = np.log(pro_df)
-    logpath = [np.log(p) for p in path]
     
     '''
     print(pro_df)
     print(logpro_df)
+    print('bug hier')
     print('path',path)
-    print('logpath',logpath)
     print(state_df)
     '''
 
     return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
-            'path':path, 'log_path':logpath,
+            'path':to_nestedlist(path),
             'path_matrix': to_nestedlist(state_df)}
     
 
@@ -144,4 +147,4 @@ em = [(' ',[*'ATGC']),
       ('-',[0.125,0.125,0.375,0.375])]
 
 seq = 'TGTACAA'
-#print(get_results(seq,trans,em))
+print(get_results(seq,trans,em))
