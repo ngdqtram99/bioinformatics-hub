@@ -60,14 +60,22 @@ def get_alignment(traceback : DataFrame, position: int):
     return [[*s1_alg],[*s2_alg]]
 
 # Überlapp-Algorithmus
-def get_result(sequence1: str, sequence2: str, match = 1, mismatch = -1, gap_penalty = -1):
+def get_result(sequence1: str, sequence2: str, similarity = True, match = 1, mismatch = -1, gap_penalty = -1):
     seq1,seq2 = '-' + sequence1, '-' + sequence2
 
     traceback = DataFrame(None, index=[*seq1], columns=[*seq2])
     matrix = DataFrame(0, index=[*seq1], columns=[*seq2])    
 
-    assert gap_penalty <= 0, 'gap_penalty sollte kleiner oder gleich 0 sein'
-    
+    # Prüft die Vorbedingungen von Match, Mismatch und Gap-Penalty
+    if similarity:
+        assert gap_penalty < 0, 'Gap-Penalty sollte kleiner 0 sein'
+        assert mismatch <= 0, 'Mismatch sollte kleiner oder gleich 0 sein'
+        assert match > 0, 'Match sollte größe als 0 sein'
+    else:
+        assert gap_penalty > 0, 'Gap-Penalty sollte bei größer 0 sein'
+        assert mismatch >= 0, 'Mismatch sollte größer oder gleich 0 sein'
+        assert match < 0, 'Match sollte kleiner als 0 sein'
+
     #Initialisierung
     for i in range(1,len(matrix.columns)):
         matrix.loc['-'][i] = matrix.loc['-'][i-1] + gap_penalty
