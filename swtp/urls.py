@@ -16,16 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webapp.views import base_view
-from webapp.views import dotplot_view
-from webapp.views import simple_search_view
-from webapp.views import horspool_view
+from webapp.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('horspool/', horspool_view, name='horspool'),
-    path('base/', base_view, name='base'),
+    path('', base_view, name='base'),
     path('dotplot/', dotplot_view, name='dotplot'),
-    path('simple_search/', simple_search_view, name='simple_search')
+    path('simple_search/', simple_search_view, name='simple_search'),
+    path('overlap/', overlap_view, name='overlap')
 ]
 

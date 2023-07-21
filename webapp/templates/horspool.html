@@ -1,12 +1,61 @@
+{% extends 'base.html' %}
 <html>
+    {% block content %}
 <head>
     <title>Horspool</title>
 </head>
+<style>
+    .input-container {
+  display: flex;
+  flex-direction: column;
+}
+</style>
 <body>
     <h1>Horspool</h1>
+    <p>Der Boyer-Moore-Horspool-Algorithmus oder Horspool-Algorithmus ist ein Algorithmus zum Finden von Teilzeichenfolgen in Zeichenfolgen. Es wurde 1980 von Nigel Horspool veröffentlicht. In der Bioinformatik, wird er angewendet, um Muster in Sequenzen zu finden. Diese Muster können beispielsweise Transkriptionsfaktorbindestellen, Tranksriptionsstart, Translationsinitiationssignal, usw. sein.</p>
+
+<p>Richtung der Vergleiche:</p>
+
+<ul>
+  <li>Rückwärts: Wenn die letzte Position gleich ist, werden die Buchstaben von rechts nach links verglichen.</li>
+  <li>Vorwärts: Wenn die letzte Position gleich ist, werden die Buchstaben  von links nach rechts verglichen. </li>
+
+  </ul>
+  <p>
+    Wenn das letzte Zeichen des Vergleichsstrings im Pattern vorkommt, wird die Vergleichsposition um m Positionen nach rechts verschoben. Andernfalls kann die Anzahl der verschobenen Positionen anhand der Shift-Tabelle, abhängig von der Anzahl der Vorkommen dieses Zeichens, berechnet werden. 
+ 
+  </p>
+
     <form method="POST" action="{% url 'horspool' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <!-- {{ form.as_p }}  -->
+        <div class="form-group">
+            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+            <div class="input-container">
+              {{ form.pattern }}
+              {% if form.errors.pattern %}
+            <span class="error-message">{{ form.errors.pattern }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
+            <div class="input-container">
+              {{ form.sequence }}
+              {% if form.errors.sequence %}
+              <span class="error-message">{{ form.errors.sequence }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren:</label>            
+                {{ form.ignore_case_choice }}            
+        </div>   
+          <div class="form-group">
+            <label for="{{ form.direction.id_for_label }}">Richtung:</label>
+            {{ form.direction }}
+          </div>
+        
         <button type="submit">Suchen</button>
     </form>
 
@@ -35,4 +84,5 @@
 {% endif %}
 
 </body>
+{% endblock %}
 </html>

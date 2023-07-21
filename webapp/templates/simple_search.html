@@ -1,19 +1,49 @@
+{% extends 'base.html' %}
+
 <html>
+    {% block content %}
 <head>
     <title>Simple search</title>
 </head>
+<style>
+    .input-container {
+  display: flex;
+  flex-direction: column;
+}
+</style>
 <body>
     <h1>Simple search</h1>
     <p>
         Simple search ist ein Stringvergleich. Es werden alle Vorkommen des Musters in der Sequenz gesucht. 
-        Dabei wird, bei jedem Abbrechen des Vergleichs von dem Muster und einem gleich langem Teil der Sequenz, das Suchfenster um eins nach vorne verschoben. 
+        Dabei wird bei jedem Abbrechen des Vergleichs von dem Muster und einem gleich langem Teil der Sequenz, das Suchfenster um eins nach vorne verschoben. 
         Der Vergleich wird abgebrochen, wenn entweder das Muster gefunden wurde oder zwei Buchstaben nicht übereinstimmen.
-        Die maximale Länge von Sequenz und Muster ist 500.000. Als Eingabe für Sequenz und Muster sind alle Zeichen erlaubt.
+        Die maximale Länge von Sequenz und Muster ist 500.000. Als Eingabe für Sequenz und Muster sind alle Zeichen erlaubt. 
         Die Ausgabe liefert sowohl die Stellen an denen das Muster in der Sequenz vorkommt, als auch die Anzahl aller Vergleiche.
     </p>
     <form method="POST" action="{% url 'simple_search' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group">
+            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+            <div class="input-container">
+              {{ form.pattern }}
+              {% if form.errors.pattern %}
+            <span class="error-message">{{ form.errors.pattern }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
+            <div class="input-container">
+              {{ form.sequence }}
+              {% if form.errors.sequence %}
+              <span class="error-message">{{ form.errors.sequence }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren:</label>            
+                {{ form.ignore_case_choice }}            
+        </div>          
         <button type="submit">Suchen</button>
     </form>
 
@@ -41,4 +71,5 @@
     </p>
 {% endif %}
 </body>
+{% endblock %}
 </html>
