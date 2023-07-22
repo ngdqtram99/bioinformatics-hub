@@ -24,6 +24,7 @@ urlpatterns = [
     path('', base_view, name='base'),
     path('dotplot/', dotplot_view, name='dotplot'),
     path('simple_search/', simple_search_view, name='simple_search'),
-    path('overlap/', overlap_view, name='overlap')
+    path('overlap/', overlap_view, name='overlap'),
+    path('needleman_wunsch/', needleman_wunsch_view, name='needleman_wunsch')
 ]
 
