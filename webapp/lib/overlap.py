@@ -13,8 +13,9 @@ def to_matrix(dataframe : DataFrame):
     return matrix
 
 # Traceback-Wert
-def traceback_value(dia,ver,hor):
-    m = max(dia,ver,hor)
+def traceback_value(dia,ver,hor, similarity : bool):
+    
+    m = max(dia,ver,hor) if similarity else min(dia,ver,hor)
     if m == dia: return "dia"
     if m == ver: return "ver"
     else: return "hor"
@@ -88,8 +89,9 @@ def get_result(sequence1: str, sequence2: str, similarity = True, match = 1, mis
             hor = matrix.iloc[i][j-1] + gap_penalty
             dia = matrix.iloc[i-1][j-1] + s
             
-            matrix.iloc[i][j] = max(dia,ver,hor)
-            traceback.iloc[i][j] = traceback_value(dia,ver,hor)
+            matrix.iloc[i][j] = max(dia,ver,hor) if similarity else min(dia,ver,hor)
+            
+            traceback.iloc[i][j] = traceback_value(dia,ver,hor,similarity)
     
     # Bestes Score
     max_value = max(matrix.iloc[len(sequence1)]) 
