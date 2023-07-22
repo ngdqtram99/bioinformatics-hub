@@ -105,7 +105,8 @@ def needleman_wunsch_view(request):
             match = form.cleaned_data['match']
             mismatch = form.cleaned_data['mismatch']
             gap_penalty = form.cleaned_data['gap_penalty']
-            #result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty)
+            similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
+            #result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)
             result={} 
             result['matrix'] = [ #nur zum Schauen/Testen
           [0, -10, -20, -30, -40],

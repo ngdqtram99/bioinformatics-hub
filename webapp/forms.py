@@ -109,6 +109,8 @@ class NeedlemanWunschForm(forms.Form):
     match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=0)
     mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=1)
     gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=100, initial=1)
+    choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
+    optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 
     def is_valid(self):
             valid = super().is_valid()
