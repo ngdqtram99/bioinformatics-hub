@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block content %}
+ 
+    <form method="POST" action="{% url 'needleman_wunsch' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Suchen</button>
+    </form>
+
+      <style>
+        .path {
+          background-color: #c7dff8;
+        }
+    
+        .hor {
+          background-image: url('{% static "images/hor.png" %}');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        .vert {
+          background-image: url('{% static "images/vert.png" %}');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        .diag {
+          background-image: url('{% static "images/diag.png" %}');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        table {
+          border-collapse: collapse;
+        }
+    
+        td {
+          border: 1px solid black;
+          padding: 10px;
+          text-align: center;
+        }
+      </style>
+    </head>
+    <body>
+      <table id="matrixTable"></table>
+    
+      <script>
+        
+        const matrixValues = {{matrix}};
+    
+        const sequences = [ ""," ","A", "A", "T", "C", "G"];
+        const secondSequence = ["M", "", "A", "A", "C", "G"];
+    
+        const path = [
+          [[5, 4], 'diag'],
+          [[4, 3], 'diag'],
+          [[3, 2], 'vert'],
+          [[2, 2], 'diag'],
+          [[1, 1], 'diag'],
+          [[0, 0]]
+        ];
+    
+        // Funktion, um die Tabelle zu erstellen und den Pfad mit Klassen für die Pfeile zu markieren
+        function createMatrixTable() {
+          const table = document.getElementById("matrixTable");
+    
+          for (let i = 0; i <= sequences.length; i++) {
+            const row = document.createElement("tr");
+    
+            for (let j = 0; j < secondSequence.length; j++) {
+              const cell = document.createElement("td");
+    
+              if (i === 0 && j >= 0) {
+                // Zeilen- und Spaltenbeschriftungen einfügen
+                cell.textContent = secondSequence[j];
+              } else if (i > 0 && j === 0) {
+                cell.textContent = sequences[i];
+              } else if (i > 0 && j > 0) {
+                // Scores in die Zellen einfügen
+                cell.textContent = matrixValues[i - 1][j - 1];
+              }
+    
+              // Prüfen, ob die Zelle zum Pfad gehört und füge die Klasse path hinzu
+              for (let k = 1; k <= path.length; k++) {
+                const [coords, direction] = path[k - 1];
+    
+                if (coords[0] === i-1 && coords[1] === j-1) {
+                  cell.classList.add('path');
+                  if (direction) {
+                    cell.classList.add(`${direction}`);
+                  }
+                  break;
+                }
+              }
+    
+              row.appendChild(cell);
+            }
+    
+            table.appendChild(row);
+          }
+        }
+    
+        
+        createMatrixTable();
+
+     
+        </script>   
+    
+    {% endblock %}

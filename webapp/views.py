@@ -94,7 +94,45 @@ def base_view(request):
     return render(request, 'base.html')
 
 def needleman_wunsch_view(request):
-    return render(request, 'needleman_wunsch.html')
+    form = NeedlemanWunschForm()
+
+    if request.method == 'POST':
+        form = NeedlemanWunschForm(request.POST)
+
+        if form.is_valid():
+            seq1 = form.cleaned_data['sequence1']
+            seq2 = form.cleaned_data['sequence2']
+            match = form.cleaned_data['match']
+            mismatch = form.cleaned_data['mismatch']
+            gap_penalty = form.cleaned_data['gap_penalty']
+            #result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty)
+            result={} 
+            result['matrix'] = [ #nur zum Schauen/Testen
+          [0, -10, -20, -30, -40],
+          [-10, 1, -9, -19, -29],
+          [-20, -9, 2, -8, -18],
+          [-30, -19, -8, 1, -9],
+          [-40, -29, -18, -7, 0],
+          [-50,-39,-28,-17,-6]
+        ]  
+            if result is not None:
+
+                context = {
+                    'form': form,
+                    'matrix': result['matrix'],
+                    #'alignments' : result['alignments'],
+                    #'score' : result['score']
+                }
+            else:
+                context = {
+                    'form' : form,
+                    'error' : True
+                }
+            return render(request, 'needleman_wunsch.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'needleman_wunsch.html',context)
 
 def smith_waterman_view(request):
     return render(request, 'smith_waterman.html')
