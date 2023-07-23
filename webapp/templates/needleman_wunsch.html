@@ -7,7 +7,7 @@
         {{ form.as_p }}
         <button type="submit">Suchen</button>
     </form>
-
+    <br>
       <style>
         .path {
           background-color: #c7dff8;
@@ -34,77 +34,38 @@
         table {
           border-collapse: collapse;
         }
-    
+        .alignment-table{
+            font-family: monospace;
+        }
         td {
-          border: 1px solid black;
-          padding: 10px;
-          text-align: center;
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        .alignment:hover {
+            background-color:  #88bdf5;
+            }
+        .alignment.selected {
+        background-color: #007bff;
+        color: white;
         }
       </style>
     </head>
     <body>
-      <table id="matrixTable"></table>
-    
-      <script>
-        
-        const matrixValues = {{matrix}};
-    
-        const sequences = [ ""," ","A", "A", "T", "C", "G"];
-        const secondSequence = ["M", "", "A", "A", "C", "G"];
-    
-        const path = [
-          [[5, 4], 'diag'],
-          [[4, 3], 'diag'],
-          [[3, 2], 'vert'],
-          [[2, 2], 'diag'],
-          [[1, 1], 'diag'],
-          [[0, 0]]
-        ];
-    
-        // Funktion, um die Tabelle zu erstellen und den Pfad mit Klassen für die Pfeile zu markieren
-        function createMatrixTable() {
-          const table = document.getElementById("matrixTable");
-    
-          for (let i = 0; i <= sequences.length; i++) {
-            const row = document.createElement("tr");
-    
-            for (let j = 0; j < secondSequence.length; j++) {
-              const cell = document.createElement("td");
-    
-              if (i === 0 && j >= 0) {
-                // Zeilen- und Spaltenbeschriftungen einfügen
-                cell.textContent = secondSequence[j];
-              } else if (i > 0 && j === 0) {
-                cell.textContent = sequences[i];
-              } else if (i > 0 && j > 0) {
-                // Scores in die Zellen einfügen
-                cell.textContent = matrixValues[i - 1][j - 1];
-              }
-    
-              // Prüfen, ob die Zelle zum Pfad gehört und füge die Klasse path hinzu
-              for (let k = 1; k <= path.length; k++) {
-                const [coords, direction] = path[k - 1];
-    
-                if (coords[0] === i-1 && coords[1] === j-1) {
-                  cell.classList.add('path');
-                  if (direction) {
-                    cell.classList.add(`${direction}`);
-                  }
-                  break;
-                }
-              }
-    
-              row.appendChild(cell);
-            }
-    
-            table.appendChild(row);
-          }
-        }
-    
-        
-        createMatrixTable();
-
-     
-        </script>   
+        <table id="matrixTable"> </table>
+        <br>
+        <div id="alignmentsContainer"> </div>
+          
+      <script> 
+        var matrixValues = {{matrix}}
+        var alignments = {{alignments|safe}}
+        var firstSequence = '{{form.sequence1.value}}'.split("")
+        firstSequence.unshift(""); 
+        firstSequence.unshift("");
+        var secondSequence = '{{form.sequence2.value}}'.split("")
+        secondSequence.unshift(""); 
+        secondSequence.unshift("M");
+    </script>
+      <script src="{% static 'js/pairwise.js' %}"></script>   
     
     {% endblock %}
