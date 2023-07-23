@@ -116,14 +116,34 @@ def needleman_wunsch_view(request):
           [-40, -29, -18, -7, 0],
           [-50,-39,-28,-17,-6]
         ]  
+            result['alignments']=[{'alignment':['AATCG', '||:||', 'AA-CG'],
+                                   'path':[
+                                    [[5, 4], 'diag'],
+                                    [[4, 3], 'diag'],
+                                    [[3, 2], 'vert'],
+                                    [[2, 2], 'diag'],
+                                    [[1, 1], 'diag'],
+                                    [[0, 0]]]},
+                                    {'alignment':['AATCG', '|::||', 'A-ACG'],
+                                   'path':[
+                                    [[5, 4], 'diag'],
+                                    [[4, 3], 'diag'],
+                                    [[3, 2], 'hor'],
+                                    [[3, 1], 'diag'],
+                                    [[2, 0], 'vert'],
+                                    [[1, 0], 'vert'],
+                                    [[0, 0]]]}]
+            
             if result is not None:
 
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
+                    'alignments' : result['alignments'],
                     #'alignments' : result['alignments'],
-                    #'score' : result['score']
+                    'score' : 4
                 }
+                print(context)
             else:
                 context = {
                     'form' : form,
