@@ -1,5 +1,5 @@
-#from traceback import _get_paths, _modify_path
-from webapp.lib.traceback import _get_paths, _modify_path
+from traceback import _get_paths, _modify_path
+#from webapp.lib.traceback import _get_paths, _modify_path
 
 # Gibt die Richtung/Vorgänger zurück
 def traceback_value(dia,ver,hor, similarity : bool):
@@ -74,7 +74,7 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
 
     for i in range(1,len(seq1)): 
         matrix[i][0] = matrix[i-1][0] + gap_penalty 
-        traceback[i][0] = "ver"
+        traceback[i][0] = "vert"
     
     # Gibt (Mis)-Match zurück, wenn die verglichen Buchstaben (nicht) identisch sind
     def is_match(a, b, match, mismatch):
@@ -123,7 +123,7 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
     
 # Beispiel
 res = get_result('actg','aacg',2,-1,-2,True)
-for i in res: print(res[i])
+#for i in res: print(res[i])
 '''
 [[0, -2, -4, -6, -8], 
  [-2, 2, 0, -2, -4], 
