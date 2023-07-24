@@ -33,8 +33,8 @@ class HorspoolForm(forms.Form):
         return valid 
 
 class DotplotForm(forms.Form):
-    sequence1 = forms.CharField(max_length=200)
-    sequence2 = forms.CharField(max_length=200)
+    sequence1 = forms.CharField(label = "Sequenz 1", max_length=200, strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label = "Sequenz 2", max_length=200, strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
 
     def is_valid(self):
         valid = super().is_valid()
