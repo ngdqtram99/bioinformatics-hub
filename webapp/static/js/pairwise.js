@@ -1,3 +1,36 @@
+/*
+Dieses Skript wird verwendet, um Alignments, die Score-Tabelle und Pfade in den Alignment-Templates zu zeichnen.
+Dieses Skript ermöglicht auch, dass ein Alignment in der Alignments-Tabelle ausgewählt werden kann und der dazugehörige Pfad wird in der Score-Tabelle gezeichnet.
+
+Der Template muss eine Tabelle und einen div-Container mit bestimmten ids enthalten:
+<table id="matrixTable"> 
+<div id="alignmentsContainer">
+
+Desweiteren sollen CSS-Klassen .path, .alignment, .alignment.selected, .hor, .vert und .diag definiert sein
+
+Folgende Variablen müssen im Template initialisiert werden:
+
+matrixValues - die Score-Matrix in Form von Listen von Listen (eigene Liste für jede Zeile)
+    Beispiel von matrixValues = [ 
+            [0, -10, -20, -30, -40],
+            [-10, 1, -9, -19, -29],
+            [-20, -9, 2, -8, -18],
+            [-30, -19, -8, 1, -9],
+            [-40, -29, -18, -7, 0],
+            [-50,-39,-28,-17,-6]
+            ] 
+alignments - Eine Liste von dictionaries für jeden Alignment. Aufgebaut wie folgt:
+    [{'alignment':[], 'path':[]}, {'alignment':[], 'path':[]},…] 
+
+Dabei besteht jeder Alignment aus einer Liste von Strings
+    Der erste String ist die Sequenz 1 nach dem Alignment (also mit ggf. eingefügten Gaps) 
+    Der zweite String besteht aus Leerzeichen und '|' - Zeichen, dabei steht | überall an den Positionen, wo Sequenz 1 nach dem Alignment mit der Sequenz 2 nach dem Alignment übereinstimmt
+    Der dritte String ist Sequenz 2 nach dem Alignment
+    Beispiel: 'alignment': ['--CC', '  ||', 'BBCC']
+Der Path enthält eine Liste von Listen, die die Positionen in der Matrix beschreiben, durch die der Pfad verläuft. Zusätzlich enthält jede liste einen String mit der Richting
+    Beispiel: 'path': [[[2, 4], 'diag'], [[1, 3], 'diag'], [[0, 2], 'hor'], [[0, 1], 'hor'], [[0, 0]]]
+    Erlaubte Richtingen sind 'hor' für Horizontal, 'vert' für Vertikal und 'diag' für Diagonal. Die Richting darf auch fehlen*/
+
 const path = alignments[0].path;
     
 // Funktion, um die Tabelle zu erstellen und den Pfad mit Klassen für die Pfeile zu markieren
@@ -53,9 +86,7 @@ function showAlignments() {
     // Iteriere durch die Alignments und füge sie der Tabelle hinzu
     for (let i = 0; i < alignments.length; i++) {
         const alignment = alignments[i].alignment;
-        const path = alignments[i].path;
-        
-        
+        const path = alignments[i].path;       
         
         const alignmentRow = document.createElement("tr");
         alignmentRow.classList.add('alignment');
@@ -66,10 +97,10 @@ function showAlignments() {
             
         }
         selectedAlignmentRow = document.querySelector(".alignment.selected");
-        console.log(selectedAlignmentRow)
         const alignmentCell = document.createElement("td");
     
         alignment.forEach((line, index) => {
+          line = line.replaceAll(" ",":")
           const lineText = document.createTextNode(line);
           alignmentCell.appendChild(lineText);
     
