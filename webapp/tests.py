@@ -3,6 +3,7 @@ from .lib import dotplot
 from .lib import simple_search
 import unittest
 from .forms import DotplotForm
+from .lib import horspool
 
 class TestDotplot(TestCase):
     
@@ -43,8 +44,6 @@ class TestDotplotForm(TestCase):
         form.is_valid()
         self.assertEqual(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
         self.assertEqual(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
-
-
 
 
 # Simple Search Tests
@@ -95,3 +94,94 @@ class TestSimpleSearch(unittest.TestCase):
 
         self.assertEquals(result['comparsions_count'], 3)
         self.assertEquals(result['results'], [])
+
+
+# Horspool tests
+class TestHorspool(TestCase):
+    # es werden alle möglichen Ergebnisse für Rückwärts getestet
+    def test_comparisons_count_backwards(self):
+        # kein Vergleich
+        # keine Matches
+        result = horspool.get_result('', '')
+
+        self.assertEquals(result['comparisons_count'], 0)
+        self.assertEquals(result['result'], [])
+
+        # ein Vergleich
+        # keine Matches
+        result = horspool.get_result('T', 'A')
+
+        self.assertEquals(result['comparisons_count'], 1)
+        self.assertEquals(result['results'], [])
+
+        # ein Vergleich
+        # ein Match
+        result = horspool.get_result('A', 'A')
+
+        self.assertEquals(result['comparisons_count'], 1)
+        self.assertEquals(result['results'], [0])
+
+        # mehrere Vergleich
+        # keine Matches
+        result = horspool.get_result('A', 'TGCTGCC')
+
+        self.assertEquals(result['comparisons_count'], 7)
+        self.assertEquals(result['results'], [])
+
+        # mehrere Vergleiche
+        # ein Match
+        result = horspool.get_result('A', 'TGATGCC')
+
+        self.assertEquals(result['comparisons_count'], 7)
+        self.assertEquals(result['results'], [2])
+
+        # mehrere Vergleiche
+        # mehrere Matches
+        result = horspool.get_result('TG', 'TGATGCC')
+
+        self.assertEquals(result['comparisons_count'], 6)
+        self.assertEquals(result['results'], [0, 3])
+
+    # es werden alle möglichen Ergebnisse für vorwärts getestet
+    def test_comparisons_count_forward(self):
+        # kein Vergleich
+        # keine Matches
+        result = horspool.get_result('', '', False)
+
+        self.assertEquals(result['comparisons_count'], 0)
+        self.assertEquals(result['result'], [])
+
+        # ein Vergleich
+        # keine Matches
+        result = horspool.get_result('T', 'A', False)
+
+        self.assertEquals(result['comparisons_count'], 1)
+        self.assertEquals(result['results'], [])
+
+        # ein Vergleich
+        # ein Match
+        result = horspool.get_result('A', 'A')
+
+        self.assertEquals(result['comparisons_count'], 1)
+        self.assertEquals(result['results'], [0])
+
+        # mehrere Vergleich
+        # keine Matches
+        result = horspool.get_result('A', 'TGCTGCC')
+
+        self.assertEquals(result['comparisons_count'], 7)
+        self.assertEquals(result['results'], [])
+
+        # mehrere Vergleiche
+        # ein Match
+        result = horspool.get_result('A', 'TGATGCC')
+
+        self.assertEquals(result['comparisons_count'], 7)
+        self.assertEquals(result['results'], [2])
+
+        # mehrere Vergleiche
+        # mehrere Matches
+        result = horspool.get_result('TG', 'TGATGCC')
+
+        self.assertEquals(result['comparisons_count'], 6)
+        self.assertEquals(result['results'], [0, 3])
