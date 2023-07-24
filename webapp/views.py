@@ -4,6 +4,7 @@ from .lib import dotplot
 from .lib import simple_search
 from .lib import horspool
 from .lib import overlap
+from .lib import needleman_wunsch
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -106,42 +107,14 @@ def needleman_wunsch_view(request):
             mismatch = form.cleaned_data['mismatch']
             gap_penalty = form.cleaned_data['gap_penalty']
             similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
-            #result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)
-            result={} 
-            result['matrix'] = [ #nur zum Schauen/Testen
-          [0, -10, -20, -30, -40],
-          [-10, 1, -9, -19, -29],
-          [-20, -9, 2, -8, -18],
-          [-30, -19, -8, 1, -9],
-          [-40, -29, -18, -7, 0],
-          [-50,-39,-28,-17,-6]
-        ]  
-            result['alignments']=[{'alignment':['AATCG', '||:||', 'AA-CG'],
-                                   'path':[
-                                    [[5, 4], 'diag'],
-                                    [[4, 3], 'diag'],
-                                    [[3, 2], 'vert'],
-                                    [[2, 2], 'diag'],
-                                    [[1, 1], 'diag'],
-                                    [[0, 0]]]},
-                                    {'alignment':['AATCG', '|::||', 'A-ACG'],
-                                   'path':[
-                                    [[5, 4], 'diag'],
-                                    [[4, 3], 'diag'],
-                                    [[3, 2], 'hor'],
-                                    [[3, 1], 'diag'],
-                                    [[2, 0], 'vert'],
-                                    [[1, 0], 'vert'],
-                                    [[0, 0]]]}]
-            
-            if result is not None:
+            result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)        
 
+            if result is not None:
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
                     'alignments' : result['alignments'],
-                    #'alignments' : result['alignments'],
-                    'score' : 4
+                    'score' : result['score']
                 }
                 print(context)
             else:
