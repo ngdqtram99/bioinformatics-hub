@@ -1,8 +1,8 @@
 from django import forms
 import re
 class HorspoolForm(forms.Form):
-    pattern = forms.CharField(label='Muster', strip=False)
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea, strip=False)
+    pattern = forms.CharField(label='Muster', strip=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "max-width-input"}), strip=False)
     direction = forms.ChoiceField(
         label='Richtung',
         choices=[('forward', 'Vorwärts'), ('backward', 'Rückwärts')],
@@ -33,8 +33,8 @@ class HorspoolForm(forms.Form):
         return valid 
 
 class DotplotForm(forms.Form):
-    sequence1 = forms.CharField(max_length=200)
-    sequence2 = forms.CharField(max_length=200)
+    sequence1 = forms.CharField(label = "Sequenz 1", max_length=200, strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label = "Sequenz 2", max_length=200, strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
 
     def is_valid(self):
         valid = super().is_valid()
@@ -53,8 +53,8 @@ class DotplotForm(forms.Form):
         return valid and sequence1_valid and sequence2_valid
     
 class SimpleSearchForm(forms.Form):
-    pattern = forms.CharField(label='Muster', strip=False)
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea, strip=False)
+    pattern = forms.CharField(label='Muster', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "max-width-input"}), strip=False)
     ignore_case_choice = forms.BooleanField(label='Groß-/Kleinschreibung ignorieren', required=False, initial=False, widget=forms.CheckboxInput())
     
     def clean(self):
@@ -80,8 +80,8 @@ class SimpleSearchForm(forms.Form):
         return valid 
     
 class OverlapForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1')
-    sequence2 = forms.CharField(label='Sequenz 2')
+    sequence1 = forms.CharField(label='Sequenz 1', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
     match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=1)
     mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=-1)
     gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=0, initial=-1)
@@ -104,8 +104,8 @@ class OverlapForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class NeedlemanWunschForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1')
-    sequence2 = forms.CharField(label='Sequenz 2')
+    sequence1 = forms.CharField(label='Sequenz 1', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
     match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=0)
     mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=1)
     gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=100, initial=1)

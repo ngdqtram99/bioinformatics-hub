@@ -5,9 +5,8 @@
     <title>Horspool</title>
 </head>
 <style>
-    .input-container {
-  display: flex;
-  flex-direction: column;
+      .max-width-input {
+  width: 100%; 
 }
 </style>
 <body>
@@ -28,33 +27,7 @@
 
     <form method="POST" action="{% url 'horspool' %}">
         {% csrf_token %}
-        <!-- {{ form.as_p }}  -->
-        <div class="form-group">
-            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
-            <div class="input-container">
-              {{ form.pattern }}
-              {% if form.errors.pattern %}
-            <span class="error-message">{{ form.errors.pattern }}</span>
-              {% endif %}
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
-            <div class="input-container">
-              {{ form.sequence }}
-              {% if form.errors.sequence %}
-              <span class="error-message">{{ form.errors.sequence }}</span>
-              {% endif %}
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren:</label>            
-                {{ form.ignore_case_choice }}            
-        </div>   
-          <div class="form-group">
-            <label for="{{ form.direction.id_for_label }}">Richtung:</label>
-            {{ form.direction }}
-          </div>
+        {{ form.as_p }}
         
         <button type="submit">Suchen</button>
     </form>
