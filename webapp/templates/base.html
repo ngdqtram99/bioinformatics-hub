@@ -1,6 +1,28 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+<style>
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  background-color: #f2f2f2;
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Center items vertically within the footer */
+}
+
+footer a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.vertical-bar {
+  margin: 0 5px; /* Add some space on the left and right of the vertical bar */
+  font-size: 14px;
+}
+</style>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -15,7 +37,7 @@
                 <a href="/needleman_wunsch" class="menu-item">Needleman-Wunsch</a>
                 <a href="#" class="menu-item">Smith-Waterman</a>
                 <a href="#" class="menu-item">Glokales Alignment</a>
-                <a href="#" class="menu-item">Überlapp-Alignment</a>
+                <a href="/overlap" class="menu-item">Überlapp-Alignment</a>
             </div>
         </div>
         <a href="/dotplot" class="menu-item">Dotplot</a>
@@ -42,6 +64,11 @@
             </div>
         </div>
         <a href="#" class="menu-item">Viterbi</a>
+        <footer>
+            <a href="https://www.thm.de/site/datenschutz.html">Datenschutz</a>
+            <span class="vertical-bar"> | </span>
+            <a href="https://www.thm.de/site/impressum.html">Impressum</a>
+        </footer>
         
         
     </div>
