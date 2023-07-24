@@ -80,8 +80,8 @@ class SimpleSearchForm(forms.Form):
         return valid 
     
 class OverlapForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1')
-    sequence2 = forms.CharField(label='Sequenz 2')
+    sequence1 = forms.CharField(label='Sequenz 1', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
     match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=1)
     mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=-1)
     gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=0, initial=-1)
@@ -104,8 +104,8 @@ class OverlapForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class NeedlemanWunschForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1')
-    sequence2 = forms.CharField(label='Sequenz 2')
+    sequence1 = forms.CharField(label='Sequenz 1', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
     match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=0)
     mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=1)
     gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=100, initial=1)
