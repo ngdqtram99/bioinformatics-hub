@@ -5,12 +5,15 @@
     <title>Horspool</title>
 </head>
 <style>
-      .max-width-input {
+    .max-width-input {
   width: 100%; 
 }
 </style>
 <body>
-    <h1>Horspool</h1>
+  <div class ="algo"> 
+    <h2>Horspool</h2>
+
+    <div class = "description"> 
     <p>Der Boyer-Moore-Horspool-Algorithmus oder Horspool-Algorithmus ist ein Algorithmus zum Finden von Teilzeichenfolgen in Zeichenfolgen. Es wurde 1980 von Nigel Horspool veröffentlicht. In der Bioinformatik, wird er angewendet, um Muster in Sequenzen zu finden. Diese Muster können beispielsweise Transkriptionsfaktorbindestellen, Tranksriptionsstart, Translationsinitiationssignal, usw. sein.</p>
 
 <p>Richtung der Vergleiche:</p>
@@ -24,7 +27,8 @@
     Wenn das letzte Zeichen des Vergleichsstrings im Pattern vorkommt, wird die Vergleichsposition um m Positionen nach rechts verschoben. Andernfalls kann die Anzahl der verschobenen Positionen anhand der Shift-Tabelle, abhängig von der Anzahl der Vorkommen dieses Zeichens, berechnet werden. 
  
   </p>
-
+  </div>
+    <h1> Input </h1>
     <form method="POST" action="{% url 'horspool' %}">
         {% csrf_token %}
         {{ form.as_p }}
@@ -32,8 +36,10 @@
         <button type="submit">Suchen</button>
     </form>
 
+
+
     {% if results is not None %}
-    <h2>Ergebnisse:</h2>        
+    <h1>Output</h1>        
     <p>Es wurden {{comparisons_count}} Vergleiche gemacht.</p>
     {% if results|length > 0 %}
         <p>Das Muster wurde an folgenden Positionen gefunden:</p>
@@ -57,5 +63,6 @@
 {% endif %}
 
 </body>
+</div>
 {% endblock %}
 </html>
