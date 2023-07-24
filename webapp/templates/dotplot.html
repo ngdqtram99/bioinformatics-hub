@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 <html>
   {% block content %}
-<head>
-    <title>Dotplot</title>
-</head>
+
 <style>
   .filled{
     background-color: rgb(0, 123, 255);
@@ -54,7 +52,9 @@
   }
 </style>
 <body>
-    <h1>Dotplot</h1>
+    <div class ="algo"> 
+    <h2>Dotplot</h2>
+    <div class ="description"> 
     <p>
       Beim Dotplot wird die Ähnlichkeit von zwei Sequenzen betrachtet. Die erste Sequenz ist oben in der Matrix und die zweite links.
       Jeder Buchstabe der ersten Sequenz wird mit jedem Buchstaben der zweiten Sequenz verglichen. Wenn die Buchstaben gleich sind, wird die entsperchende Zelle der Matrix makiert.
@@ -64,6 +64,8 @@
       <li>Die Ausgabe ist die Dotplot-Matrix.</li>
     </ul>
     </p>
+    </div>
+    <h1> Input </h1>
     <form method="POST" action="{% url 'dotplot' %}">
         {% csrf_token %}
         {{ form.as_p }}
@@ -71,7 +73,7 @@
     </form>
 
     {% if results is not None %}
-        <h2>Ergebnisse:</h2>
+        <h1>Output</h1>
         <div class = "main_output">
           <table class = "calculation">
             <thead>
@@ -101,6 +103,7 @@
             <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Tabelle herunterladen</a>
         </p>
     {% endif %}
+      </div>
 </body>
 {% endblock %}
 </html>
