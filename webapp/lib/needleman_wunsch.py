@@ -88,7 +88,7 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
             hor = matrix[i][j-1] + gap_penalty
             dia = matrix[i-1][j-1] + is_match(seq1[i],seq2[j],match,mismatch)
             
-            matrix[i][j] = max(dia,ver,hor)
+            matrix[i][j] = max(dia,ver,hor) if similarity else min(dia,ver,hor)
             traceback[i][j] = traceback_value(dia,ver,hor, similarity)
     
     # Score
