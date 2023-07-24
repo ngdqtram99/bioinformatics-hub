@@ -1,8 +1,8 @@
 from django import forms
 import re
 class HorspoolForm(forms.Form):
-    pattern = forms.CharField(label='Muster', strip=False)
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea, strip=False)
+    pattern = forms.CharField(label='Muster', strip=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "max-width-input"}), strip=False)
     direction = forms.ChoiceField(
         label='Richtung',
         choices=[('forward', 'Vorwärts'), ('backward', 'Rückwärts')],
@@ -53,8 +53,8 @@ class DotplotForm(forms.Form):
         return valid and sequence1_valid and sequence2_valid
     
 class SimpleSearchForm(forms.Form):
-    pattern = forms.CharField(label='Muster', strip=False)
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea, strip=False)
+    pattern = forms.CharField(label='Muster', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "max-width-input"}), strip=False)
     ignore_case_choice = forms.BooleanField(label='Groß-/Kleinschreibung ignorieren', required=False, initial=False, widget=forms.CheckboxInput())
     
     def clean(self):
