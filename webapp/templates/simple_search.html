@@ -11,13 +11,17 @@
 }
 </style>
 <body>
-    <h1>Simple Search</h1>
+    <div class ="algo"> 
+    <h2>Simple Search</h2>
+    <div class = "description"> 
     <p>
         SimpleSearch Algorithmus wird verwendet, um ein Pattern in einem String zu suchen. Bei dieser Art der Suche wird eine sequenzielle Suche über alle Buchstabe nacheinander durchgeführt.
         Dabei wird bei jedem Abbrechen des Vergleichs von dem Muster und einem gleich langem Teil der Sequenz, das Suchfenster um eins nach vorne verschoben. 
         Der Vergleich wird abgebrochen, wenn entweder das Muster gefunden wurde oder zwei Buchstaben nicht übereinstimmen.
        
     </p>
+    </div>
+    <h1>Input</h1>
     <form method="POST" action="{% url 'simple_search' %}">
         {% csrf_token %}
         {{ form.as_p }} 
@@ -25,7 +29,7 @@
     </form>
 
     {% if results is not None %}
-    <h2>Ergebnisse:</h2>        
+    <h1>Output</h1>        
     <p>Es wurden {{comparisons_count}} Vergleiche gemacht.</p>
     {% if results|length > 0 %}
         <p>Das Muster wurde an folgenden Positionen gefunden:</p>
@@ -48,5 +52,6 @@
     </p>
 {% endif %}
 </body>
+</div>
 {% endblock %}
 </html>
