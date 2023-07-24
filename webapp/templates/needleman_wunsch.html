@@ -2,13 +2,13 @@
 {% load static %}
     {% block content %}
  
-    <form method="POST" action="{% url 'needleman_wunsch' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Suchen</button>
-    </form>
     <br>
       <style>
+
+      .max-width-input {
+      width: 100%; 
+      } 
+
         .path {
           background-color: #c7dff8;
         }
@@ -52,6 +52,16 @@
       </style>
     </head>
     <body>
+      <h1>Needleman Wunsch Algorithmus</h1>
+      <p>
+        Beschreibung
+      </p>
+
+      <form method="POST" action="{% url 'needleman_wunsch' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Suchen</button>
+      </form>
         <table id="matrixTable"> </table>
         <br>
         <div id="alignmentsContainer"> </div>
