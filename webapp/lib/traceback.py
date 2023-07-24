@@ -39,6 +39,7 @@ def _get_paths(traceback,start_pos):
         else:
             while pos[0] >= 0 and pos[1] >= 0:
                 if pos == [0,0]: break
+                if len(result) >= 10: break # Ergibt maximal nur 10 Pfäder
 
                 path.append(traceback[pos[0]][pos[1]])
                 #print('hier1',path)
