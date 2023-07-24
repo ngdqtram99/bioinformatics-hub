@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<html>
+  {% block content %}
+
+<style>
+  
+</style>
+<body>
+    <div class ="algo"> 
+    <h2> Suffixtrie</h2>
+    <p>
+      Beschreibung
+      <ul> 
+     
+    </ul>
+    </p>
+    <h1> Input </h1>
+    <form method="POST" action="{% url 'suffix_trie' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      
+      <button type="submit">Ausführen</button>
+  </form>
+    
+</body>
+</div>
+{% endblock %}
+</html>
