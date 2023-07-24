@@ -43,6 +43,7 @@ def _get_paths(traceback,start_pos):
                 path.append(traceback[pos[0]][pos[1]])
                 #print('hier1',path)
                 #print('check pos bf', pos)
+                #print('direction',traceback[pos[0]][pos[1]])
                 if traceback[pos[0]][pos[1]] == 'diag': 
                     pos[0] -= 1 
                     pos[1] -= 1
