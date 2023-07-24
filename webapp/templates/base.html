@@ -22,6 +22,57 @@ footer a {
   margin: 0 5px; /* Add some space on the left and right of the vertical bar */
   font-size: 14px;
 }
+
+div.description {
+    display: inline-block;
+    line-height: 150%;
+    vertical-align: top;
+    
+}
+
+body {
+    min-width: 100px;
+    min-height: 1500px;
+    background-color: #ffffff;
+    color: #373534;
+    margin: 0px;
+    font-family: Arial,"Helvetica Narrow",sans-serif;
+}
+
+h1 {
+    background-color: #cacac8;
+    font-size: 100%;
+    font-weight: bold;
+    padding: 3pt 0pt 3pt 12pt;
+    padding-top: 3pt;
+    padding-right: 0pt;
+    padding-bottom: 3pt;
+    padding-left: 12pt;
+    
+   
+}
+
+h2 {
+    color: #03060a; 
+    
+}
+
+button {
+    font-family: Arial,"Helvetica Narrow",sans-serif;
+    color: #131211;
+}
+
+div.algo {
+    display: block;
+    position: sticky;
+    left: 200px;
+    margin: 0px;
+    padding: 30px;
+    background-color: #d4e7f3;
+}
+
+
+
 </style>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,8 +86,8 @@ footer a {
             <button class="accordion-btn" onclick="toggleAccordion()">Alignment <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
                 <a href="/needleman_wunsch" class="menu-item">Needleman-Wunsch</a>
-                <a href="#" class="menu-item">Smith-Waterman</a>
-                <a href="#" class="menu-item">Glokales Alignment</a>
+                <a href="/smith_waterman" class="menu-item">Smith-Waterman</a>
+                <a href="/glocal_alignment" class="menu-item">Glokales Alignment</a>
                 <a href="/overlap" class="menu-item">Überlapp-Alignment</a>
             </div>
         </div>
@@ -51,16 +102,16 @@ footer a {
         <div class="accordion">
             <button class="accordion-btn" onclick="toggleAccordion()">Phylogenie <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
-                <a href="#" class="menu-item">UPGMA</a>
-                <a href="#" class="menu-item">Neighbour Joining</a>
+                <a href="/upgma" class="menu-item">UPGMA</a>
+                <a href="/neighbour_joining" class="menu-item">Neighbour Joining</a>
             </div>
         </div>        
         <div class="accordion">
             <button class="accordion-btn" onclick="toggleAccordion()">String Indizes <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
-                <a href="#" class="menu-item">Suffixtrie</a>
-                <a href="#" class="menu-item">Suffixtree</a>
-                <a href="#" class="menu-item">Suffixarray</a>
+                <a href="/suffix_trie" class="menu-item">Suffixtrie</a>
+                <a href="/suffix_tree" class="menu-item">Suffixtree</a>
+                <a href="/suffix_array" class="menu-item">Suffixarray</a>
             </div>
         </div>
         <a href="#" class="menu-item">Viterbi</a>
