@@ -36,7 +36,7 @@ def get_alignment(seq1 : str, seq2: str, path : list): # Sequenzen ohne - am Anf
         if p == "diag":
             s1_alg = seq1[i] + s1_alg
             s2_alg = seq2[j] + s2_alg
-            alg = '|' + alg
+            alg = '|' + alg if seq1[i] == seq2[j] else ' ' + alg
             i -= 1 ; j -= 1
 
         elif p == "vert":
@@ -123,7 +123,7 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
     
 # Beispiel
 res = get_result('actg','aacg',2,-1,-2,True)
-#for i in res: print(res[i])
+for i in res: print(res[i])
 '''
 [[0, -2, -4, -6, -8], 
  [-2, 2, 0, -2, -4], 
@@ -131,9 +131,9 @@ res = get_result('actg','aacg',2,-1,-2,True)
  [-6, -2, -1, 0, 1], 
  [-8, -4, -3, -2, 2]]
 
-[{'alignment': ['actg', '||||', 'aacg'], 'path': [[[4, 4], 'diag'], [[3, 3], 'diag'], [[2, 2], 'diag'], [[1, 1], 'diag'], [[0, 0]]]}, 
- {'alignment': ['-actg', ' || |', 'aac-g'], 'path': [[[4, 4], 'diag'], [[3, 3], 'vert'], [[2, 3], 'diag'], [[1, 2], 'diag'], [[0, 1], 'hor'], [[0, 0]]]}, 
- {'alignment': ['a-ctg', '| | |', 'aac-g'], 'path': [[[4, 4], 'diag'], [[3, 3], 'vert'], [[2, 3], 'diag'], [[1, 2], 'hor'], [[1, 1], 'diag'], [[0, 0]]]}]
+[{'alignment': ['actg', '|  |', 'aacg'], 'path': [[[4, 4], 'diag'], [[3, 3], 'diag'], [[2, 2], 'diag'], [[1, 1], 'diag'], [[0, 0]]]}, 
+{'alignment': ['-actg', ' || |', 'aac-g'], 'path': [[[4, 4], 'diag'], [[3, 3], 'vert'], [[2, 3], 'diag'], [[1, 2], 'diag'], [[0, 1], 'hor'], [[0, 0]]]}, 
+{'alignment': ['a-ctg', '| | |', 'aac-g'], 'path': [[[4, 4], 'diag'], [[3, 3], 'vert'], [[2, 3], 'diag'], [[1, 2], 'hor'], [[1, 1], 'diag'], [[0, 0]]]}] 2
 
- 2
- '''
+2
+'''
