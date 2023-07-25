@@ -41,4 +41,4 @@ def get_result(pattern, sequence, backward = True):
     return {'comparisons_count':comparison,
             'results': results}
 
-print(get_result("",""))
+#print(get_result("",""))

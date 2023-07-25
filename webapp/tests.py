@@ -53,32 +53,32 @@ class TestSimpleSearch(unittest.TestCase):
         # no results
         result = simple_search.get_result('T', 'A')
 
-        self.assertEquals(result['comparsions_count'], 1)
+        self.assertEquals(result['comparisons_count'], 1)
         self.assertEquals(result['results'], [])
 
         # one result
         result = simple_search.get_result('A', 'A')
 
-        self.assertEquals(result['comparsions_count'], 1)
+        self.assertEquals(result['comparisons_count'], 1)
         self.assertEquals(result['results'], [0])
 
-        # multiple comparsions
+        # multiple comparisons
         # no results
         result = simple_search.get_result('UA', 'ACGUCAC')
 
-        self.assertEquals(result['comparsions_count'], 7)
+        self.assertEquals(result['comparisons_count'], 7)
         self.assertEquals(result['results'], [])
 
         # one result
         result = simple_search.get_result('UA', 'ACGUUAC')
 
-        self.assertEquals(result['comparsions_count'], 8)
+        self.assertEquals(result['comparisons_count'], 8)
         self.assertEquals(result['results'], [4])
 
         # multiple results
         result = simple_search.get_result('UA', 'AUACGUUAUA')
 
-        self.assertEquals(result['comparsions_count'], 13)
+        self.assertEquals(result['comparisons_count'], 13)
         self.assertEquals(result['results'], [1, 6, 8])
 
 
@@ -86,13 +86,13 @@ class TestSimpleSearch(unittest.TestCase):
         # Sequence to short
         result = simple_search.get_result('ACA', 'U')
 
-        self.assertEquals(result['comparsions_count'], 0)
+        self.assertEquals(result['comparisons_count'], 0)
         self.assertEquals(result['results'], [])
 
         # Pattern not in Sequence
         result = simple_search.get_result('U', 'ACA')
 
-        self.assertEquals(result['comparsions_count'], 3)
+        self.assertEquals(result['comparisons_count'], 3)
         self.assertEquals(result['results'], [])
 
 
@@ -185,3 +185,4 @@ class TestHorspool(TestCase):
 
         self.assertEquals(result['comparisons_count'], 6)
         self.assertEquals(result['results'], [0, 3])
+
