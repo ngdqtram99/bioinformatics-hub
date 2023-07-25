@@ -21,7 +21,7 @@ def traceback_value(dia,ver,hor, similarity : bool):
 
 #---------------------------------
 # Gibt die Alignment zurück
-def get_alignment(seq1 : str, seq2: str, path : list): # Sequenzen ohne - am Anfang
+def get_alignment(seq1 : str, seq2: str, path : list): 
 
     s1_alg = "" # Alignment von Sequenz 1
     alg = "" # Wenn die Buchstaben identisch an der selben Stelle zweier Sequenzen sind, ergibt '|', sonst ' ' (leer-Zeichen)
@@ -95,7 +95,7 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
     score = matrix[len(seq1)-1][len(seq2)-1]
 
     # Alignment entspricht jedes besten Score
-    start_pos = [len(seq1[1:]), len(seq2[1:])] # Start-Position zum Traceback (die ganz unten rechte Position) 
+    start_pos = [len(sequence1), len(sequence2)] # Start-Position zum Traceback (die ganz unten rechte Position) 
     
     '''
     print('traceback')
@@ -109,8 +109,8 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
     for i in unmodified_paths: print(i)
     '''
 
-    start_pos = [len(seq1[1:]), len(seq2[1:])] # Nach der Modifikation wird start_pos zu [0,0] gesetzt, deswegen muss es hier wieder richtig umgesetzt
-    alignments = [{'alignment':get_alignment(seq1[1:],seq2[1:],path),'path':_modify_path(path,start_pos)} for path in unmodified_paths]
+    start_pos = [len(sequence1), len(sequence2)] # Nach der Modifikation wird start_pos zu [0,0] gesetzt, deswegen muss es hier wieder richtig umgesetzt
+    alignments = [{'alignment':get_alignment(seq1,seq2,path),'path':_modify_path(path,start_pos)} for path in unmodified_paths]
     
     '''
     print('alignments')
