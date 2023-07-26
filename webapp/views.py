@@ -5,6 +5,7 @@ from .lib import simple_search
 from .lib import horspool
 from .lib import overlap
 from .lib import needleman_wunsch
+from .lib import glocal_alignment
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -116,7 +117,6 @@ def needleman_wunsch_view(request):
                     'alignments' : result['alignments'],
                     'score' : result['score']
                 }
-                print(context)
             else:
                 context = {
                     'form' : form,
@@ -129,10 +129,66 @@ def needleman_wunsch_view(request):
     return render(request, 'needleman_wunsch.html',context)
 
 def smith_waterman_view(request):
+    form = SmithWatermanForm()
+
+    if request.method == 'POST':
+        form = SmithWatermanForm(request.POST)
+
+        if form.is_valid():
+            seq1 = form.cleaned_data['sequence1']
+            seq2 = form.cleaned_data['sequence2']
+            match = form.cleaned_data['match']
+            mismatch = form.cleaned_data['mismatch']
+            gap_penalty = form.cleaned_data['gap_penalty']
+            result = None
+            #result = smith_waterman.get_result(seq1, seq2, match, mismatch, gap_penalty)
+            if result is not None:
+
+                context = {
+                    'form': form,
+                    'matrix': result['matrix'],
+                    'alignments' : result['alignments'],
+                    'score' : result['score']
+                }
+            else:
+                context = {
+                    'form' : form,
+                    'error' : True
+                }
     return render(request, 'smith_waterman.html')
 
 def glocal_alignment_view(request):
-    return render(request, 'glocal_alignment.html')
+    form = GlocalAlignmentForm()
+
+    if request.method == 'POST':
+        form = GlocalAlignmentForm(request.POST)
+
+        if form.is_valid():
+            seq1 = form.cleaned_data['sequence1']
+            seq2 = form.cleaned_data['sequence2']
+            match = form.cleaned_data['match']
+            mismatch = form.cleaned_data['mismatch']
+            gap_penalty = form.cleaned_data['gap_penalty']
+            similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
+            result = glocal_alignment.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)        
+
+            if result is not None:
+                context = {
+                    'form': form,
+                    'matrix': result['matrix'],
+                    'alignments' : result['alignments'],
+                    'score' : result['score']
+                }
+            else:
+                context = {
+                    'form' : form,
+                    'error' : True
+                }
+            return render(request, 'glocal_alignment.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'glocal_alignment.html', context)
 
 def overlap_view(request):
     form = OverlapForm()
