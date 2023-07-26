@@ -2,6 +2,12 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    min-width: 100px;
+    min-height: 1500px;
+    background-color: #f5f5f5;
+    color: #373534;
+    margin: 0px;
+   
   }
   
   .sidebar {
@@ -52,3 +58,63 @@ body {
     max-height: 90vh;
     overflow: auto;
   }
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    background-color: #f2f2f2;
+    display: flex; 
+    align-items: center; 
+  }
+  
+footer a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .vertical-bar {
+    margin: 0 5px; 
+    font-size: 14px;
+  }
+  
+  .description {
+      display: inline-block;
+      line-height: 150%;
+      vertical-align: top;
+      
+  }
+  
+h2 {
+      background-color: #cacac8;
+      font-size: 100%;
+      font-weight: bold;
+      padding: 3pt 0pt 3pt 12pt;
+      padding-top: 3pt;
+      padding-right: 0pt;
+      padding-bottom: 3pt;
+      padding-left: 12pt;
+      
+     
+  }
+  
+h1 {
+      color: #03060a; 
+      
+  }
+  
+button {
+      font-family: Arial,"Helvetica Narrow",sans-serif;
+      color: #131211;
+}
+  
+div.algo {
+      display: block;
+      position: sticky;
+      margin: 0px;
+      padding: 30px;
+      background-color: #d4e7f3;
+      box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
