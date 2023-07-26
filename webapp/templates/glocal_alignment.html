@@ -1,12 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 <html>
   {% block content %}
 
 <style>
+
+    .max-width-input {
+    width: 100%; 
+    } 
+
+     
+    .path {
+      background-color: #c7dff8;
+    }
   
+      .hor {
+        background-image: url('{% static "images/hor.png" %}');
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+  
+      .vert {
+        background-image: url('{% static "images/vert.png" %}');
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+  
+      .diag {
+        background-image: url('{% static "images/diag.png" %}');
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+  
+      table {
+        border-collapse: collapse;
+      }
+      .alignment-table{
+          font-family: monospace;
+      }
+      td {
+          border: 1px solid black;
+          padding: 10px;
+          text-align: center;
+      }
+      .alignment:hover {
+          background-color:  #88bdf5;
+          }
+      .alignment.selected {
+      background-color: #007bff;
+      color: white;
+      }
 </style>
 <body>
-    <div class ="algo"> 
+
     <h2> Glokales Alignment</h2>
     <p>
       Beschreibung
@@ -21,8 +67,23 @@
       
       <button type="submit">Suchen</button>
   </form>
-    
+  <table id="matrixTable"> </table>
+  <br>
+  <div id="alignmentsContainer"> </div>
+ {% if matrix is not None %}   
+<script> 
+  var matrixValues = {{matrix}}
+  var alignments = {{alignments|safe}}
+  var firstSequence = '{{form.sequence1.value}}'.split("")
+  firstSequence.unshift(""); 
+  firstSequence.unshift("");
+  var secondSequence = '{{form.sequence2.value}}'.split("")
+  secondSequence.unshift(""); 
+  secondSequence.unshift("M");
+</script>
+<script src="{% static 'js/pairwise.js' %}"></script> 
+{% endif %}    
 </body>
-</div>
+
 {% endblock %}
 </html>

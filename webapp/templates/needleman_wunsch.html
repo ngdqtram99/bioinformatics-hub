@@ -62,6 +62,7 @@
         {{ form.as_p }}
         <button type="submit">Suchen</button>
       </form>
+      {% if matrix is not None %} 
         <table id="matrixTable"> </table>
         <br>
         <div id="alignmentsContainer"> </div>
@@ -77,5 +78,5 @@
         secondSequence.unshift("M");
     </script>
       <script src="{% static 'js/pairwise.js' %}"></script>   
-    
+      {% endif %}
     {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 <html>
     {% block content %}
 
@@ -59,10 +60,25 @@
             {{ form.as_p }}
             <button type="submit">Suchen</button>
         </form>
-    
-        <p>
+      {% if matrix is not None %} 
+      
+        <table id="matrixTable"> </table>
+        <br>
+        <div id="alignmentsContainer"> </div>
           
-        </p>
+      <script> 
+        var matrixValues = {{matrix}}
+        var alignments = {{alignments|safe}}
+        var firstSequence = '{{form.sequence1.value}}'.split("")
+        firstSequence.unshift(""); 
+        firstSequence.unshift("");
+        var secondSequence = '{{form.sequence2.value}}'.split("")
+        secondSequence.unshift(""); 
+        secondSequence.unshift("M");
+    </script>
+      <script src="{% static 'js/pairwise.js' %}"></script>  
+      
+      {% endif %}
     </body>
 
     {% endblock %}
