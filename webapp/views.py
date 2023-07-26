@@ -262,7 +262,7 @@ def viterbi_view(request):
             state_input_values = request.POST.getlist('state_probabilities')
             symbol_input_values = request.POST.getlist('symbol_probabilities')         
             if len(state_input_values) == 0 or (len(state_input_values) != (len(states)-1)*len(states)):
-                print('True')
+                sum_is_valid = False
                 for state in states:
                     state_probabilities.append((state, [0.0] * (len(states)-1)))
             else:
@@ -270,14 +270,16 @@ def viterbi_view(request):
                     start_position = i * (len(states) - 1)
                     values = [float(state_input_values[start_position + j]) for j in range(len(states) - 1)]
                     if sum(values) != 1:
-                        sum_is_valid = True
+                        sum_is_valid = False
                     state_probabilities.append((states[i], values))
             symbols = list(set(list(sequence)))
 
             if len(symbol_input_values) == 0 or (len(symbol_input_values) != (len(states)-1)*len(symbols)):
+                sum_is_valid = False
                 for state in states:
                     if state != 'Start':
                         symbol_probabilities.append((state, [0.0] * len(symbols)))
+                        
             else:
                 for i in range(len(states)-1):
                     start_position = i * (len(symbols) )

@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+  <h1>Viterbi</h1>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
@@ -48,10 +52,12 @@
 
     <button type="submit">Submit</button>
 </form>
+    {% if sum_is_valid is not None%}
     {% if not sum_is_valid%}
     <p>
         Die Summe der Wahscheinlichkeiten in jeder Zeile soll 1 betragen, bitte überprüfen Sie die Eingaben in der Übergangs- und Emissionsmatrix
     </p>
+    {% endif%}
     {% endif%}
 
     {% if sum_is_valid %}
@@ -106,3 +112,4 @@
         }
     }
 </script>
+{% endblock %}
