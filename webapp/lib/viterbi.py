@@ -79,7 +79,7 @@ def get_results(seq, transition, emission):
     # Wahrscheinlichkeitsmatrix (DataFrame), Traceback-Pfad und Zustand-Pfad
     pro_df = DataFrame(0.0, index= trans_states, columns= [*seq])
     pro_df.loc['Start','s'] = 1 
-    path = DataFrame(None, index=[' '], columns=[*seq[1:]]) # Traceback-Pfad
+    traceback = DataFrame(None, index=[' '], columns=[*seq[1:]]) # Traceback-Pfad
     state_path = [] # Speichert die Zustände jedes Symbols
 
     state_df = DataFrame(index=['Zustand'],columns=[*seq[1:]])
@@ -93,7 +93,7 @@ def get_results(seq, transition, emission):
         # Beim ersten Symbol wird die Wahrscheinlichkeit von Start-Zustand gerechnet
         if i_symbol == 1:
             # Addiert Traceback (i_symbol-1, weil kein s Symbol in den Zeilenamen von path ist))
-            path.iloc[0][i_symbol-1] = 'Start'
+            traceback.iloc[0][i_symbol-1] = 'Start'
 
             for state in pro_df.index[1:]:
                 pro_df.loc[state][i_symbol] = pro_df.loc['Start']['s'] * trans_df.loc['Start'][state] * em_df.loc[state][symbol]
@@ -102,7 +102,7 @@ def get_results(seq, transition, emission):
         # Beim übrige Symbole werden ihre Wahrscheinlichkeit von die maximalen vorangegangenen gerechnet werden
         else:   
             # Addiert Traceback (i_symbol-1, weil kein s Symbol in den Zeilenamen von path ist)
-            path.iloc[0][i_symbol-1] = pre_state = pro_df.iloc[:,i_symbol-1].idxmax()
+            traceback.iloc[0][i_symbol-1] = pre_state = pro_df.iloc[:,i_symbol-1].idxmax()
 
             for state in pro_df.index[1:]:
                 pro_df.loc[state][i_symbol] = pro_df.loc[pre_state][i_symbol-1] * trans_df.loc[pre_state][state] * em_df.loc[state][symbol]
@@ -119,6 +119,10 @@ def get_results(seq, transition, emission):
     # Erzeugt die log-Wahrscheinlichkeitsmatrix
     logpro_df = np.log(pro_df)
     
+    # Erreicht path vom traceback
+    path = list(reversed(traceback.iloc[0,:]))
+
+    
     '''
     print(pro_df)
     print(logpro_df)
@@ -128,7 +132,7 @@ def get_results(seq, transition, emission):
     '''
 
     return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
-            'path':to_nestedlist(path),
+            'path': path,
             'path_matrix': to_nestedlist(state_df)}
     
 
