@@ -52,17 +52,22 @@
       </style>
     </head>
     <body>
-      <h1>Needleman Wunsch Algorithmus</h1>
+      <h1>Needleman Wunsch Alignment</h1>
       <p>
         Beschreibung
       </p>
-
+      <h2> Input </h2>
       <form method="POST" action="{% url 'needleman_wunsch' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Suchen</button>
+        <div class="button-container">
+          <button type="submit">Ausführen</button>
+      </div>
       </form>
+
+
       {% if matrix is not None %} 
+      <h2>Output</h2>  
         <table id="matrixTable"> </table>
         <br>
         <div id="alignmentsContainer"> </div>

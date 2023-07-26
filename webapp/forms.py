@@ -35,12 +35,25 @@ class HorspoolForm(forms.Form):
 class DotplotForm(forms.Form):
     sequence1 = forms.CharField(label = "Sequenz 1", max_length=200, widget=forms.TextInput(attrs={"class": "max-width-input"}))
     sequence2 = forms.CharField(label = "Sequenz 2", max_length=200, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    ignore_case_choice = forms.BooleanField(label='Groß-/Kleinschreibung ignorieren', required=False, initial=False, widget=forms.CheckboxInput())
+
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        sequence1 = cleaned_data.get('sequence1','')
+        sequence2 = cleaned_data.get('sequence2','')
+        ignore_case_choice = cleaned_data.get('ignore_case_choice')
+        if ignore_case_choice:
+             cleaned_data['sequence1'] = sequence1.lower()
+             cleaned_data['sequence2'] = sequence2.lower()
+        return cleaned_data
 
     def is_valid(self):
         valid = super().is_valid()
 
         sequence1 = self.cleaned_data.get('sequence1', '')
         sequence2 = self.cleaned_data.get('sequence2', '')
+        
 
         sequence1_valid = re.match(r'^[A-Za-z]+$', sequence1)
         sequence2_valid = re.match(r'^[A-Za-z]+$', sequence2)

@@ -11,8 +11,8 @@
 }
 </style>
 <body>
-    <div class ="algo"> 
-    <h2>Simple Search</h2>
+   
+    <h1>Simple Search</h1>
     <div class = "description"> 
     <p>
         SimpleSearch Algorithmus wird verwendet, um ein Pattern in einem String zu suchen. Bei dieser Art der Suche wird eine sequenzielle Suche über alle Buchstabe nacheinander durchgeführt.
@@ -21,15 +21,39 @@
        
     </p>
     </div>
-    <h1>Input</h1>
+    <h2>Input</h2>
+    
     <form method="POST" action="{% url 'simple_search' %}">
         {% csrf_token %}
-        {{ form.as_p }} 
-        <button type="submit">Suchen</button>
+        <div class="form-field {% if form.pattern.errors %}has-error{% endif %}">
+            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+            {{ form.pattern }}
+            {% if form.pattern.errors %}
+                <div class="error-message">
+                    {{ form.pattern.errors.as_text }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-field {% if form.sequence.errors %}has-error{% endif %}">
+            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
+            {{ form.sequence }}
+            {% if form.sequence.errors %}
+                <div class="error-message">
+                    {{ form.sequence.errors.as_text }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            {{ form.ignore_case_choice }}
+            <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren</label>
+        </div>
+    <div class="button-container">
+        <button type="submit">Ausführen</button>
+    </div>
     </form>
 
     {% if results is not None %}
-    <h1>Output</h1>        
+    <h2>Output</h2>        
     <p>Es wurden {{comparisons_count}} Vergleiche gemacht.</p>
     {% if results|length > 0 %}
         <p>Das Muster wurde an folgenden Positionen gefunden:</p>
@@ -52,6 +76,6 @@
     </p>
 {% endif %}
 </body>
-</div>
+
 {% endblock %}
 </html>

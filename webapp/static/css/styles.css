@@ -2,11 +2,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    min-width: 100px;
-    min-height: 1500px;
     background-color: #f5f5f5;
-    color: #373534;
+    color: #131211;
     margin: 0px;
+    
    
   }
   
@@ -17,6 +16,7 @@ body {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
     height: 100vh;
     float: left;
+    position:fixed
   }
   
   .menu-item {
@@ -37,6 +37,7 @@ body {
     padding: 6px;
     background-color: transparent;
     cursor: pointer;
+    font-size: medium;
   }
   .accordion-btn:hover {
     background-color:  #88bdf5;
@@ -115,6 +116,34 @@ div.algo {
       position: sticky;
       margin: 0px;
       padding: 30px;
-      background-color: #d4e7f3;
+      background-color: #ffffff;
       box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
+
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: small;
+}
+
+.has-error .max-width-input {
+  border: 1px solid red; /* Optionally, add a red border to the input field on error */
+}
+
+/* Add margin or padding to the container element that wraps the form fields */
+.form-field {
+  margin-bottom: 10px; /* Add space between each form field */
+}
+
+.button-container {
+  margin-top: 20px; /* Add space between the form fields and the button */
+}
+
+.max-width-input {
+  font-family: Arial, sans-serif;
+  font-size: inherit;
+  font-weight: inherit;
+  
+}
+
+

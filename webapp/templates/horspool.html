@@ -10,8 +10,7 @@
 }
 </style>
 <body>
-  <div class ="algo"> 
-    <h2>Horspool</h2>
+    <h1>Horspool</h1>
 
     <div class = "description"> 
     <p>Der Boyer-Moore-Horspool-Algorithmus oder Horspool-Algorithmus ist ein Algorithmus zum Finden von Teilzeichenfolgen in Zeichenfolgen. Es wurde 1980 von Nigel Horspool veröffentlicht. In der Bioinformatik, wird er angewendet, um Muster in Sequenzen zu finden. Diese Muster können beispielsweise Transkriptionsfaktorbindestellen, Tranksriptionsstart, Translationsinitiationssignal, usw. sein.</p>
@@ -28,18 +27,53 @@
  
   </p>
   </div>
-    <h1> Input </h1>
+    <h2> Input </h2>
     <form method="POST" action="{% url 'horspool' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-field {% if form.pattern.errors %}has-error{% endif %}">
+            <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+            {{ form.pattern }}
+            {% if form.pattern.errors %}
+                <div class="error-message">
+                    {{ form.pattern.errors.as_text }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-field {% if form.sequence.errors %}has-error{% endif %}">
+            <label for="{{ form.sequence.id_for_label }}">Sequenz:</label>
+            {{ form.sequence }}
+            {% if form.sequence.errors %}
+                <div class="error-message">
+                    {{ form.sequence.errors.as_text }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label>Richtung:</label>
+            <div>
+                {% for radio in form.direction %}
+                    <label for="{{ radio.id_for_label }}">
+                        {{ radio.tag }}
+                        {{ radio.choice_label }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-field">
+            {{ form.ignore_case_choice }}
+            <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren</label>
+        </div>
+    
         
-        <button type="submit">Suchen</button>
+        <div class="button-container">
+            <button type="submit">Ausführen</button>
+        </div>
     </form>
 
 
 
     {% if results is not None %}
-    <h1>Output</h1>        
+    <h2>Output</h2>        
     <p>Es wurden {{comparisons_count}} Vergleiche gemacht.</p>
     {% if results|length > 0 %}
         <p>Das Muster wurde an folgenden Positionen gefunden:</p>
@@ -63,6 +97,5 @@
 {% endif %}
 
 </body>
-</div>
 {% endblock %}
 </html>

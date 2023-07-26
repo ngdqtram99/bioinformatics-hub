@@ -53,19 +53,21 @@
 </style>
 <body>
 
-    <h2> Glokales Alignment</h2>
+    <h1> Glokales Alignment</h1>
     <p>
       Beschreibung
       <ul> 
      
     </ul>
     </p>
-    <h1> Input </h1>
+    <h2> Input </h2>
     <form method="POST" action="{% url 'glocal_alignment' %}">
       {% csrf_token %}
       {{ form.as_p }}
       
-      <button type="submit">Suchen</button>
+      <div class="button-container">
+        <button type="submit">Ausführen</button>
+    </div>
   </form>
   <table id="matrixTable"> </table>
   <br>

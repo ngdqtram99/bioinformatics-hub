@@ -55,10 +55,13 @@
         <p>
           Beschreibung
         </p>
+        <h2> Input </h2>
         <form method="POST" action="{% url 'overlap' %}">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Suchen</button>
+            <div class="button-container">
+              <button type="submit">Ausführen</button>
+          </div>
         </form>
       {% if matrix is not None %} 
       

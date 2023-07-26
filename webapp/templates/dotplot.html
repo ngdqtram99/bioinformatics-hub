@@ -52,8 +52,8 @@
   }
 </style>
 <body>
-    <div class ="algo"> 
-    <h2>Dotplot</h2>
+    
+    <h1>Dotplot</h1>
     <div class ="description"> 
     <p>
       Beim Dotplot wird die Ähnlichkeit von zwei Sequenzen betrachtet. Die erste Sequenz ist oben in der Matrix und die zweite links.
@@ -65,15 +65,39 @@
     </ul>
     </p>
     </div>
-    <h1> Input </h1>
+    <h2> Input </h2>
     <form method="POST" action="{% url 'dotplot' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-field {% if form.sequence1.errors %}has-error{% endif %}">
+          <label for="{{ form.sequence1.id_for_label }}">Sequenz 1:</label>
+          {{ form.sequence1 }}
+          {% if form.sequence1.errors %}
+              <div class="error-message">
+                  {{ form.sequence1.errors.as_text }}
+              </div>
+          {% endif %}
+      </div>
+      <div class="form-field {% if form.sequence2.errors %}has-error{% endif %}">
+          <label for="{{ form.sequence2.id_for_label }}">Sequenz 2:</label>
+          {{ form.sequence2 }}
+          {% if form.sequence2.errors %}
+              <div class="error-message">
+                  {{ form.sequence2.errors.as_text }}
+              </div>
+          {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.ignore_case_choice }}
+        <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren</label>
+    </div>
+      <div class="button-container">
         <button type="submit">Ausführen</button>
+        </div>
     </form>
 
     {% if results is not None %}
-        <h1>Output</h1>
+        <h2>Output</h2>
         <div class = "main_output">
           <table class = "calculation">
             <thead>
@@ -103,7 +127,7 @@
             <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Tabelle herunterladen</a>
         </p>
     {% endif %}
-      </div>
+     
 </body>
 {% endblock %}
 </html>

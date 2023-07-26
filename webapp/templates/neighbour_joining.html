@@ -6,23 +6,24 @@
   
 </style>
 <body>
-    <div class ="algo"> 
-    <h2> Neighbour Joining</h2>
+    <h1> Neighbour Joining</h1>
     <p>
       Beschreibung
       <ul> 
       
     </ul>
     </p>
-    <h1> Input </h1>
+    <h2> Input </h2>
     <form method="POST" action="{% url 'neighbour_joining' %}">
       {% csrf_token %}
       {{ form.as_p }}
       
-      <button type="submit">Suchen</button>
+      <div class="button-container">
+        <button type="submit">Ausführen</button>
+    </div>
   </form>
     
 </body>
-</div>
+
 {% endblock %}
 </html>
