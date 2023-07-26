@@ -82,9 +82,11 @@ class SimpleSearchForm(forms.Form):
 class OverlapForm(forms.Form):
     sequence1 = forms.CharField(label='Sequenz 1', widget=forms.TextInput(attrs={"class": "max-width-input"}))
     sequence2 = forms.CharField(label='Sequenz 2', widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=1)
-    mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=-1)
-    gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=0, initial=-1)
+    match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=-1)
+    mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=1)
+    gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=100, initial=1)
+    choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
+    optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 
     def is_valid(self):
             valid = super().is_valid()

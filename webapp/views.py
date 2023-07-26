@@ -155,7 +155,10 @@ def smith_waterman_view(request):
                     'form' : form,
                     'error' : True
                 }
-    return render(request, 'smith_waterman.html')
+    context = {
+    'form': form,
+}
+    return render(request, 'smith_waterman.html', context)
 
 def glocal_alignment_view(request):
     form = GlocalAlignmentForm()
@@ -202,7 +205,10 @@ def overlap_view(request):
             match = form.cleaned_data['match']
             mismatch = form.cleaned_data['mismatch']
             gap_penalty = form.cleaned_data['gap_penalty']
-            result = overlap.get_result(seq1, seq2, match, mismatch, gap_penalty)
+            similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
+            result = overlap.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)
+            print(result)
+            result['alignments'] = [{'alignment':result['alignments'], 'path':[]}]
             if result is not None:
 
                 context = {
