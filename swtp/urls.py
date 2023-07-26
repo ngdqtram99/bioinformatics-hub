@@ -33,6 +33,7 @@ urlpatterns = [
     path('suffix_trie/', suffix_trie_view, name='suffix_trie'),
     path('suffix_array/', suffix_array_view, name='suffix_array'),
     path('glocal_alignment/', glocal_alignment_view, name='glocal_alignment'),
+    path("viterbi", viterbi_view, name='viterbi')
 ]
 
 
