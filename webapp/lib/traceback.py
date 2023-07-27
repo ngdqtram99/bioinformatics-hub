@@ -26,7 +26,9 @@ def _get_paths(traceback,start_pos):
             path = [path.copy() for _ in range(len(traceback[pos[0]][pos[1]]))]
             #print('hier2',path)
 
-            for i in range(len(path)): path[i].append(traceback[pos[0]][pos[1]][i])
+            for i in range(len(path)): 
+                if traceback[pos[0]][pos[1]][i] != None: 
+                    path[i].append(traceback[pos[0]][pos[1]][i])
             #print('hier3',path)
 
 
@@ -59,8 +61,8 @@ def _get_paths(traceback,start_pos):
 
 traceback = [[None,'hor', 'hor', 'hor', 'hor',],
              ['vert', 'diag','hor','vert','hor'],
-             ['vert', 'diag',['diag','vert','hor'],'hor','hor'],
-             ['vert', 'vert',['vert','hor'],'hor','hor']]
+             ['vert', 'diag',[None, 'diag'],'hor','hor'],
+             ['vert', 'vert',['vert','hor'],'diag','hor']]
 
 paths = _get_paths(traceback,pos)
 #print('result',paths)
