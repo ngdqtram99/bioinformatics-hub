@@ -1,0 +1,172 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #131211;
+    margin: 0px;
+    
+   
+  }
+  
+  .sidebar {
+    background-color: #c7dff8;
+    width: 160px;
+    padding: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    height: 100vh;
+    float: left;
+    position:fixed;
+  }
+  
+  .menu-item {
+    display: block;
+    padding: 6px;
+    text-decoration: none;
+    color: black;
+    border-radius: 5px;
+    border: 1px solid #c7dff8;
+    
+    
+  }
+
+
+
+.submenu-item{
+    display: block;
+    padding: 6px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #88bdf5;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+  }
+
+  
+.menu-item:hover {
+    background-color:  #88bdf5;
+  }
+
+.submenu-item:hover{
+    background-color:  #88bdf5;
+  }
+  
+.accordion-btn {
+    width: 100%;
+    border: none;
+    text-align: left;
+    padding: 6px;
+    cursor: pointer;
+    font-size: medium;
+    background-color: #c7dff8; 
+  }
+  .accordion-btn:hover {
+    background-color:  #88bdf5;
+  }
+  
+  .accordion-content {
+    display: none;
+    padding-left: 10px;
+
+    
+  }
+  
+  .accordion-btn.active {
+    background-color: #499ef9;
+  
+  }  
+ 
+  .content {
+    margin-left: 175px;
+    padding: 20px;
+    max-height: 90vh;
+    overflow: auto;
+  }
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    background-color: #f2f2f2;
+    display: flex; 
+    align-items: center; 
+  }
+  
+footer a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .vertical-bar {
+    margin: 0 5px; 
+    font-size: 14px;
+  }
+  
+  .description {
+      display: inline-block;
+      line-height: 150%;
+      vertical-align: top;
+      
+  }
+  
+h2 {
+      background-color: #cacac8;
+      font-size: 100%;
+      font-weight: bold;
+      padding: 3pt 0pt 3pt 12pt;
+      padding-top: 3pt;
+      padding-right: 0pt;
+      padding-bottom: 3pt;
+      padding-left: 12pt;
+      
+     
+  }
+  
+h1 {
+      color: #03060a; 
+      
+  }
+  
+button {
+      font-family: Arial,"Helvetica Narrow",sans-serif;
+      color: #131211;
+}
+  
+div.algo {
+      display: block;
+      position: sticky;
+      margin: 0px;
+      padding: 30px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+
+
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: small;
+}
+
+.has-error .max-width-input {
+  border: 1px solid red; /* Optionally, add a red border to the input field on error */
+}
+
+/* Add margin or padding to the container element that wraps the form fields */
+.form-field {
+  margin-bottom: 10px; /* Add space between each form field */
+}
+
+.button-container {
+  margin-top: 20px; /* Add space between the form fields and the button */
+}
+
+.max-width-input {
+  font-family: Arial, sans-serif;
+  font-size: inherit;
+  font-weight: inherit;
+  
+}
+
+
