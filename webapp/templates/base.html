@@ -4,7 +4,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -13,33 +13,33 @@
         <div class="accordion">
             <button class="accordion-btn" onclick="toggleAccordion()">Alignment <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
-                <a href="/needleman_wunsch" class="submenu-item">Needleman-Wunsch</a>
-                <a href="/smith_waterman" class="submenu-item">Smith-Waterman</a>
-                <a href="/glocal_alignment" class="submenu-item">Glokales Alignment</a>
-                <a href="/overlap" class="submenu-item">Überlapp-Alignment</a>
+                <a href="/needleman_wunsch" class="menu-item">Needleman-Wunsch</a>
+                <a href="/smith_waterman" class="menu-item">Smith-Waterman</a>
+                <a href="/glocal_alignment" class="menu-item">Glokales Alignment</a>
+                <a href="/overlap" class="menu-item">Überlapp-Alignment</a>
             </div>
         </div>
         <a href="/dotplot" class="menu-item">Dotplot</a>
         <div class="accordion">
             <button class="accordion-btn" onclick="toggleAccordion()">Exaktes Pattternmatching <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
-                <a href="/simple_search" class="submenu-item">Simple Search</a>
-                <a href="/horspool" class="submenu-item">Horspool</a>
+                <a href="/simple_search" class="menu-item">Simple Search</a>
+                <a href="/horspool" class="menu-item">Horspool</a>
             </div>
         </div>
         <div class="accordion">
             <button class="accordion-btn" onclick="toggleAccordion()">Phylogenie <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
-                <a href="/upgma" class="submenu-item">UPGMA</a>
-                <a href="/neighbour_joining" class="submenu-item">Neighbour Joining</a>
+                <a href="/upgma" class="menu-item">UPGMA</a>
+                <a href="/neighbour_joining" class="menu-item">Neighbour Joining</a>
             </div>
         </div>        
         <div class="accordion">
             <button class="accordion-btn" onclick="toggleAccordion()">String Indizes <i class="fa fa-caret-down"></i></button>
             <div class="accordion-content">
-                <a href="/suffix_trie" class="submenu-item">Suffixtrie</a>
-                <a href="/suffix_tree" class="submenu-item">Suffixtree</a>
-                <a href="/suffix_array" class="submenu-item">Suffixarray</a>
+                <a href="/suffix_trie" class="menu-item">Suffixtrie</a>
+                <a href="/suffix_tree" class="menu-item">Suffixtree</a>
+                <a href="/suffix_array" class="menu-item">Suffixarray</a>
             </div>
         </div>
         <a href="#" class="menu-item">Viterbi</a>
