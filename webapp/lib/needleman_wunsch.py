@@ -116,10 +116,10 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
     print('alignments')
     for i in alignments: print(i)
     '''
-    
     return {'matrix': matrix,
             'alignments': alignments,
-            'score': score}
+            'score': score,
+            'traceback' : traceback}
     
 # Beispiel
 res = get_result('actg','aacg',2,-1,-2,True)

@@ -30,7 +30,31 @@
           background-repeat: no-repeat;
           background-size: contain;
         }
+
+        .diaghor {
+            background-image: url('{% static "images/diag_hor.png" %}');
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
+
+        .diagvert {
+        background-image: url('{% static "images/diag_vert.png" %}');
+        background-repeat: no-repeat;
+        background-size: contain;
+        }
     
+        .diaghorvert {
+            background-image: url('{% static "images/diag_hor_vert.png" %}');
+            background-repeat: no-repeat;
+            background-size: contain;
+            }
+
+        .horvert {
+            background-image: url('{% static "images/hor_vert.png" %}');
+            background-repeat: no-repeat;
+            background-size: contain;
+            }
+
         table {
           border-collapse: collapse;
         }
@@ -71,11 +95,14 @@
         <table id="matrixTable"> </table>
         <br>
         <div id="alignmentsContainer"> </div>
-          
+        <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
       <script> 
+        var tracebackMatrix = {{ traceback|safe}}
         var matrixValues = {{matrix}}
         var alignments = {{alignments|safe}}
+        var showArrowsCheckbox = document.getElementById("showArrows")
         var firstSequence = '{{form.sequence1.value}}'.split("")
+        console.log(tracebackMatrix)
         firstSequence.unshift(""); 
         firstSequence.unshift("");
         var secondSequence = '{{form.sequence2.value}}'.split("")

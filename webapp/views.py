@@ -110,13 +110,14 @@ def needleman_wunsch_view(request):
             gap_penalty = form.cleaned_data['gap_penalty']
             similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
             result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)        
-
+            result['traceback'] [0][0] = ''
             if result is not None:
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
                     'alignments' : result['alignments'],
-                    'score' : result['score']
+                    'score' : result['score'],
+                    'traceback' : result['traceback']
                 }
             else:
                 context = {
