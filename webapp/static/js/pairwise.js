@@ -5,6 +5,7 @@ Dieses Skript ermöglicht auch, dass ein Alignment in der Alignments-Tabelle aus
 Der Template muss eine Tabelle und einen div-Container mit bestimmten ids enthalten:
 <table id="matrixTable"> 
 <div id="alignmentsContainer">
+Es muss auch ein Checkbox <input type="checkbox" id="showArrows"> im Template vorhanden sein  
 
 Desweiteren sollen CSS-Klassen .path, .alignment, .alignment.selected, .hor, .vert und .diag, .duaghorvert, .horvert und .diaghor definiert sein
 
@@ -165,8 +166,9 @@ function showAlignments() {
     const alignmentCell = document.createElement("td");
 
     alignment.forEach((line, index) => {
-      line = line.replaceAll(" ", ":");
+     
       const lineText = document.createTextNode(line);
+   
       alignmentCell.appendChild(lineText);
 
       if (index < alignment.length - 1) {
