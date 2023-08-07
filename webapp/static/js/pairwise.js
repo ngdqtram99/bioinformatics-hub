@@ -45,7 +45,9 @@ Der Path enthält eine Liste von Listen, die die Positionen in der Matrix beschr
     Erlaubte Richtingen sind 'hor' für Horizontal, 'vert' für Vertikal und 'diag' für Diagonal. Die Richting darf auch fehlen*/
 
 var path = alignments[0].path;
-
+var selectedAlignmentRow = document.querySelector(".alignment.selected");
+var selectedPath = null;
+var selectedCell = document.querySelector(".selectedcell");
 // Funktion, um die Tabelle zu erstellen und den Pfad mit Klassen für die Pfeile zu markieren
 function createMatrixTable() {
   const showArrowsCheckbox = document.getElementById("showArrows");
@@ -81,15 +83,64 @@ function createMatrixTable() {
         }
       }
 
+      if (!isNaN(cell.textContent) && cell.textContent != "") {
+        cell.setAttribute("row", i - 1);
+        cell.setAttribute("col", j - 1);
+        cell.addEventListener("click", () => {
+          var checkBox = document.getElementById("showArrows");
+          // Klasse vom bereits gewählter Zeile löschen
+          if (selectedCell != null) {
+            selectedCell.classList.remove("selectedcell");
+            if (!checkBox.checked) {
+              selectedCell.classList.remove(
+                "diag",
+                "hor",
+                "vert",
+                "diagvert",
+                "diaghor",
+                "diaghorvert",
+                "horvert"
+              );
+            }
+            if (selectedCell.classList.contains("path")) {
+              applyNewPath(selectedPath);
+            }
+          }
+          if (selectedCell != cell) {
+            // Neue als selected markieren
+            cell.classList.add("selectedcell");
+            selectedCell = cell;
+            addArrowClasses(cell.getAttribute("row"), cell.getAttribute("col"));
+            //selectedPath = path;
+            //applyNewPath(path);
+          } else {
+            selectedCell = null;
+            cell.classList.remove("selectedcell");
+            
+            if (!checkBox.checked) {
+              cell.classList.remove(
+                "diag",
+                "hor",
+                "vert",
+                "diagvert",
+                "diaghor",
+                "diaghorvert",
+                "horvert"
+              );
+            }
+            if (cell.classList.contains("path")) {
+              console.log("Path");
+              applyNewPath(selectedPath);
+            }
+          }
+        });
+      }
       row.appendChild(cell);
     }
-
     table.appendChild(row);
   }
 }
 
-var selectedAlignmentRow = document.querySelector(".alignment.selected");
-var selectedPath = null;
 // Funktion zum Anzeigen der Alignments
 function showAlignments() {
   const alignmentsContainer = document.getElementById("alignmentsContainer");
@@ -108,6 +159,7 @@ function showAlignments() {
 
     if (i === 0 && selectedAlignmentRow == null) {
       alignmentRow.classList.add("selected");
+      selectedPath = path;
     }
 
     const alignmentCell = document.createElement("td");
@@ -155,7 +207,8 @@ function applyNewPath(path) {
   const cells = matrixTable.querySelectorAll("td");
   if (!showArrowsCheckBox.checked) {
     cells.forEach((cell) => {
-      cell.classList.remove("path", "diag", "hor", "vert");
+      if (!cell.classList.contains("selectedcell")) {
+      cell.classList.remove("path", "diag", "hor", "vert");}
     });
   } else {
     cells.forEach((cell) => {
@@ -178,39 +231,51 @@ function applyNewPath(path) {
     }
   }
 }
+function addArrowClasses(k, n) {
+  console.log(k, n);
+  const matrixTable = document.getElementById("matrixTable");
+  const cells = matrixTable.querySelectorAll("td");
+  const coords = [k, n];
+  var direction = tracebackMatrix[k][n];
 
+  const rowIndex = Number(coords[0]) + 1;
+  const colIndex = Number(coords[1]) + 1;
+  console.log(rowIndex);
+  const cell = matrixTable.rows[rowIndex].cells[colIndex];
+  if (Array.isArray(direction)) {
+    direction = direction.sort();
+    direction = direction.join("");
+  }
+
+  if (direction != "") {
+    cell.classList.add(direction);
+  }
+}
 function showArrows(checked) {
   const matrixTable = document.getElementById("matrixTable");
 
-  const cells = matrixTable.querySelectorAll("td");
+  var cells = matrixTable.querySelectorAll("td");
+  
   cells.forEach((cell) => {
-    cell.classList.remove(
-      "diag",
-      "hor",
-      "vert",
-      "diagvert",
-      "diaghor",
-      "diaghorvert",
-      "horvert"
-    );
+    if (!cell.classList.contains("selectedcell")) {
+      console.log(cell);
+      cell.classList.remove(
+        "diag",
+        "hor",
+        "vert",
+        "diagvert",
+        "diaghor",
+        "diaghorvert",
+        "horvert"
+      );
+    }
   });
+  
   if (checked) {
     // Füge die neuen Klassen mit Richtungen aus der Traceback Matrix hinzu
     for (let k = 0; k < tracebackMatrix.length; k++) {
       for (n = 0; n < tracebackMatrix[k].length; n++) {
-        const coords = [k, n];
-        var direction = tracebackMatrix[k][n];
-        const rowIndex = coords[0] + 1;
-        const colIndex = coords[1] + 1;
-        const cell = matrixTable.rows[rowIndex].cells[colIndex];
-        if (Array.isArray(direction)) {
-          direction = direction.sort();
-          direction = direction.join("");
-        }
-
-        if (direction != "") {
-          cell.classList.add(direction);
-        }
+        addArrowClasses(k, n);
       }
     }
   } else if (selectedAlignmentRow != null) {
