@@ -75,7 +75,7 @@ def get_alignment(seq1: str, seq2: str, path: list, start_pos: list):
     return [s1_alg, alg, s2_alg]
 
 # Gibt die Matrix, ALignments und den Score zurück
-def get_result(sequence1, sequence2, match, missmatch, gap_penalty):
+def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, gap_penalty: float):
     seq1, seq2 = '-' + sequence1, '-' + sequence2
 
     traceback = [[None for j in range(len(seq2))] for i in range(len(seq1))]
