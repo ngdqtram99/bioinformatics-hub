@@ -49,16 +49,7 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
 
     traceback = [[None for j in range(len(seq2))] for i in range(len(seq1))]
     matrix = [[0 for j in range(len(seq2))] for i in range(len(seq1))]
-    # Prüft die Vorbedingungen von Match, Mismatch und Gap-Penalty
-    if similarity:
-        assert gap_penalty < 0, 'Gap-Penalty sollte kleiner 0 sein'
-        assert mismatch <= 0, 'Mismatch sollte kleiner oder gleich 0 sein'
-        assert match > 0, 'Match sollte größe als 0 sein'
-    else:
-        assert gap_penalty > 0, 'Gap-Penalty sollte bei größer 0 sein'
-        assert mismatch >= 0, 'Mismatch sollte größer oder gleich 0 sein'
-        assert match < 0, 'Match sollte kleiner als 0 sein'
-
+    
     #Initialisierung
     for i in range(1,len(seq2)):
         matrix[0][i] = matrix[0][i-1] + gap_penalty
@@ -98,4 +89,4 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
 
 # Beispiel
 res = get_result('AAAN','ANNA', 2, -1 ,-2, True)
-#for i in res: print(res[i])
+for i in res: print(res[i])
