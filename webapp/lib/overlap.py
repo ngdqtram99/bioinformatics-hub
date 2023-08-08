@@ -84,6 +84,7 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     '''
 
     return {'matrix': matrix,
+            'traceback':traceback,
             'alignments': alignments,
             'score': max_value}
 

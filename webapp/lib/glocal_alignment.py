@@ -145,6 +145,7 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     for i in alignments: print(i)
     '''
     return {'matrix': matrix,
+            'traceback': traceback,
             'alignments': alignments,
             'score': best_scores}
     

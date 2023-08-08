@@ -141,7 +141,9 @@ def get_result(sequence1, sequence2, match, missmatch, gap_penalty):
 
     score = k
     print('score',score)
+
     return {'matrix': matrix,
+            'traceback':traceback,
             'alignments': alignments,
             'score': score}
 
