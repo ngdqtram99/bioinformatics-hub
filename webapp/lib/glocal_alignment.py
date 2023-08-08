@@ -75,7 +75,7 @@ def get_alignment(seq1 : str, seq2: str, path : list, start_pos : list):
 
 
 # Glokal-Algorithmus
-def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_penalty : int, similarity : bool):
+def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty: float, similarity : bool):
     # Sequenz 1 ist String und Sequenz 2 ist Pattern
 
     seq1,seq2 = '-' + sequence1, '-' + sequence2

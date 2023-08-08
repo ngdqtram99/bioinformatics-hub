@@ -61,7 +61,7 @@ def get_alignment(seq1 : str, seq2: str, path : list):
 
 
 # Needlemann-Wunsch-Algorithmus
-def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_penalty : int, similarity : bool):
+def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty: float, similarity : bool):
     seq1,seq2 = '-' + sequence1, '-' + sequence2
 
     traceback = [[None for j in range(len(seq2))] for i in range(len(seq1))]
