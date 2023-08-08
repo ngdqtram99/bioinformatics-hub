@@ -75,7 +75,7 @@ def get_alignment(seq1 : str, seq2: str, path : list, start_pos : list):
 
 
 # Glokal-Algorithmus
-def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty: float, similarity : bool):
+def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty: float, similarity : bool, threshold: float):
     # Sequenz 1 ist String und Sequenz 2 ist Pattern
 
     seq1,seq2 = '-' + sequence1, '-' + sequence2
@@ -115,33 +115,12 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     last_col = [i[-1] for i in matrix] # Letzt Spalte der Scorematrix
     best_scores = []
     best_scores_pos = []
-    
-    # Addiert das beste Score (max./min. Werte abhängig von der Ähnlichkeit)
-    best_scores.append(max(last_col)) if similarity else best_scores.append(min(last_col)) 
-    tem_last_col = last_col.copy()
-    for i in range(len(last_col)): # Addiert Position(en) des besten Scores
-        if last_col[i] == best_scores[-1]:
+
+    for i in range(len(last_col)):
+        if (similarity and last_col[i] >= threshold) or (not similarity and last_col[i] <= threshold):
+            if last_col[i] not in best_scores: best_scores.append(last_col[i])
             best_scores_pos.append(i)
-        
-            # Löscht das gerade gefundene beste Score, um das zweite beste Score zu finden
-            tem_last_col.remove(best_scores[-1])
-    
-    assert len(last_col) > len(tem_last_col), 'Temporale last_col sollte keine das besten Score enthalten'
-    
-    if similarity and max(tem_last_col) >= best_scores[-1] - 2:
-        best_scores.append(max(tem_last_col)) # Addiert das zweite beste Score
-    
-        for i in range(len(last_col)): # Addiert Position(en) des zweiten besten Scores
-            if last_col[i] == best_scores[-1]:
-                best_scores_pos.append(i)
-    
-    elif not similarity and min(tem_last_col) <= best_scores[-1] + 2:
-        best_scores.append(min(tem_last_col)) # Addiert das zweite beste Score
-    
-        for i in range(len(last_col)): # Addiert Position(en) des zweiten besten Scores
-            if last_col[i] == best_scores[-1]:
-                best_scores_pos.append(i)
-    
+
     #print('best_scores',best_scores)
 
     # Start-Position zum Traceback (die ganz unten rechte Position)  
@@ -170,5 +149,5 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
             'score': best_scores}
     
 # Beispiel
-res = get_result('PXPO-YXPONY','PONY',0,1,1,False)
+res = get_result('PXPO-YXPONY','PONY',0,1,3,False,2)
 #for i in res: print(res[i])
