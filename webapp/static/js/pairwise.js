@@ -106,8 +106,10 @@ function createMatrixTable() {
                 "horvert"
               );
             }
-            if (selectedCell.classList.contains("path")) {
+            if (selectedCell.classList.contains("path") && selectedAlignmentRow != null) {
               applyNewPath(selectedPath);
+            } else if (selectedCell.classList.contains("path") && selectedAlignmentRow == null) {
+              selectedCell.classList.remove("path");
             }
           }
           if (selectedCell != cell) {
@@ -115,8 +117,6 @@ function createMatrixTable() {
             cell.classList.add("selectedcell");
             selectedCell = cell;
             addArrowClasses(cell.getAttribute("row"), cell.getAttribute("col"));
-            //selectedPath = path;
-            //applyNewPath(path);
           } else {
             selectedCell = null;
             cell.classList.remove("selectedcell");
@@ -132,8 +132,10 @@ function createMatrixTable() {
                 "horvert"
               );
             }
-            if (cell.classList.contains("path")) {
+            if (cell.classList.contains("path") && selectedAlignmentRow != null) {
               applyNewPath(selectedPath);
+            } else if (cell.classList.contains("path") && selectedAlignmentRow == null) {
+              cell.classList.remove("path");
             }
           }
         });
@@ -236,8 +238,6 @@ function applyNewPath(path) {
   }
 }
 function addArrowClasses(k, n) {
-  //const matrixTable = document.getElementById("matrixTable");
-  //const cells = matrixTable.querySelectorAll("td");
   const coords = [k, n];
   var direction = tracebackMatrix[k][n];
 
