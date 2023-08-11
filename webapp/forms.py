@@ -174,6 +174,7 @@ class GlocalAlignmentForm(forms.Form):
     match = forms.IntegerField(label='Match', min_value=-100, max_value=100, initial=-1)
     mismatch = forms.IntegerField(label='Mismatch', min_value=-100, max_value=100, initial=1)
     gap_penalty = forms.IntegerField(label='Gap-Score', min_value=-100, max_value=100, initial=1)
+    threshold = forms.IntegerField(label='Schwellenwert', min_value=-100, max_value=100, initial=1)
     choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
     optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 

@@ -7,6 +7,7 @@ from .lib import overlap
 from .lib import needleman_wunsch
 from .lib import glocal_alignment
 from .lib import viterbi
+from .lib import smith_waterman
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -109,15 +110,30 @@ def needleman_wunsch_view(request):
             mismatch = form.cleaned_data['mismatch']
             gap_penalty = form.cleaned_data['gap_penalty']
             similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
-            result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)        
-            result['traceback'] [0][0] = ''
+            result = needleman_wunsch.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity) 
+
             if result is not None:
+                result['traceback'] [0][0] = ''
+                def create_fasta(alignments):
+                    fasta_lines = []
+
+                    for i, alignment in enumerate(alignments):
+                        fasta_lines.append(f'>Alignment_{i + 1}')
+
+                        for sequence in alignment['alignment']:
+                            fasta_lines.append(sequence)
+
+                    fasta_content = '\n'.join(fasta_lines)
+                    return fasta_content
+
+                fasta_content = create_fasta(result['alignments'])                
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
                     'alignments' : result['alignments'],
                     'score' : result['score'],
-                    'traceback' : result['traceback']
+                    'traceback' : result['traceback'],
+                    'fasta_content' : fasta_content
                 }
             else:
                 context = {
@@ -142,21 +158,29 @@ def smith_waterman_view(request):
             match = form.cleaned_data['match']
             mismatch = form.cleaned_data['mismatch']
             gap_penalty = form.cleaned_data['gap_penalty']
-            result = None
-            #result = smith_waterman.get_result(seq1, seq2, match, mismatch, gap_penalty)
-            if result is not None:
+            result = smith_waterman.get_result(seq1, seq2, match, mismatch, gap_penalty)
 
+            if result is not None:
+                for sublist in result['traceback']:
+                    for i in range(len(sublist)):
+                        if sublist[i] is None:
+                            sublist[i] = ''
+                        elif isinstance(sublist[i], list) and None in sublist[i]:
+                            sublist[i].remove(None)                
+                print (result)
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
                     'alignments' : result['alignments'],
-                    'score' : result['score']
+                    'score' : result['score'],
+                    'traceback' : result['traceback']
                 }
             else:
                 context = {
                     'form' : form,
                     'error' : True
                 }
+            return render(request, 'smith_waterman.html', context)
     context = {
     'form': form,
 }
@@ -173,16 +197,27 @@ def glocal_alignment_view(request):
             seq2 = form.cleaned_data['sequence2']
             match = form.cleaned_data['match']
             mismatch = form.cleaned_data['mismatch']
+            threshold = form.cleaned_data['threshold']
             gap_penalty = form.cleaned_data['gap_penalty']
             similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
-            result = glocal_alignment.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)        
+            result = glocal_alignment.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity, threshold)        
 
-            if result is not None:
+            if result is not None:                
+                for sublist in result['traceback']:
+                    for i in range(len(sublist)):
+                        if sublist[i] is None:
+                            sublist[i] = ''
+                        elif isinstance(sublist[i], list) and None in sublist[i]:
+                            sublist[i].remove(None)
+                if len(result['alignments']) == 0:
+                    pass
+                    #result['alignments'] = [{'alignment':[], 'path':[]}]
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
                     'alignments' : result['alignments'],
-                    'score' : result['score']
+                    'score' : result['score'],
+                    'traceback' : result['traceback']
                 }
             else:
                 context = {
@@ -207,17 +242,23 @@ def overlap_view(request):
             match = form.cleaned_data['match']
             mismatch = form.cleaned_data['mismatch']
             gap_penalty = form.cleaned_data['gap_penalty']
-            similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
-            result = overlap.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)
-            print(result)
-            result['alignments'] = [{'alignment':result['alignments'], 'path':[]}]
-            if result is not None:
 
+            similarity = True if form.cleaned_data['optimization_field'] == 'similarity' else False
+            result = overlap.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)         
+            
+            if result is not None:
+                for sublist in result['traceback']:
+                    for i in range(len(sublist)):
+                        if sublist[i] is None:
+                            sublist[i] = ''
+                        elif isinstance(sublist[i], list) and None in sublist[i]:
+                            sublist[i].remove(None)                 
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
                     'alignments' : result['alignments'],
-                    'score' : result['score']
+                    'score' : result['score'],
+                    'traceback' : result['traceback']
                 }
             else:
                 context = {
