@@ -1,0 +1,70 @@
+
+        .path {
+          background-color: #c7dff8;
+        }
+    
+        .hor {
+          background-image: url('/webapp/static/images/hor.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        .vert {
+          background-image: url('/webapp/static/images/vert.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        .diag {
+          background-image: url('/webapp/static/images/diag.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+
+        .diaghor {
+            background-image: url('/webapp/static/images/diag_hor.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
+
+        .diagvert {
+        background-image: url('/webapp/static/images/diag_vert.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        }
+    
+        .diaghorvert {
+            background-image: url('/webapp/static/images/diag_hor_vert.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            }
+
+        .horvert {
+            background-image: url('/webapp/static/images/hor_vert.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            }
+
+        table {
+          border-collapse: collapse;
+        }
+        .alignment-table{
+            white-space: pre;
+            font-family: monospace;
+        }
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        .alignment:hover {
+            background-color:  #88bdf5;
+            }
+        .alignment.selected {
+        background-color: #007bff;
+        color: white;
+        }
+        .selectedcell {
+          background-color: #007bff;
+          color: white;
+          }

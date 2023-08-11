@@ -1,85 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+
+    {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+    {% endblock %}
     {% block content %}
- 
-    <br>
-      <style>
-      
-      .max-width-input {
-      width: 100%; 
-      } 
-
-        .path {
-          background-color: #c7dff8;
-        }
+  
     
-        .hor {
-          background-image: url('{% static "images/hor.png" %}');
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-    
-        .vert {
-          background-image: url('{% static "images/vert.png" %}');
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-    
-        .diag {
-          background-image: url('{% static "images/diag.png" %}');
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-
-        .diaghor {
-            background-image: url('{% static "images/diag_hor.png" %}');
-            background-repeat: no-repeat;
-            background-size: contain;
-          }
-
-        .diagvert {
-        background-image: url('{% static "images/diag_vert.png" %}');
-        background-repeat: no-repeat;
-        background-size: contain;
-        }
-    
-        .diaghorvert {
-            background-image: url('{% static "images/diag_hor_vert.png" %}');
-            background-repeat: no-repeat;
-            background-size: contain;
-            }
-
-        .horvert {
-            background-image: url('{% static "images/hor_vert.png" %}');
-            background-repeat: no-repeat;
-            background-size: contain;
-            }
-
-        table {
-          border-collapse: collapse;
-        }
-        .alignment-table{
-            white-space: pre;
-            font-family: monospace;
-        }
-        td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
-        .alignment:hover {
-            background-color:  #88bdf5;
-            }
-        .alignment.selected {
-        background-color: #007bff;
-        color: white;
-        }
-        .selectedcell {
-          background-color: #007bff;
-          color: white;
-          }
-      </style>
-    </head>
     <body>
       <h1>Needleman Wunsch Alignment</h1>
       <p>
@@ -98,21 +25,23 @@
       {% if matrix is not None %} 
       <h2>Output</h2>  
         <table id="matrixTable"> </table>
+        
         <br>
         <div id="alignmentsContainer"> </div>
+        <br>
+        <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
         <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
       <script> 
-        var tracebackMatrix = {{ traceback|safe}}
-        var matrixValues = {{matrix}}
-        var alignments = {{alignments|safe}}
-        var showArrowsCheckbox = document.getElementById("showArrows")
-        var firstSequence = '{{form.sequence1.value}}'.split("")
-        console.log(tracebackMatrix)
+        var tracebackMatrix = {{ traceback|safe}};
+        var matrixValues = {{matrix}};
+        var alignments = {{alignments|safe}};
+        var showArrowsCheckbox = document.getElementById("showArrows");
+        var firstSequence = '{{form.sequence1.value}}'.split("");
         firstSequence.unshift(""); 
         firstSequence.unshift("");
-        var secondSequence = '{{form.sequence2.value}}'.split("")
+        var secondSequence = '{{form.sequence2.value}}'.split("");
         secondSequence.unshift(""); 
-        secondSequence.unshift("M");
+        secondSequence.unshift("M"); 
     </script>
       <script src="{% static 'js/pairwise.js' %}"></script>   
       {% endif %}

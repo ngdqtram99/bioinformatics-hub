@@ -1,56 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-<html>
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+{% endblock %}
     {% block content %}
 
-    <style>
-      .filled{
-        background-color: rgb(0, 123, 255);
-      }
-
-      .max-width-input {
-      width: 100%; 
-      }    
-        .main_output {
-          width: fit-content;
-          background-color: #f2f3f1;    
-          text-align: left;
-          max-width: 95%;
-          max-height: 90vh;
-          display: block;  
-          overflow: auto;
-       
-        }
-        table, th, td {
-        text-align: center;
-        width: 20px;
-        height:20px;
-        table-layout: fixed;
-        border: 1px solid rgb(0,0,0,10%);       
-    }
-    .calculation th:first-child,
-      .calculation td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 0;
-        background-color: #f2f3f1;
-       
-      }
-      thead {
-        font-weight: normal;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        background-color: #f2f3f1;
-      }
-      table {
-        font-weight: bold;
-        border-collapse: inherit;
-        border-spacing: 0px;
-        
-      }
-    </style>
-    <body>
+ 
         <h1>Überlapp Alignment</h1>
         <p>
           Beschreibung
@@ -65,24 +20,32 @@
         </form>
       {% if matrix is not None %} 
       
-        <table id="matrixTable"> </table>
-        <br>
-        <div id="alignmentsContainer"> </div>
-          
-      <script> 
-        var matrixValues = {{matrix}}
-        var alignments = {{alignments|safe}}
-        var firstSequence = '{{form.sequence1.value}}'.split("")
-        firstSequence.unshift(""); 
-        firstSequence.unshift("");
-        var secondSequence = '{{form.sequence2.value}}'.split("")
-        secondSequence.unshift(""); 
-        secondSequence.unshift("M");
-    </script>
+      <h2>Output</h2>  
+      <table id="matrixTable"> </table>
+      
+      <br>
+      <div id="alignmentsContainer"> </div>
+      <br>
+      <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
+      <br>
+      <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
+        
+        <script> 
+          var tracebackMatrix = {{ traceback|safe}};
+          var matrixValues = {{matrix}};
+          var alignments = {{alignments|safe}};
+          var showArrowsCheckbox = document.getElementById("showArrows");
+          var firstSequence = '{{form.sequence1.value}}'.split("");
+          firstSequence.unshift(""); 
+          firstSequence.unshift("");
+          var secondSequence = '{{form.sequence2.value}}'.split("");
+          secondSequence.unshift(""); 
+          secondSequence.unshift("M"); 
+      </script>
       <script src="{% static 'js/pairwise.js' %}"></script>  
       
       {% endif %}
-    </body>
+ 
 
     {% endblock %}
 
