@@ -45,7 +45,10 @@ Der Path enthält eine Liste von Listen, die die Positionen in der Matrix beschr
     Beispiel: 'path': [[[2, 4], 'diag'], [[1, 3], 'diag'], [[0, 2], 'hor'], [[0, 1], 'hor'], [[0, 0]]]
     Erlaubte Richtingen sind 'hor' für Horizontal, 'vert' für Vertikal und 'diag' für Diagonal. Die Richting darf auch fehlen*/
 
-var path = alignments[0].path;
+var path = [] 
+if (alignments.length > 0) {
+  path = alignments[0].path;
+}
 var selectedAlignmentRow = document.querySelector(".alignment.selected");
 var selectedPath = null;
 var selectedCell = document.querySelector(".selectedcell");
@@ -130,7 +133,6 @@ function createMatrixTable() {
               );
             }
             if (cell.classList.contains("path")) {
-              console.log("Path");
               applyNewPath(selectedPath);
             }
           }
@@ -234,15 +236,13 @@ function applyNewPath(path) {
   }
 }
 function addArrowClasses(k, n) {
-  console.log(k, n);
-  const matrixTable = document.getElementById("matrixTable");
-  const cells = matrixTable.querySelectorAll("td");
+  //const matrixTable = document.getElementById("matrixTable");
+  //const cells = matrixTable.querySelectorAll("td");
   const coords = [k, n];
   var direction = tracebackMatrix[k][n];
 
   const rowIndex = Number(coords[0]) + 1;
   const colIndex = Number(coords[1]) + 1;
-  console.log(rowIndex);
   const cell = matrixTable.rows[rowIndex].cells[colIndex];
   if (Array.isArray(direction)) {
     direction = direction.sort();
@@ -260,7 +260,6 @@ function showArrows(checked) {
   
   cells.forEach((cell) => {
     if (!cell.classList.contains("selectedcell")) {
-      console.log(cell);
       cell.classList.remove(
         "diag",
         "hor",
@@ -294,5 +293,8 @@ showArrowsCheckbox.addEventListener("change", () => {
     showArrows(false);
   }
 });
-showAlignments();
+if (alignments.length > 0) {
+  showAlignments();
+}
+
 createMatrixTable();
