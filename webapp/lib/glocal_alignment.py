@@ -10,7 +10,7 @@ def traceback_value(dia,ver,hor, similarity : bool):
     def _direction(index : int):
         if index == 0: return "diag"
         elif index == 1: return "vert"
-        else: return "hor" ## index = 2
+        else: return "hor"
     
     if len(indexes) == 1: return _direction(indexes[0])
     else: return [_direction(i) for i in indexes]
