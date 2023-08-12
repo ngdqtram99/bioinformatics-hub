@@ -126,7 +126,7 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     # Start-Position zum Traceback (die ganz unten rechte Position)  
     list_start_pos = [[i,len(sequence2)] for i in best_scores_pos] 
     
-
+    # Findet Pafde 
     unmodified_paths = [_get_paths(traceback, start_pos) for start_pos in list_start_pos]
 
     '''
@@ -134,16 +134,18 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     for i in unmodified_paths: print(i)
     '''
 
-    # Nach der Modifikation werden alle start_pos zu [0,0] gesetzt, deswegen muss es hier wieder richtig umgesetzt
+    # Nach dem Finden der Pfade werden alle start_pos zu [0,0] gesetzt, deswegen muss es hier wieder richtig umgesetzt
     list_start_pos = [[i,len(sequence2)] for i in best_scores_pos] 
+    
+    # Ertstellt eine Liste der Dictionaries der Alignments wie im Entwurf des Algorithmus
     alignments = []
-
     for i in range(len(list_start_pos)):
         alignments.extend([{'alignment':get_alignment(seq1,seq2,path, list_start_pos[i]),'path':_modify_path(path,list_start_pos[i])} for path in unmodified_paths[i]])    
     '''
     print('alignments')
     for i in alignments: print(i)
     '''
+    
     return {'matrix': matrix,
             'traceback': traceback,
             'alignments': alignments,
