@@ -85,9 +85,7 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
         if a == b: return match
         return mismatch
 
-    k = 0 # Score der längsten gemeinsamen Teilsequenz
-    max_i = 0 # Speichert an welchem Punkt in Sequenz 1 der maximale Score ist
-    max_j= 0 # Speichert an welchem Punkt in Sequenz 2 der maximale Score ist
+    k = 0 # Bestes Score: Score der längsten gemeinsamen Teilsequenz
 
     # Initialisierung
     for i in range(1, len(seq1)):
@@ -104,21 +102,22 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
             # setze k immer auf den maximalen Score
             if k < maxScore:
                 k = maxScore
-                max_i = i
-                max_j = j
+                
 
     #for i in matrix: print(i)
     #for j in traceback: print(j)
 
+    # Liste von Startposition zum Traceback
     start_pos = []
     for i in range(len(seq1)):
         for j in range(len(seq2)):
             if matrix[i][j] == k: start_pos.append([i,j])
-    print(start_pos)
+    #print(start_pos)
 
+    # Findet Pfade 
     unmodified_paths = [_get_paths(traceback, pos) for pos in start_pos]
 
-
+    # Modifiziert Pfade, indem nur die passende Pfade behalten werden
     for i in range(len(unmodified_paths)):
         sm_paths = [] # Smith-Watermann-Path: beinhalt nur Paths, die nur diagonale Richtungen enthälten
         for path in unmodified_paths[i]:
@@ -128,18 +127,18 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
     
     #print('unmodified_paths', unmodified_paths)
 
-    #start_pos = [max_i, max_j]
-
+    # Erstellt wieder die Liste der Startpositionen zum Traceback, weil sie nach dem Finden der Pfade geändert wird 
     start_pos = []
     for i in range(len(seq1)):
         for j in range(len(seq2)):
             if matrix[i][j] == k: start_pos.append([i,j])
 
+    # Erstellt ein Dictionary aller Alignment und speichert in richtigen Format wie im Entwurf des Algorithmus 
     alignments = []
     for p in range(len(start_pos)):
         alignments.extend([{'alignment': get_alignment(seq1, seq2, path, start_pos[p]), 'path': _modify_path(path, start_pos[p])} for path in unmodified_paths[p]])
 
-    score = k
+    score = k # Das beste Score
     print('score',score)
 
     return {'matrix': matrix,
