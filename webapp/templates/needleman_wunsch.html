@@ -3,6 +3,10 @@
 
     {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
     {% endblock %}
     {% block content %}
   
@@ -10,8 +14,44 @@
     <body>
       <h1>Needleman Wunsch Alignment</h1>
       <p>
-        Beschreibung
-      </p>
+        Der Needleman-Wunsch-Algorithmus ist ein Algorithmus für das paarweise Sequenz-Alignment. 
+        Er vergleicht zwei angegebene Sequenzen miteinander, wobei für jedes Paar von Positionen beider Sequenzen ein Score berechnet und in der Score-Matrix \(M\) gespeichert wird.
+         Hierfür werden die Werte für Übereinstimmungen (Match), Unterschiede (Mismatch) und Lückenstrafen (Gap-Penalty) benötigt.
+        </p>
+        <p>
+        Um den Score an einer bestimmten Stelle in der Score-Matrix \(M\) zu berechnen, werden drei temporäre Scores aus den drei vorherigen Richtungen (diagonal, 
+        vertikal und horizontal) berechnet. Der maximale oder minimale Score aus diesen drei Werten wird als der Score für diese spezifische Stelle festgelegt, abhängig davon, 
+        ob die Optimierung auf Distanz oder Ähnlichkeit abzielt.
+        </p>
+        <p>
+        Während der Bewertung werden die Richtungen, aus denen die maximalen oder minimalen Scores erzielt wurden, in einer Traceback-Matrix gespeichert. 
+        Diese Traceback-Matrix ermöglicht es uns später, das optimale Alignment von der unteren rechten Ecke bis zur oberen linken Ecke der Score-Matrix zu rekonstruieren.
+        </p>
+        <p>Die Formel zur Berechnung jeder Stelle in der Score-Matrix lautet: </p>
+        <p> \(
+          M(i,j) = m \begin{cases}
+                      M(i-1,j-1) + s \\
+                      M(i-1,j) + Gap\: penalty \\
+                      M(i,j-1) + Gap\: penalty, \quad \text{wo}
+                    \end{cases}
+                    \)
+          </p>
+          <p>
+          \(
+          s = \begin{cases}
+          Match,\text{ wenn } \text{seq1}(i) = \text{seq2}(j) \\
+          Mismatch,\text{ wenn } \text{seq1}(i) \neq \text{seq2}(j) \quad \text{und}
+          \end{cases}
+          \)
+        </p>
+          <p>
+          \(
+            m = \begin{cases}
+          min,\text{ wenn Optimierung nach Distanz}, \\
+          max,\text{ wenn Optimierung nach Ähnlichkeit}
+          \end{cases}
+          \)
+        </p>
       <h2> Input </h2>
       <form method="POST" action="{% url 'needleman_wunsch' %}">
         {% csrf_token %}
