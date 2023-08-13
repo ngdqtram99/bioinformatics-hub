@@ -1,7 +1,7 @@
 # Inputs: Sequenz, Emissionsmatrix (Set von Tupels (Tulpe: ein String (Zustand) und eine Liste (Wahrscheinlichkeiten))), Übergangmatrix (gleich Type wie Emissionsmatrix)
 # Outputs: Wahrscheinlichkeitsmatrix, Pfad, Zustand Matrix 
 
-from pandas import DataFrame
+from pandas import DataFrame, Series
 import numpy as np
 
 # Konvertiert django definierte Matrix zu DataFrame
@@ -29,6 +29,21 @@ def to_nestedlist(df : DataFrame):
     
     #for i in nestedlist: print(i)
     return nestedlist
+
+def get_idmax(df_lastcol: Series): # enthält nur die letzte Spalte
+    #print(df_lastcol)
+    max_value = df_lastcol.max()
+    num = df_lastcol.to_numpy()
+
+    # Erstellt eine Liste, die alle Indexes mit dem maximalen Wert beinhält
+    idmax = np.array(np.where(num == max_value)).tolist()
+
+    return idmax[0] if len(idmax) == 1 else idmax # Gibt Integer (Index) oder eine Liste von Integer (Indexes) zurück
+
+# Beispiele
+'''df = DataFrame({'A':[1,2,3,4],'B':[3,4,1,4]},index=['a','b','c','d'])
+df_lastcol = df.iloc[:,-1]
+print('list_idmax', get_idmax(df_lastcol))'''
 
 # Viterbi Algorithmus
 def get_results(seq, transition, emission):
@@ -151,4 +166,4 @@ em = [(' ',[*'ATGC']),
       ('-',[0.125,0.125,0.375,0.375])]
 
 seq = 'TGTACAA'
-print(get_results(seq,trans,em))
+#print(get_results(seq,trans,em))
