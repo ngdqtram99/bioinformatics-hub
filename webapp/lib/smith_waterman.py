@@ -35,14 +35,14 @@ def get_alignment(seq1: str, seq2: str, path: list, start_pos: list):
     
     for x in range(len(seq1)-1,i,-1):
         s1_alg = seq1[x] + s1_alg
-        s2_alg = ' ' + s2_alg
+        s2_alg += ' ' 
         alg += ' '
 
     for y in range(len(seq2)-1,j,-1):
         s2_alg = seq2[y] + s2_alg
         s1_alg += ' '
         alg += ' '
-
+    
     # Erstellt Alignment
     for p in path:
         if p == "diag":
@@ -50,6 +50,18 @@ def get_alignment(seq1: str, seq2: str, path: list, start_pos: list):
             s2_alg = seq2[j] + s2_alg
             alg = '|' + alg if seq1[i] == seq2[j] else ' ' + alg
             i -= 1;
+            j -= 1
+        
+        elif p == "vert":
+            s1_alg = seq1[i] + s1_alg
+            s2_alg = "-" + s2_alg
+            alg = ' ' + alg
+            i -= 1
+
+        elif p == "hor":
+            s1_alg = "-" + s1_alg
+            s2_alg = seq2[j] + s2_alg
+            alg = ' ' + alg
             j -= 1
 
     while i > 0 and j > 0:
@@ -92,8 +104,8 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
         for j in range(1, len(seq2)):
 
             diag = matrix[i-1][j-1] + is_match(seq1[i], seq2[j], match, missmatch)
-            vert = matrix[i][j-1]-gap_penalty
-            hor = matrix[i-1][j]-gap_penalty
+            hor = matrix[i][j-1]-gap_penalty
+            vert = matrix[i-1][j]-gap_penalty
             none = 0
             maxScore = max(diag, vert, hor, none)
             matrix[i][j] = maxScore
@@ -117,14 +129,6 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
     # Findet Pfade 
     unmodified_paths = [_get_paths(traceback, pos) for pos in start_pos]
 
-    # Modifiziert Pfade, indem nur die passende Pfade behalten werden
-    for i in range(len(unmodified_paths)):
-        sm_paths = [] # Smith-Watermann-Path: beinhalt nur Paths, die nur diagonale Richtungen enthälten
-        for path in unmodified_paths[i]:
-            if 'vert' not in path and 'hor' not in path:
-                sm_paths.append(path)
-        unmodified_paths[i] = sm_paths
-    
     #print('unmodified_paths', unmodified_paths)
 
     # Erstellt wieder die Liste der Startpositionen zum Traceback, weil sie nach dem Finden der Pfade geändert wird 
@@ -146,7 +150,7 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
             'alignments': alignments,
             'score': score}
 
-res = get_result('fcggtcggtca','ggtc',2,-1,2)
+res = get_result('fcggtdcggvca','ggtc',2,-1,1)
 #print(res['alignments'])
 
 
