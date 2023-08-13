@@ -35,13 +35,13 @@ def get_alignment(seq1: str, seq2: str, path: list, start_pos: list):
     
     for x in range(len(seq1)-1,i,-1):
         s1_alg = seq1[x] + s1_alg
-        s2_alg = '_' + s2_alg
-        alg += '_'
+        s2_alg = ' ' + s2_alg
+        alg += ' '
 
     for y in range(len(seq2)-1,j,-1):
         s2_alg = seq2[y] + s2_alg
-        s1_alg += '_'
-        alg += '_'
+        s1_alg += ' '
+        alg += ' '
 
     # Erstellt Alignment
     for p in path:
@@ -55,19 +55,19 @@ def get_alignment(seq1: str, seq2: str, path: list, start_pos: list):
     while i > 0 and j > 0:
         s1_alg = seq1[i] + s1_alg
         s2_alg = seq2[j] + s2_alg
-        alg = '_' + alg
+        alg = ' ' + alg
         i -= 1 ; j -= 1
 
     while i > 0:
         s1_alg = seq1[i] + s1_alg
-        s2_alg = '_' + s2_alg
-        alg = '_' + alg
+        s2_alg = ' ' + s2_alg
+        alg = ' ' + alg
         i -= 1
 
     while j > 0:
-        s1_alg = '_' + s1_alg
+        s1_alg = ' ' + s1_alg
         s2_alg = seq2[j] + s2_alg
-        alg = '_' + alg
+        alg = ' ' + alg
         j -= 1
     
     print('\nalignment\n',s1_alg,'\n',alg,'\n',s2_alg,'\n')
@@ -92,8 +92,8 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
         for j in range(1, len(seq2)):
 
             diag = matrix[i-1][j-1] + is_match(seq1[i], seq2[j], match, missmatch)
-            vert = matrix[i][j-1]+gap_penalty
-            hor = matrix[i-1][j]+gap_penalty
+            vert = matrix[i][j-1]-gap_penalty
+            hor = matrix[i-1][j]-gap_penalty
             none = 0
             maxScore = max(diag, vert, hor, none)
             matrix[i][j] = maxScore
@@ -139,14 +139,14 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
         alignments.extend([{'alignment': get_alignment(seq1, seq2, path, start_pos[p]), 'path': _modify_path(path, start_pos[p])} for path in unmodified_paths[p]])
 
     score = k # Das beste Score
-    print('score',score)
+    #print('score',score)
 
     return {'matrix': matrix,
             'traceback':traceback,
             'alignments': alignments,
             'score': score}
 
-res = get_result('fcggtcggtca','ggtc',2,-1,-2)
+res = get_result('fcggtcggtca','ggtc',2,-1,2)
 #print(res['alignments'])
 
 
