@@ -53,7 +53,7 @@ def get_alignment(sequence1 : str, sequence2 : str, path : list, start_pos: list
 
     print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
 
-    return [[*s1_alg],[*s2_alg]]
+    return [s1_alg,s2_alg]
 
 # Überlapp-Algorithmus
 def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty:float, similarity: bool):
