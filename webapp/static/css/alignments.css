@@ -2,7 +2,9 @@
         .path {
           background-color: #c7dff8;
         }
-    
+        p {
+            text-align: justify;
+        }
         .hor {
           background-image: url('/webapp/static/images/hor.png');
           background-repeat: no-repeat;
@@ -51,11 +53,25 @@
         .alignment-table{
             white-space: pre;
             font-family: monospace;
+            text-align: left;
+            font-size: 16px;
+            background-color: #f2f3f1;
         }
-        td {
+        .alignment-table td{
+            border-bottom: 2px solid rgb(0,0,0,30%);
+        }
+        #matrixTable {
+            table-layout: fixed;
+        
+        }
+        #matrixTable td {
             border: 1px solid black;
-            padding: 10px;
+            width:30px;
+            max-width: 30px;
+            padding: 11px;
+            height: 30px;
             text-align: center;
+            
         }
         .alignment:hover {
             background-color:  #88bdf5;
