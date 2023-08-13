@@ -1,45 +1,57 @@
+#from traceback import _get_paths, _modify_path
+from webapp.lib.traceback import _get_paths, _modify_path
+ 
 # Traceback-Wert
 def traceback_value(dia,ver,hor, similarity : bool):
     
     m = max(dia,ver,hor) if similarity else min(dia,ver,hor)
-    if m == dia: return "dia"
-    if m == ver: return "ver"
+    if m == dia: return "diag"
+    if m == ver: return "vert"
     else: return "hor"
 
 # Gibt die Alignment zurück
-def get_alignment(sequence1 : str, sequence2 : str, traceback : list, position: int):
+def get_alignment(sequence1 : str, sequence2 : str, path : list, start_pos: list):
 
     s1_alg = ""
     s2_alg = ""
-    
-    i = len(traceback) - 1
-    j  = position
+    alg = ""
 
+    i = start_pos[0]
+    j  = start_pos[1]
+
+    assert i == len(sequence1)-1, "Die Position startet nicht aus die letzte Zeile der Matrix"
+    
     # Alignment erstellen
     # Addiert Substring der Sequenz 2, die nicht zum Überlapp-Teil gehört
     for pos in range(j+1, len(sequence2)):
         s2_alg += sequence2[pos]
 
     # Addiert die Überlapp-Substring
-    while i > 0 and j > 0:
-        if traceback[i][j] == "dia":
+    for p in path:
+        if p == "diag":
             s1_alg = sequence1[i] + s1_alg
             s2_alg = sequence2[j] + s2_alg
+            alg = "|" + alg if sequence1[i] == sequence2[j] else "_" + alg
             i -= 1 ; j -= 1
-        elif traceback[i][j] == "ver":
+        elif p == "vert":
             s1_alg = sequence1[i] + s1_alg
             s2_alg = "-" + s2_alg
+            alg = " " + alg
             i -= 1
-        elif traceback[i][j] == "hor":
+        elif p == "hor":
             s1_alg = "-" + s1_alg
             s2_alg = sequence2[j] + s2_alg
+            alg = " " + alg
             j -= 1
 
     # Addiert Substring der Sequenz 1, die nicht zum Überlapp-Teil gehört
     while i > 0:
         s1_alg = sequence1[i] + s1_alg
-        s2_alg = '-' + s2_alg
+        s2_alg = "_" + s2_alg
+        alg = "_" + alg
         i -= 1
+
+    print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
 
     return [[*s1_alg],[*s2_alg]]
 
@@ -68,21 +80,39 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
             traceback[i][j] = traceback_value(dia,ver,hor,similarity)
     
     # Bestes Score der letzten Zeile der Scorematrix
-    max_value = max(matrix[-1]) 
-    # Positionen des besten Score. Weil es möglich ist, viele Positionen den selben Score besitzen, behält die Methode nur die im Matrix ganz rechten Position 
-    for i in range(len(seq2)):
-        if matrix[-1][i] == max_value: 
-            pos = i
+    max_value = max(matrix[-1])
 
-    # Alignment entspricht jedes besten Score
-    alignments = get_alignment(seq1, seq2, traceback, pos)
+    '''print('matrix')
+    for i in matrix: print(i)
+    print('traceback')
+    for i in traceback: print(i)'''
 
-    '''
-    print(matrix)
-    print(traceback)
-    for i in alignments: print(i)
-    '''
+    # Erstellt die Liste von Startpositionen zum Traceback
+    ## Positionen des besten Score. Es ist möglich, viele Positionen besitzen den selben Score 
+    list_start_pos = [i for i in range(len(seq2)) if matrix[-1][i] == max_value]
+    ## Modifiziert die Liste von Integer (nur die Position IN der letzten Zeile) zur Liste von [Pos der letzten Zeile der 1. Seq][Pos IN der letzten Zeile]
+    list_start_pos = [[len(sequence1),i] for i in list_start_pos]
 
+    #print('list_start_pos',list_start_pos)
+
+    # Findet Pfade
+    unmodified_paths = [_get_paths(traceback, start_pos) for start_pos in list_start_pos]
+    
+    '''print('unmodified_paths')
+    for i in unmodified_paths: print(i)'''
+
+    # Erstellt wieder die Liste von Startpotitionen, weil sie nach dem Finden der Pfade geändert wird
+    list_start_pos = [i for i in range(len(seq2)) if matrix[-1][i] == max_value]
+    list_start_pos = [[len(sequence1),i] for i in list_start_pos]
+
+    # Ertstellt eine Liste der Dictionaries der Alignments wie im Entwurf des Algorithmus
+    alignments = []
+    for i in range(len(list_start_pos)):
+        alignments.extend([{'alignment':get_alignment(seq1,seq2,path, list_start_pos[i]),'path':_modify_path(path,list_start_pos[i])} for path in unmodified_paths[i]])    
+    
+    '''print('alignments')
+    for i in alignments: print(i)'''
+    
     return {'matrix': matrix,
             'traceback':traceback,
             'alignments': alignments,
@@ -90,4 +120,4 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
 
 # Beispiel
 res = get_result('AAAN','ANNA', 2, -1 ,-2, True)
-for i in res: print(res[i])
+#for i in res: print(res[i])
