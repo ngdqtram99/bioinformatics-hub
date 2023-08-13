@@ -35,7 +35,7 @@ def get_alignment(seq1 : str, seq2: str, path : list, start_pos : list):
     
     for x in range(len(seq1)-1,i,-1):
         s1_alg = seq1[x] + s1_alg
-        s2_alg += '_'
+        s2_alg += ' '
         alg += ' '
     
 
@@ -61,7 +61,7 @@ def get_alignment(seq1 : str, seq2: str, path : list, start_pos : list):
 
     while i > 0:
         s1_alg = seq1[i] + s1_alg
-        s2_alg = '_' + s2_alg
+        s2_alg = ' ' + s2_alg
         alg = ' ' + alg
         i -= 1
 
