@@ -47,13 +47,13 @@ def get_alignment(sequence1 : str, sequence2 : str, path : list, start_pos: list
     # Addiert Substring der Sequenz 1, die nicht zum Überlapp-Teil gehört
     while i > 0:
         s1_alg = sequence1[i] + s1_alg
-        s2_alg = "_" + s2_alg
-        alg = "_" + alg
+        s2_alg = " " + s2_alg
+        alg = " " + alg
         i -= 1
 
     print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
 
-    return [s1_alg,s2_alg]
+    return [s1_alg,alg,s2_alg]
 
 # Überlapp-Algorithmus
 def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty:float, similarity: bool):
@@ -119,5 +119,5 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
             'score': max_value}
 
 # Beispiel
-res = get_result('AAAN','ANNA', 2, -1 ,-2, True)
-#for i in res: print(res[i])
+res = get_result('tramnguyen','nguyntram', -1, 1 , 1, False)
+for i in res: print(res[i])
