@@ -8,6 +8,7 @@ from .lib import needleman_wunsch
 from .lib import glocal_alignment
 from .lib import viterbi
 from .lib import smith_waterman
+from .lib import upgma
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -279,16 +280,17 @@ def upgma_view(request):
         if form.is_valid():
             csv_data = form.cleaned_data['csv_data']
             names = form.cleaned_data['names']
-            method = 'upgma'
-            #result = phylo.get_result(names, csv_data, method)
-            result = None
+            
+            result = upgma.get_results(names, csv_data)
+            
             if result is not None:
                 context = {
                     'form': form,
                     'newick' : result['newick'],
                     'base64_plot' : result['base64_plot'],
-                    'iterations' : result['iterations']
+                    'iterations' : result['intermatrixes']
                 } 
+
                 return render(request, 'upgma.html', context)
     context = {
         'form': form,
@@ -302,15 +304,14 @@ def neighbour_joining_view(request):
         if form.is_valid():
             csv_data = form.cleaned_data['csv_data']
             names = form.cleaned_data['names']
-            method = 'nj'
-            #result = phylo.get_result(names, csv_data, method)
+            #result = nj.get_results(names, csv_data)
             result = None
             if result is not None:
                 context = {
                     'form': form,
                     'newick' : result['newick'],
                     'base64_plot' : result['base64_plot'],
-                    'iterations' : result['iterations']
+                    'iterations' : result['intermatrixes']
                 } 
                 return render(request, 'neighbour_joining.html', context)
     context = {

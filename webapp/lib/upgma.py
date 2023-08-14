@@ -1,5 +1,5 @@
 import copy
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 from Bio.Phylo.TreeConstruction import DistanceMatrix, DistanceTreeConstructor
 from Bio.Phylo import BaseTree
 from Bio import Phylo
@@ -170,8 +170,8 @@ def get_results(names: list, matrix: list):
     buffer.close()
 
     return {'intermatrixes': upgma_res['intermatrixes'],
-            'newwick': newwick(tree),
-            'tree_plot': base64_plot(tree)}
+            'newick': newwick(tree),
+            'base64_plot': base64_plot(tree)}
 
 get_results(names, matrix)
 
