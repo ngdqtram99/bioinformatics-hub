@@ -253,6 +253,7 @@ class UpgmaNjForm (forms.Form):
         cleaned_csv = [[parse(cell) for cell in row if parse(cell) is not None] for row in rows]
         if len(cleaned_csv[0]) == len(cleaned_csv):
             cleaned_csv = cleaned_csv[::-1]
+            cleaned_csv = [row.reverse() for row in cleaned_csv]
         cleaned_csv = [[cell for cell in row[:i+1]] for i, row in enumerate(cleaned_csv)]
         cleaned_data['csv_data'] = cleaned_csv
         if names is None or names == '':
@@ -283,7 +284,7 @@ class UpgmaNjForm (forms.Form):
             if len(csv_data) != len (csv_data[-1]):
                 self.add_error('csv_data', "Die Anzahl der Zeilen soll gleich der Anzahl der Spalten sein") 
                 valid = False  
-            diag_is_valid = [row[0] == 0.0 for row in csv_data]
+            diag_is_valid = [row[-1] == 0.0 for row in csv_data]
             if False in diag_is_valid:
                 self.add_error('csv_data', "Auf der Diagonale dürfen nur 0 stehen")
                 valid = False

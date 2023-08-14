@@ -316,7 +316,7 @@ def neighbour_joining_view(request):
     context = {
         'form': form,
     }
-    return render(request, 'neighbour_joining.html')
+    return render(request, 'neighbour_joining.html', context)
 
 def suffix_tree_view(request):
     return render(request, 'suffix_tree.html')    
