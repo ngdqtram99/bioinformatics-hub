@@ -1,4 +1,4 @@
-#from traceback import _get_paths, _modify_path
+#from pairwise_traceback import _get_paths, _modify_path
 from webapp.lib.pairwise_traceback import _get_paths, _modify_path
 
 # Gibt die Richtung/Vorgänger zurück

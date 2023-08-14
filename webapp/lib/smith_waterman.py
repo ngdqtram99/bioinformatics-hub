@@ -1,5 +1,5 @@
-#from traceback import _get_paths, _modify_path
-from webapp.lib.pairwise_traceback import _get_paths, _modify_path
+from pairwise_traceback import _get_paths, _modify_path
+#from webapp.lib.pairwise_traceback import _get_paths, _modify_path
 
 # Gibt die Richtung/Vorgänger zurück
 def traceback_value(dia, ver, hor, none):
@@ -150,7 +150,7 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
             'alignments': alignments,
             'score': score}
 
-res = get_result('fcggtdcggvca','ggtc',2,-1,1)
-#print(res['alignments'])
+res = get_result('fcggcggccggcagfc','atfdggcdad',2,-1,1)
+print(res['alignments'])
 
 
