@@ -25,6 +25,10 @@
   </form>
     
 </body>
-
+{% if newick is not None %} 
+    <p>Newick-String: {{newick}}</p>
+    <br>
+    <img src="data:image/png;base64, {{base64_plot}}"/>
+{% endif %}
 {% endblock %}
 </html>
