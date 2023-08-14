@@ -7,6 +7,8 @@ import io
 import base64
 
 class NewDistanceTreeConstructor(DistanceTreeConstructor):
+
+    # Überschreibt die Methode upgma von DistanceTreeConstructor
     def upgma(self, distance_matrix: DistanceMatrix):
         if not isinstance(distance_matrix, DistanceMatrix):
                 raise TypeError("Es muss ein DistanceMatrix-Object sein.")
@@ -41,7 +43,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             # Erstellt Obenclade
             clade1 = clades[min_i]
             clade2 = clades[min_j]
-            inner_clade = BaseTree.Clade(None, f"({clade1.name}{clade2.name})") # zB. A und B -> (AB); (AB) und C -> ((AB)C) 
+            inner_clade = BaseTree.Clade(None, f"({clade1.name},{clade2.name})") # zB. A und B -> (AB); (AB) und C -> ((AB)C) 
             inner_clade.clades.append(clade1)
             inner_clade.clades.append(clade2)
 
@@ -110,11 +112,6 @@ def count_subclades(clade: BaseTree.Clade):
 
     return count
 
-# Neue Methode UPGMA
-
-'''# Überschreibt UPGMA von DistanceTreeConstructor 
-DistanceTreeConstructor.upgma = upgma    
-'''
 # Input Beispiel:
 names = ['Alpha', 'Beta', 'Gamma', 'Delta']
 matrix = [[0], 
@@ -155,7 +152,7 @@ def get_results(names: list, matrix: list):
 
     # Erstellt Plot
     fig, ax = plt.subplots(figsize=(10,10))
-    Phylo.draw(tree,axes=ax, do_show=False) # Zeigt das Bild nicht
+    Phylo.draw(tree,axes=ax, do_show=True) # Zeigt das Bild nicht
 
     # Speichert Plot in Buffer
     buffer = io.BytesIO()
