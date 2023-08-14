@@ -161,13 +161,13 @@ def smith_waterman_view(request):
             result = smith_waterman.get_result(seq1, seq2, match, mismatch, gap_penalty)
 
             if result is not None:
+                print(result)
                 for sublist in result['traceback']:
                     for i in range(len(sublist)):
                         if sublist[i] is None:
                             sublist[i] = ''
                         elif isinstance(sublist[i], list) and None in sublist[i]:
                             sublist[i].remove(None)                
-                print (result)
                 context = {
                     'form': form,
                     'matrix': result['matrix'],
@@ -247,6 +247,7 @@ def overlap_view(request):
             result = overlap.get_result(seq1, seq2, match, mismatch, gap_penalty, similarity)         
             
             if result is not None:
+                print (result)
                 for sublist in result['traceback']:
                     for i in range(len(sublist)):
                         if sublist[i] is None:
@@ -272,9 +273,49 @@ def overlap_view(request):
     return render(request, 'overlap.html', context)
 
 def upgma_view(request):
-    return render(request, 'upgma.html')
+    form = UpgmaNjForm()
+    if request.method == 'POST':
+        form = UpgmaNjForm(request.POST)
+        if form.is_valid():
+            csv_data = form.cleaned_data['csv_data']
+            names = form.cleaned_data['names']
+            method = 'upgma'
+            #result = phylo.get_result(names, csv_data, method)
+            result = None
+            if result is not None:
+                context = {
+                    'form': form,
+                    'newick' : result['newick'],
+                    'base64_plot' : result['base64_plot'],
+                    'iterations' : result['iterations']
+                } 
+                return render(request, 'upgma.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'upgma.html', context)
 
 def neighbour_joining_view(request):
+    form = UpgmaNjForm()
+    if request.method == 'POST':
+        form = UpgmaNjForm(request.POST)
+        if form.is_valid():
+            csv_data = form.cleaned_data['csv_data']
+            names = form.cleaned_data['names']
+            method = 'nj'
+            #result = phylo.get_result(names, csv_data, method)
+            result = None
+            if result is not None:
+                context = {
+                    'form': form,
+                    'newick' : result['newick'],
+                    'base64_plot' : result['base64_plot'],
+                    'iterations' : result['iterations']
+                } 
+                return render(request, 'neighbour_joining.html', context)
+    context = {
+        'form': form,
+    }
     return render(request, 'neighbour_joining.html')
 
 def suffix_tree_view(request):

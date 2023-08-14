@@ -231,3 +231,67 @@ class ViterbiForm(forms.Form):
                     self.add_error('states', "Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener 'Start'-Zustand wird nicht berücksichtigt.")
                     valid = False
         return valid
+    
+class UpgmaNjForm (forms.Form):
+    names = forms.CharField(label='Namen', required=False)
+    csv_data = forms.CharField(
+        label='CSV Data',
+        widget=forms.Textarea(),
+        initial="0;\t;\t;\t;\t;\n3;\t0;\t;\t;\t;\n7;\t8;\t0;\t;\t;\n9;\t10;\t10;\t0;\t;\n8;\t9;\t9;\t5;\t0;")
+     
+    def clean(self):
+        cleaned_data = super().clean()
+        csv_data = cleaned_data.get('csv_data')
+        names = cleaned_data.get('names')
+
+        rows = [row.strip().split(';') for row in csv_data.split('\n') if row.strip()]
+        def parse(cell):
+            try:
+                 return float(cell)
+            except ValueError or TypeError:
+                 return None             
+        cleaned_csv = [[parse(cell) for cell in row if parse(cell) is not None] for row in rows]
+        if len(cleaned_csv[0]) == len(cleaned_csv):
+            cleaned_csv = cleaned_csv[::-1]
+        cleaned_csv = [[cell for cell in row[:i+1]] for i, row in enumerate(cleaned_csv)]
+        cleaned_data['csv_data'] = cleaned_csv
+        if names is None or names == '':
+            def generate_names(num_columns):
+                def convert_to_column_name(n):
+                    result = []
+                    while n:
+                        n, remainder = divmod(n - 1, 26)
+                        result.append(chr(65 + remainder))
+                    return ''.join(result[::-1])
+                
+                column_names = [convert_to_column_name(i) for i in range(1, num_columns + 1)]
+                return column_names
+            cleaned_data['names'] = generate_names(len(cleaned_data['csv_data']))
+        else:
+            cleaned_data['names'] = [name.strip() for name in names.split(';') if name.strip() != '']
+        return cleaned_data
+    
+
+    def is_valid(self):
+        valid = super().is_valid()
+        if valid:
+            csv_data = self.cleaned_data.get('csv_data')
+            names = self.cleaned_data.get('names')
+            if len(names) != len(csv_data):
+                self.add_error('names', "Die Anzahl von Namen sollte mit der Anzahl von Spalten/Zeilen übereinstimmen. Bitte geben Sie die Namen ein, separiert mit Semikolon oder lassen Sie das Eingabefeld frei, dann werden die Namen automatisch generiert")
+                valid = False
+            if len(csv_data) != len (csv_data[-1]):
+                self.add_error('csv_data', "Die Anzahl der Zeilen soll gleich der Anzahl der Spalten sein") 
+                valid = False  
+            diag_is_valid = [row[0] == 0.0 for row in csv_data]
+            if False in diag_is_valid:
+                self.add_error('csv_data', "Auf der Diagonale dürfen nur 0 stehen")
+                valid = False
+            count_is_valid = [len(row)==i+1 for i,row in enumerate(csv_data)]
+            if False in count_is_valid:
+                self.add_error('csv_data',"Die Matrix ist nicht diagonal oder nicht vollständig")
+                valid = False
+            if len(csv_data) < 2:
+                self.add_error('csv_data',"Die Matrix soll aus mindestens zwei Zeilen bestehen")
+                valid = False
+        return valid
