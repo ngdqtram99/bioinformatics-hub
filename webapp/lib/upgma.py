@@ -91,7 +91,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
 def newwick(tree : BaseTree.Tree):
     
     def add(clade: BaseTree.Clade):
-        if clade.is_terminal(): return f"{clade.name}:{clade.branch_length}"
+        if clade.is_terminal(): return f"{clade.name}:{round(clade.branch_length,4)}"
 
         newwick = ""
         clade1 = clade.clades[0]
