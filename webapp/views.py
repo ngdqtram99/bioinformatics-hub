@@ -9,6 +9,7 @@ from .lib import glocal_alignment
 from .lib import viterbi
 from .lib import smith_waterman
 from .lib import upgma
+from .lib import neighbour_joining
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -282,7 +283,6 @@ def upgma_view(request):
             names = form.cleaned_data['names']
             
             result = upgma.get_results(names, csv_data)
-            
             if result is not None:
                 context = {
                     'form': form,
@@ -304,8 +304,7 @@ def neighbour_joining_view(request):
         if form.is_valid():
             csv_data = form.cleaned_data['csv_data']
             names = form.cleaned_data['names']
-            #result = nj.get_results(names, csv_data)
-            result = None
+            result = neighbour_joining.get_results(names, csv_data)
             if result is not None:
                 context = {
                     'form': form,
