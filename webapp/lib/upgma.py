@@ -1,10 +1,14 @@
 import copy
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from Bio.Phylo.TreeConstruction import DistanceMatrix, DistanceTreeConstructor
 from Bio.Phylo import BaseTree
 from Bio import Phylo
 import io
 import base64
+import tempfile
+from pathlib import Path
 
 class NewDistanceTreeConstructor(DistanceTreeConstructor):
 
@@ -155,25 +159,30 @@ def get_results(names: list, matrix: list):
     #print(upgma_res['intermatrixes'])
 
     # Erstellt Plot
-    fig, ax = plt.subplots(figsize=(10,10))
-    Phylo.draw(tree,axes=ax, do_show=True) # Zeigt das Bild nicht
+   # Erzeugt den Plot
+    fig, ax = plt.subplots(figsize=(10, 10))
+    Phylo.draw(tree, axes=ax, do_show=False)  # Zeigt das Bild nicht
 
-    # Speichert Plot in Buffer
-    buffer = io.BytesIO()
-    fig.savefig(buffer, format= "png")
-    buffer.seek(0)
+    # Erstelle eine temporäre Datei für den Plot
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_plot_file:
+        plot_file_path = temp_plot_file.name
+        fig.savefig(plot_file_path, format="png")
+        temp_plot_path = Path(plot_file_path)
 
-    # Koddiert Buffer in base64
-    base64_plot = base64.b64decode(buffer.read()).decode()
+    plt.close(fig)  # Schließt den Plot
 
-    # Schließt alle
-    plt.close()
-    buffer.close()
+    # Liest den Plot aus der Datei ein und konvertiert ihn in Base64
+    with open(plot_file_path, "rb") as plot_file:
+        plot_data = plot_file.read()
+    base64_plot = base64.b64encode(plot_data).decode()
+
+    # Löscht die temporäre Plot-Datei
+    temp_plot_path.unlink()
 
     return {'intermatrixes': upgma_res['intermatrixes'],
             'newick': newwick(tree),
-            'base64_plot': base64_plot(tree)}
+            'base64_plot': base64_plot}
    
-get_results(names, matrix)
+#get_results(names, matrix)
 
 
