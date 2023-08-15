@@ -236,8 +236,8 @@ def get_results(names: list, matrix: list):
 
     return {'intermatrixes': nj_res['intermatrixes'],
             'newick': newwick(tree),
-            'base64_plot': base64_plot(tree)}
+            'base64_plot': base64_plot}
 
-get_results(names, matrix)
+#get_results(names, matrix)
 
 
