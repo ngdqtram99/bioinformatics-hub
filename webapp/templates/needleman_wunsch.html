@@ -1,17 +1,64 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 
-    {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
-  
-    {% endblock %}
+{% endblock %}
     {% block content %}
-  
+ 
+    <br>
+      <style>
+
+      .max-width-input {
+      width: 100%; 
+      } 
+
+        .path {
+          background-color: #c7dff8;
+        }
     
+        .hor {
+          background-image: url('{% static "images/hor.png" %}');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        .vert {
+          background-image: url('{% static "images/vert.png" %}');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        .diag {
+          background-image: url('{% static "images/diag.png" %}');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+    
+        table {
+          border-collapse: collapse;
+        }
+        .alignment-table{
+            font-family: monospace;
+        }
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        .alignment:hover {
+            background-color:  #88bdf5;
+            }
+        .alignment.selected {
+        background-color: #007bff;
+        color: white;
+        }
+      </style>
+    </head>
     <body>
       <h1>Needleman Wunsch Alignment</h1>
       <p>
@@ -53,7 +100,7 @@
           max,\text{ wenn Optimierung nach Ähnlichkeit}
           \end{cases}
           \)
-        </p>
+      </p>
       <h2> Input </h2>
       <p>
         Die Sequenzen dürfen maximal 500.000 Zeichen lang sein, es sind nur lateinische Buchstaben erlaubt
@@ -63,33 +110,92 @@
       </p>
       <form method="POST" action="{% url 'needleman_wunsch' %}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <div class="button-container">
+        <!--{{form.as_p}} -->
+
+        
+        <div class="form-field {% if form.sequence1.errors %}has-error{% endif %}">
+          <label for="{{ form.sequence1.id_for_label }}">Sequenz 1:</label>
+          <br>
+          {{ form.sequence1 }}
+          {% if form.sequence1.errors %}
+              <div class="error-message">
+                  {{ form.sequence1.errors.as_text }}
+              </div>
+          {% endif %}
+      </div>
+
+  
+      <div class="form-field {% if form.sequence2.errors %}has-error{% endif %}">
+          <label for="{{ form.sequence2.id_for_label }}">Sequenz 2:</label>
+          <br>
+          {{ form.sequence2 }}
+          {% if form.sequence2.errors %}
+              <div class="error-message">
+                  {{ form.sequence2.errors.as_text }}
+              </div>
+          {% endif %}
+      </div>
+      <div class = "form-field">
+        <label for="{{ form.match.id_for_label }}">Match:</label>
+        <br>
+        {{form.match}}
+      </div>
+      <div class = "form-field">
+        <label for="{{ form.mismatch.id_for_label }}">Mismatch:</label>
+        <br>
+        {{form.mismatch}}
+      </div>
+      
+    
+       <div class="form-field">
+        <label for="{{ form.gap_penalty.id_for_label }}">Gap-Score:</label>
+        <br>
+        {{form.gap_penalty}}
+
+       </div>
+
+       <div class="form-field">
+        
+        <label for="{{ form.optimization_field.id_for_label }}">Optimieren nach:</label>
+        <br>
+        {{form.optimization_field}}
+
+       </div>
+
+
+      
+      <div class="button-container">
           <button type="submit">Ausführen</button>
       </div>
+
+      
+
+
+
+      
       </form>
 
 
       {% if matrix is not None %} 
       <h2>Output</h2>  
-        <table id="matrixTable"> </table>
+      <table id="matrixTable"> </table>
         
-        <br>
-        <div id="alignmentsContainer"> </div>
-        <br>
-        <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
-        <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
-      <script> 
-        var tracebackMatrix = {{ traceback|safe}};
-        var matrixValues = {{matrix}};
-        var alignments = {{alignments|safe}};
-        var showArrowsCheckbox = document.getElementById("showArrows");
-        var firstSequence = '{{form.sequence1.value}}'.split("");
-        firstSequence.unshift(""); 
-        firstSequence.unshift("");
-        var secondSequence = '{{form.sequence2.value}}'.split("");
-        secondSequence.unshift(""); 
-        secondSequence.unshift("M"); 
+      <br>
+      <div id="alignmentsContainer"> </div>
+      <br>
+      <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
+      <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
+    <script> 
+      var tracebackMatrix = {{ traceback|safe}};
+      var matrixValues = {{matrix}};
+      var alignments = {{alignments|safe}};
+      var showArrowsCheckbox = document.getElementById("showArrows");
+      var firstSequence = '{{form.sequence1.value}}'.split("");
+      firstSequence.unshift(""); 
+      firstSequence.unshift("");
+      var secondSequence = '{{form.sequence2.value}}'.split("");
+      secondSequence.unshift(""); 
+      secondSequence.unshift("M"); 
     </script>
       <script src="{% static 'js/pairwise.js' %}"></script>   
       {% endif %}

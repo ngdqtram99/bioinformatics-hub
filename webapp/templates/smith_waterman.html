@@ -2,25 +2,105 @@
 {% load static %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 {% endblock %}
 
   {% block content %}
 
     <h1>Smith-Waterman Alignment</h1>
     <p>
-      Beschreibung
-      <ul> 
-     
-    </ul>
+      Smith Waterman berechnet den optimalen lokalen Alignement score bzw. da optimale lokale Alignement zwischen
+Nukleotidsequenzen oder Aminosäurensequenzen. Er ist eine Abwandlung des Needleman-wunsch Algorithmus in
+dem das globale Alignement berechnet wird.
+      
+    </p>
+
+    <p>
+    Als Eingabe werden zwei Sequenzen benötigt (Nukleotidsequenz oder Aminosäuresequenz), Match, Missmatch und
+Gap-penalty. Für jeden Buchstaben der Sequenz wird nun der Score mit folgender Funktion berechnet.
+    </p>
+    <p>
+      Daraus ergibt sich eine Matrix. Zusätzlich wird sich zu jedem berechneten Score der Vorgänger gemerkt, welcher
+im Anschluss zurück verfolgt wird. In der Letzten Spalte wird nach dem Höchsten Score gesucht und von diesem
+aus zurück gegangen, bis es keinen Vorgänger mehr gibt.
+    </p>
+
+    <p> \(
+      M(i,j) = max \begin{cases}
+      M(i-1,j-1) + s(a[j],b[j]) \quad \text{Match bzw. Missmatch}\\ 
+      M(i,j-1) - Gap\: penalty \quad \text{Insertion}\\ 
+      M(i-1,j) - Gap\: penalty \quad \text{Deletion} \\ 
+      0 \quad \text{Leeres Suffix}
+      
+    \end{cases}
+    \)
+    </p>
+
+    <p>
+      \(
+      s(a[j],b[j]) = \begin{cases}
+      Match,\text{ wenn } a[i] = b[i] \\
+      Mismatch,\text{ wenn } a[i] \neq b[i] 
+      \end{cases}
+      \)
     </p>
     <h2> Input </h2>
     <form method="POST" action="{% url 'smith_waterman' %}">
       {% csrf_token %}
-      {{ form.as_p }}
-      
-      <div class="button-container">
+      <div class="form-field {% if form.sequence1.errors %}has-error{% endif %}">
+        <label for="{{ form.sequence1.id_for_label }}">Sequenz 1:</label>
+        <br>
+        {{ form.sequence1 }}
+        {% if form.sequence1.errors %}
+            <div class="error-message">
+                {{ form.sequence1.errors.as_text }}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div class="form-field {% if form.sequence2.errors %}has-error{% endif %}">
+        <label for="{{ form.sequence2.id_for_label }}">Sequenz 2:</label>
+        <br>
+        {{ form.sequence2 }}
+        {% if form.sequence2.errors %}
+            <div class="error-message">
+                {{ form.sequence2.errors.as_text }}
+            </div>
+        {% endif %}
+    </div>
+    <div class = "form-field">
+      <label for="{{ form.match.id_for_label }}">Match:</label>
+      <br>
+      {{form.match}}
+    </div>
+    <div class = "form-field">
+      <label for="{{ form.mismatch.id_for_label }}">Mismatch:</label>
+      <br>
+      {{form.mismatch}}
+    </div>
+    
+  
+     <div class="form-field">
+      <label for="{{ form.gap_penalty.id_for_label }}">Gap-Score:</label>
+      <br>
+      {{form.gap_penalty}}
+
+     </div>
+
+    
+
+
+    
+    <div class="button-container">
         <button type="submit">Ausführen</button>
     </div>
+
+    
+
   </form>
   {% if matrix is not None %}   
   <h2>Output</h2>  
