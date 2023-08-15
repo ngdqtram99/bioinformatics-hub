@@ -17,7 +17,17 @@
     <h2> Input </h2>
     <form method="POST" action="{% url 'upgma' %}">
       {% csrf_token %}
-      {{ form.as_p }}
+      <div class = "form-field">
+        <label for="{{ form.names.id_for_label }}">Namen:</label>
+        <br>
+        {{form.names}}
+      </div>
+      <div class = "form-field">
+        <label for="{{ form.csv_data.id_for_label }}">Mismatch:</label>
+        <br>
+        {{form.csv_data}}
+      </div>
+      
       
       <div class="button-container">
         <button type="submit">Ausführen</button>

@@ -95,9 +95,9 @@ class SimpleSearchForm(forms.Form):
 class OverlapForm(forms.Form):
     sequence1 = forms.CharField(label='Sequenz 1', widget=forms.TextInput(attrs={"class": "max-width-input"}))
     sequence2 = forms.CharField(label='Sequenz 2', widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1)
-    mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1)
-    gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1)
+    match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1, widget=forms.TextInput(attrs={'size': '10'}))
+    mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
+    gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
     optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 
@@ -119,8 +119,8 @@ class OverlapForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class SmithWatermanForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.TextInput(attrs={"size": "167"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.TextInput(attrs={"size": "167"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=1)
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=-1)
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1)
@@ -145,9 +145,9 @@ class SmithWatermanForm(forms.Form):
 class NeedlemanWunschForm(forms.Form):
     sequence1 = forms.CharField(label='Sequenz 1', widget=forms.TextInput(attrs={"class": "max-width-input"}))
     sequence2 = forms.CharField(label='Sequenz 2', widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=0)
-    mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1)
-    gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1)
+    match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=0, widget=forms.TextInput(attrs={'size': '10'}))
+    mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
+    gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
     optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 
@@ -171,10 +171,10 @@ class NeedlemanWunschForm(forms.Form):
 class GlocalAlignmentForm(forms.Form):
     sequence1 = forms.CharField(label='Sequenz 1', widget=forms.TextInput(attrs={"class": "max-width-input"}))
     sequence2 = forms.CharField(label='Sequenz 2', widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1)
-    mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1)
-    gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1)
-    threshold = forms.FloatField(label='Schwellenwert', min_value=-1000, max_value=1000, initial=1)
+    match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1, widget=forms.TextInput(attrs={'size': '10'}))
+    mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
+    gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1,widget=forms.TextInput(attrs={'size': '10'}))
+    threshold = forms.FloatField(label='Schwellenwert', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
     optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 
