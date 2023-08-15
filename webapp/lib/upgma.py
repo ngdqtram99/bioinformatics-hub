@@ -22,7 +22,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
         # Minimaler Index
         min_i = 0
         min_j = 0
-        intermatrixes = [[dm.names,dm.matrix]] # Liste von Liste von Infos der Zwischenmatrix in Format: [names, matrix, min_dist]
+        intermatrixes = [[copy.deepcopy(dm.names),copy.deepcopy(dm.matrix)]] # Liste von Liste von Infos der Zwischenmatrix in Format: [names, matrix, min_dist]
         inter_min_values = []
 
         while len(dm) > 1:
@@ -76,7 +76,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             #for i in dm.matrix: print(i)
 
             # Speichert Zwischenmatrix
-            intermatrixes.append([dm.names,dm.matrix])
+            intermatrixes.append([copy.deepcopy(dm.names),copy.deepcopy(dm.matrix)])
             
         inner_clade.branch_length = 0 # Wurzel
 
@@ -150,6 +150,8 @@ def get_results(names: list, matrix: list):
     upgma_res = constructor.upgma(distance_matrix)
     tree = upgma_res['tree']
 
+    #print(upgma_res['intermatrixes'])
+
     # Erstellt Plot
     fig, ax = plt.subplots(figsize=(10,10))
     Phylo.draw(tree,axes=ax, do_show=True) # Zeigt das Bild nicht
@@ -162,7 +164,6 @@ def get_results(names: list, matrix: list):
     # Koddiert Buffer in base64
     base64_plot = base64.b64decode(buffer.read()).decode()
 
-    # Schließt alle
     plt.close()
     buffer.close()
 
@@ -170,6 +171,9 @@ def get_results(names: list, matrix: list):
             'newick': newwick(tree),
             'base64_plot': base64_plot(tree)}
 
-get_results(names, matrix)
+    # Schließt alle
+    
+res = get_results(names, matrix)
+print(res['intermatrixes'])
 
 
