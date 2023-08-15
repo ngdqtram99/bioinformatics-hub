@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-<html>
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/phylo.css' %}">
+{% endblock %}
   {% block content %}
 
-<style>
-  
-</style>
-<body>
     <h1> Neighbour Joining</h1>
     <p>
       Beschreibung
@@ -31,8 +30,18 @@
         <button type="submit">Ausführen</button>
     </div>
   </form>
-    
-</body>
 
+  {% if newick is not None %} 
+  <p>Newick-String: {{newick}}</p>
+  <br>
+  <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>
+
+<div id="tables-container"></div>
+<script>  
+var iterations = {{iterations|safe}}
+</script>
+
+<script src="{% static 'js/phylo.js' %}"></script> 
+{% endif %}
 {% endblock %}
-</html>
+
