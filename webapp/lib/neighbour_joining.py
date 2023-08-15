@@ -104,7 +104,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             list_edited_min_dist.append(edited_min_dist)
 
             # Addiert die bearbeitete Distanzmatrix in Dictionary
-            intermatrixes[-1]['edited_matrix'] = edited_matrix
+            intermatrixes[-1]['edited_matrix'] = edited_matrix.matrix
 
             # create clade
             clade1 = clades[min_i]
@@ -150,7 +150,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
         for i in range(len(list_edited_min_dist)):
             intermatrixes[i]['edited_min_dist'] = list_edited_min_dist[i]
         
-        #for i in intermatrixes: print(i)
+        for i in intermatrixes: print(i)
 
         return {'tree': BaseTree.Tree(root, rooted=True),
                 'intermatrixes': intermatrixes}
@@ -216,7 +216,7 @@ def get_results(names: list, matrix: list):
     print(newwick(tree))
     # Erstellt Plot
     fig, ax = plt.subplots(figsize=(10, 10))
-    Phylo.draw(tree, axes=ax, do_show=False)  # Zeigt das Bild nicht
+    Phylo.draw(tree, axes=ax, do_show=True)  # Zeigt das Bild nicht
 
     # Erstelle eine temporäre Datei für den Plot
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_plot_file:
@@ -238,6 +238,6 @@ def get_results(names: list, matrix: list):
             'newick': newwick(tree),
             'base64_plot': base64_plot}
 
-#get_results(names, matrix)
+get_results(names, matrix)
 
 
