@@ -10,56 +10,6 @@
 {% endblock %}
     {% block content %}
  
-    <br>
-      <style>
-
-      .max-width-input {
-      width: 100%; 
-      } 
-
-        .path {
-          background-color: #c7dff8;
-        }
-    
-        .hor {
-          background-image: url('{% static "images/hor.png" %}');
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-    
-        .vert {
-          background-image: url('{% static "images/vert.png" %}');
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-    
-        .diag {
-          background-image: url('{% static "images/diag.png" %}');
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-    
-        table {
-          border-collapse: collapse;
-        }
-        .alignment-table{
-            font-family: monospace;
-        }
-        td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
-        .alignment:hover {
-            background-color:  #88bdf5;
-            }
-        .alignment.selected {
-        background-color: #007bff;
-        color: white;
-        }
-      </style>
-    </head>
-    <body>
       <h1>Needleman Wunsch Alignment</h1>
       <p>
         Der Needleman-Wunsch-Algorithmus ist ein Algorithmus für das paarweise Sequenz-Alignment. 
@@ -81,18 +31,20 @@
           M(i,j) = m \begin{cases}
                       M(i-1,j-1) + s \\
                       M(i-1,j) + Gap\: penalty \\
-                      M(i,j-1) + Gap\: penalty, \quad \text{wo}
+                      M(i,j-1) + Gap\: penalty
                     \end{cases}
                     \)
           </p>
+          <p>wobei</p>
           <p>
           \(
           s = \begin{cases}
           Match,\text{ wenn } \text{seq1}(i) = \text{seq2}(j) \\
-          Mismatch,\text{ wenn } \text{seq1}(i) \neq \text{seq2}(j) \quad \text{und}
+          Mismatch,\text{ wenn } \text{seq1}(i) \neq \text{seq2}(j) 
           \end{cases}
           \)
         </p>
+        <p>und</p>
           <p>
           \(
             m = \begin{cases}
