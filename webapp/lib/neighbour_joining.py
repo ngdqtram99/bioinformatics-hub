@@ -169,16 +169,6 @@ def newwick(tree: BaseTree.Tree):
     
     return add(tree.clade)
 
-# Zählt die Subclades von einem Clade
-def count_subclades(clade: BaseTree.Clade):
-    
-    if clade.is_terminal(): return 1
-    
-    count = 0
-    for c in clade.clades:
-        count += count_subclades(c)
-
-    return count
 
 # Input Beispiel:
 names = ['A', 'B', 'C', 'D','E']
