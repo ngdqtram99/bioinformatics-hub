@@ -1,0 +1,13 @@
+/**Styles für UPGMA und NJ**/
+.tree-plot{
+    max-height:90vh;
+    max-width:90vh;
+    height:auto;
+    width:auto;
+}
+
+.dist-table td {
+    
+    text-align: center;
+    
+}
