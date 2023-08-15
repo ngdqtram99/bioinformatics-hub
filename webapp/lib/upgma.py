@@ -22,7 +22,8 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
         # Minimaler Index
         min_i = 0
         min_j = 0
-        intermatrixes = [[copy.deepcopy(dm.names),copy.deepcopy(dm.matrix)]] # Liste von Liste von Infos der Zwischenmatrix in Format: [names, matrix, min_dist]
+        intermatrixes = [{'names':copy.deepcopy(dm.names),
+                          'matrix':copy.deepcopy(dm.matrix)}] # Liste von Dictionaries von Infos der Zwischenmatrix in Format: {'names':list, 'matrix': list[list], 'min_dist':float}
         inter_min_values = []
 
         while len(dm) > 1:
@@ -76,13 +77,14 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             #for i in dm.matrix: print(i)
 
             # Speichert Zwischenmatrix
-            intermatrixes.append([copy.deepcopy(dm.names),copy.deepcopy(dm.matrix)])
+            intermatrixes.append({'names':copy.deepcopy(dm.names),
+                                  'matrix':copy.deepcopy(dm.matrix)})
             
         inner_clade.branch_length = 0 # Wurzel
 
         # Addiert Min-Wert in to intermatrixes
         for i in range(len(inter_min_values)):
-            intermatrixes[i].append(inter_min_values[i])
+            intermatrixes[i]['min_dist'] = inter_min_values[i]
 
         return {'tree':BaseTree.Tree(inner_clade),
                 'intermatrixes': intermatrixes}
@@ -164,16 +166,14 @@ def get_results(names: list, matrix: list):
     # Koddiert Buffer in base64
     base64_plot = base64.b64decode(buffer.read()).decode()
 
+    # Schließt alle
     plt.close()
     buffer.close()
 
     return {'intermatrixes': upgma_res['intermatrixes'],
             'newick': newwick(tree),
             'base64_plot': base64_plot(tree)}
-
-    # Schließt alle
-    
-res = get_results(names, matrix)
-print(res['intermatrixes'])
+   
+get_results(names, matrix)
 
 
