@@ -89,7 +89,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
         # Addiert Min-Wert in to intermatrixes
         for i in range(len(inter_min_values)):
             intermatrixes[i]['min_dist'] = inter_min_values[i]
-
+      
         return {'tree':BaseTree.Tree(inner_clade),
                 'intermatrixes': intermatrixes}
     
@@ -125,26 +125,6 @@ matrix = [[0],
           [2, 3, 0], 
           [4, 5, 6, 0]]
 
-'''def base64_plot(tree : BaseTree.Tree):
-    # Erstellt Plot
-    fig, ax = plt.subplot(figsize=(10,10))
-    Phylo.draw(tree,axes=
-    ax, do_show=False) # Zeigt das Bild nicht
-
-    # Speichert Plot in Buffer
-    buffer = io.BytesIO()
-    fig.savefig(buffer, format= "png")
-    buffer.seek(0)
-
-    # Koddiert Buffer in base64
-    base64_plot = base64.b64decode(buffer.read()).decode()
-
-    # Schließt alle
-    plt.close()
-    buffer.close()
-
-    return base64_plot
-'''
 def get_results(names: list, matrix: list):
     # Erstellt Distanzmatrix aus Input
     distance_matrix = DistanceMatrix(names,matrix)
@@ -183,6 +163,6 @@ def get_results(names: list, matrix: list):
             'newick': newwick(tree),
             'base64_plot': base64_plot}
    
-#get_results(names, matrix)
+get_results(names, matrix)
 
 
