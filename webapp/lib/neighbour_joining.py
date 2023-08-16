@@ -17,27 +17,26 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
         if not isinstance(distance_matrix, DistanceMatrix):
             raise TypeError("Must provide a DistanceMatrix object.")
 
-        # make a copy of the distance matrix to be used
+        # Kopiert Distanzmatrix
         dm = copy.deepcopy(distance_matrix)
-        # init terminal clades
+        # Initialisierung:
+        # Knoten-Liste
         clades = [BaseTree.Clade(None, name) for name in dm.names]
-        # init node distance
-        # node_dist = [0] * len(dm)
-        
-        # init minimum index
+        # Minimaler Index
         min_i = 0
         min_j = 0
+        # Nötige Liste
         list_edited_min_dist = [] # Liste der minimalen Distanz in der bearbeiteten Distanzmatrix
         intermatrixes = []  # Liste der Dictionaries, die jeweils Infos der Zwischenmatrizen enthalten. Format (für len(dm) > 2)
                             # {'matrix':list[list], 'names':list, 'edited_matrix':list[list], 'edited_min_dist': float}
 
-        # special cases for Minimum Alignment Matrices ###
-        if len(dm) == 1:
+        # Besondere Fälle
+        if len(dm) == 1: # wenn nur eine Sequenz eingegeben ist
             root = clades[0]
 
             return BaseTree.Tree(root, rooted=False)
-        elif len(dm) == 2:
-            # minimum distance will always be [1,0]
+        elif len(dm) == 2: # wenn nur 2 Sequenzen eingegeben sind
+            # Die minimale Distanz ist immer [1,0]
             min_i = 1
             min_j = 0
 
@@ -57,6 +56,8 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
                     'intermatrixes':{'names': dm.names, 'matrix': dm.matrix}}
         
         while len(dm) >= 2: # Startet immer mit len > 2
+            # Liste der Netto Divergenzen. Die dienen als die durchschnitten Distanzen
+            # von jedem Taxon zu jedem anderen
             node_dist = [0] * len(dm)
             
             if len(dm) == 2:
@@ -64,7 +65,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
                 #print('inner_clade',inner_clade)
                 break
 
-            # calculate nodeDist (r)
+            # Berechnet Netto Divergenzen
             for i in range(len(dm)):
                 node_dist[i] = 0
                 for j in range(len(dm)):
@@ -72,18 +73,18 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
                 node_dist[i] = int(node_dist[i] / (len(dm) - 2))
             #print('check node_list', node_dist)
             
-            # Addiert dm.names mit einer Zeile für r (node_dist)
+            # Addiert dm.names mit einer Zeile für Netto Divergenzen
             # und dm.matrix mit Werte in der node_dist-Liste
             # in ein Dictionary für eine Zwischenmatrizen
             names_with_node_dist = copy.deepcopy(dm.names)
-            names_with_node_dist.append('r')
+            names_with_node_dist.append('r') # Die Netto Divergenz ist r benannt
             matrix_with_node_dist = copy.deepcopy(dm.matrix)
             matrix_with_node_dist.append(copy.deepcopy(node_dist))
 
             intermatrixes.append({'names':names_with_node_dist,
                                 'matrix':matrix_with_node_dist})    
             
-            # find minimum distance pair
+            # Findet die minimale Distanz 
             edited_min_dist = dm[1, 0] - node_dist[1] - node_dist[0]
             min_i = 0
             min_j = 1
@@ -107,7 +108,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             # Addiert die bearbeitete Distanzmatrix in Dictionary
             intermatrixes[-1]['edited_matrix'] = edited_matrix.matrix
 
-            # create clade
+            # Erstellt Knoten
             clade1 = clades[min_i]
             clade2 = clades[min_j]
 
@@ -115,16 +116,16 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             inner_clade.clades.append(clade1)
             inner_clade.clades.append(clade2)
 
-            # assign branch length
+            # Berechnet die Länge der Branchen
             clade1.branch_length = (dm[min_i, min_j] + node_dist[min_i] - node_dist[min_j]) / 2.0
             clade2.branch_length = dm[min_i, min_j] - clade1.branch_length
 
-            # update node list
+            # Aktualisiert die Knoten-Liste
             clades[min_j] = inner_clade
             del clades[min_i]
 
-            # rebuild distance matrix,
-            # set the distances of new node at the index of min_j
+            # Baut die Distanzmatrix um
+            # Setzt die Distanzen der neuen Knoten in dem Index von min_j
             for k in range(0, len(dm)):
                 if k != min_i and k != min_j:
                     dm[min_j, k] = (dm[min_i, k] + dm[min_j, k] - dm[min_i, min_j]) / 2.0
@@ -132,7 +133,8 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             dm.names[min_j] = inner_clade.name
             del dm[min_i]
 
-        # set the last clade as one of the child of the inner_clade
+        # Setzt die letzte Knote als ein Kind der inner_clade
+        # Setzt den Wurzel
         root = None
         #print('clades', clades)
         if clades[0] == inner_clade:
@@ -140,13 +142,13 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             clades[1].branch_length = dm[1, 0]
             clades[0].clades.append(clades[1])
             clades[0].name = f"({clades[0].name},{clades[1].name})"
-            root = clades[0]
+            root = clades[0] 
         else:
             clades[0].branch_length = dm[1, 0]
             clades[1].branch_length = 0
             clades[1].clades.append(clades[0])
             clades[1].name = f"({clades[0].name},{clades[1].name})"
-            root = clades[1]
+            root = clades[1] 
 
         #print('check root in nj',root)
         
