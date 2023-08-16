@@ -61,6 +61,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             
             if len(dm) == 2:
                 intermatrixes.append({'names': dm.names, 'matrix': dm.matrix})
+                #print('inner_clade',inner_clade)
                 break
 
             # calculate nodeDist (r)
@@ -133,6 +134,7 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
 
         # set the last clade as one of the child of the inner_clade
         root = None
+        #print('clades', clades)
         if clades[0] == inner_clade:
             clades[0].branch_length = 0
             clades[1].branch_length = dm[1, 0]
@@ -146,17 +148,20 @@ class NewDistanceTreeConstructor(DistanceTreeConstructor):
             clades[1].name = f"({clades[0].name},{clades[1].name})"
             root = clades[1]
 
+        #print('check root in nj',root)
+        
         # Addiert Minimum in dem entsprenchenden Dictionary der Zwischenmatrizen
         for i in range(len(list_edited_min_dist)):
             intermatrixes[i]['edited_min_dist'] = list_edited_min_dist[i]
         
-        for i in intermatrixes: print(i)
+        #for i in intermatrixes: print(i)
 
         return {'tree': BaseTree.Tree(root, rooted=True),
                 'intermatrixes': intermatrixes}
     
 # Erstellt Newwick String
 def newwick(tree: BaseTree.Tree):
+    #print('check root in newwick',tree.root.clades)
     
     def add(clade: BaseTree.Clade):
         if clade.is_terminal(): return f"{clade.name}:{round(clade.branch_length,4)}"
@@ -168,7 +173,9 @@ def newwick(tree: BaseTree.Tree):
             newwick = f"(({add(clade1)},{add(clade2)}):{round(clade.branch_length,4)})" 
         else: # == 3
             clade3 = clade.clades[2]
-            newwick = f"({add(clade1)},{add(clade2)},{add(clade3)})"
+            newwick = f"((({add(clade1)},{add(clade2)}):0),{add(clade3)})"
+        
+        #print('check newwick in newwick',newwick)
         return newwick
     
     return add(tree.clade)
@@ -179,29 +186,9 @@ names = ['A', 'B', 'C', 'D','E']
 matrix = [[0], 
           [5, 0], 
           [9, 10, 0], 
-          [9,10,8, 0],
-          [8,9,7,3,0]]
+          [9,10,18, 0],
+          [8,9,17,3,0]]
 
-'''def base64_plot(tree : BaseTree.Tree):
-    # Erstellt Plot
-    fig, ax = plt.subplot(figsize=(10,10))
-    Phylo.draw(tree,axes=
-    ax, do_show=False) # Zeigt das Bild nicht
-
-    # Speichert Plot in Buffer
-    buffer = io.BytesIO()
-    fig.savefig(buffer, format= "png")
-    buffer.seek(0)
-
-    # Koddiert Buffer in base64
-    base64_plot = base64.b64decode(buffer.read()).decode()
-
-    # Schließt alle
-    plt.close()
-    buffer.close()
-
-    return base64_plot
-'''
 def get_results(names: list, matrix: list):
     # Erstellt Distanzmatrix aus Input
     distance_matrix = DistanceMatrix(names,matrix)
@@ -213,10 +200,9 @@ def get_results(names: list, matrix: list):
     nj_res = constructor.nj(distance_matrix)
     tree = nj_res['tree']
 
-    print(newwick(tree))
     # Erstellt Plot
     fig, ax = plt.subplots(figsize=(10, 10))
-    Phylo.draw(tree, axes=ax, do_show=True)  # Zeigt das Bild nicht
+    Phylo.draw(tree, axes=ax, do_show=False)  # Zeigt das Bild nicht
 
     # Erstelle eine temporäre Datei für den Plot
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp_plot_file:
