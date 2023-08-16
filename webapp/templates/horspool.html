@@ -1,15 +1,9 @@
 {% extends 'base.html' %}
-<html>
-    {% block content %}
-<head>
-    <title>Horspool</title>
-</head>
-<style>
-    .max-width-input {
-  width: 100%; 
-}
-</style>
-<body>
+{% load static %}
+{% block title%} Horspool {% endblock %}
+{% block content %}
+
+
     <h1>Horspool</h1>
 
     <div class = "description"> 
@@ -96,6 +90,5 @@
     </p>
 {% endif %}
 
-</body>
+
 {% endblock %}
-</html>

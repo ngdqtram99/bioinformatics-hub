@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title%} Smith Waterman {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -30,10 +31,10 @@ aus zurück gegangen, bis es keinen Vorgänger mehr gibt.
 
     <p> \(
       M(i,j) = max \begin{cases}
-      M(i-1,j-1) + s(a[j],b[j]) \quad \text{Match bzw. Missmatch}\\ 
-      M(i,j-1) - Gap\: penalty \quad \text{Insertion}\\ 
-      M(i-1,j) - Gap\: penalty \quad \text{Deletion} \\ 
-      0 \quad \text{Leeres Suffix}
+      M(i-1,j-1) + s(a[j],b[j]) \\ 
+      M(i,j-1) - Gap\: penalty \\ 
+      M(i-1,j) - Gap\: penalty \\ 
+      0 
       
     \end{cases}
     \)
@@ -114,7 +115,7 @@ aus zurück gegangen, bis es keinen Vorgänger mehr gibt.
   <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
     
   <script> 
-    var tracebackMatrix = {{ traceback|safe}};
+    var tracebackMatrix = {{traceback|safe}};
     var matrixValues = {{matrix}};
     var alignments = {{alignments|safe}};
     var showArrowsCheckbox = document.getElementById("showArrows");
