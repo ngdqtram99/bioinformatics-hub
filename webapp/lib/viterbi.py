@@ -67,37 +67,40 @@ def get_path(traceback: DataFrame, start_pos: list):
     path = []
 
     def recursiv(traceback: DataFrame, pos: list, path: list):
-        if np.isnan(traceback.iloc[pos[0]][pos[1]]):
-            path.append(pos)
-            result.append(path)
-            #print('check path after stop', path)
-            return path
         
+        path.append(copy.copy(pos))
+        #print('check path', path)
+  
         if isinstance(traceback.iloc[pos[0]][pos[1]], list):
+            # Vermehrt die aktuellen Pfade wegen vieler Möglichkeiten für die nächste Richtung
             path = [path.copy() for _ in range(len(traceback.iloc[pos[0]][pos[1]]))]
+            #print('check list paths 1',path)
 
+            # Sucht die vollständige Pfade aus der Richtung in der Liste
             for i in range(len(path)):
-                if not np.isnan(traceback.iloc[pos[0]][pos[1]][i]):
-                    path[i].append(traceback.iloc[pos[0]][pos[1]][i])
-            
-            for i in range(len(path)):
-                path[i] = recursiv(traceback,[path[i][-1],pos[1]-1],path)
+                # Nutzt indirekte Position, damit die selben Position für den nächsten Index nicht geändert wird  
+                path[i] = recursiv(traceback,[traceback.iloc[pos[0]][pos[1]][i],path[i][-1][1]-1],path[i])
+                #print('check path index ',i, path[i])
+            #print('check list paths 2',path)
         
         else:
-            while pos[0] >= 0 and pos[1] >= 0:
-                if np.isnan(traceback.iloc[pos[0]][pos[1]]): break
-                path.append(copy.copy(pos))
-                #print('check path', path)
+            if np.isnan(traceback.iloc[pos[0]][pos[1]]):
+                    result.append(path)
+                    #print('check path after stop', path)
+                    return path
+            while pos[0] > 0 and pos[1] > 0:
 
                 pos[0] = traceback.iloc[pos[0]][pos[1]]
                 pos[1] -= 1
-                #print('pos',pos)                
+                #print('pos next',pos)                
                 
                 path = recursiv(traceback,pos,path)
                 if isinstance(traceback.iloc[pos[0]][pos[1]], list): break 
 
+        return path
     recursiv(traceback,start_pos,path)
-    return result     
+    return result  
+
 # Beispiel für result
 # [[[3,4],[1,3],[1,2],[2,1],[0,0]]] Liste enthält ein Pfad
 # [[[3,4],[1,3],[1,2],[2,1],[0,0]],[[3,4],[1,3],[2,2],[3,1],[0,0]]] Liste enthält 2 Pfade
@@ -107,6 +110,7 @@ def get_states(trans_states: list, path: list):
     states = []
     
     for pos in path[:-1]: # Außer der Start-Zustand an der [0,0]
+        #print('pos in get states', pos)
         states.append(trans_states[pos[0]]) # pos[0] entspricht den Index des Zustandes in der trans_states
     #print('states',states)
     
@@ -190,6 +194,10 @@ def get_results(seq, transition, emission):
     # Erzeugt die log-Wahrscheinlichkeitsmatrix
     logpro_df = np.log(pro_df)
 
+    '''print(pro_df)
+    print(logpro_df)
+    print(traceback_df)'''
+
     # Erstellt die Liste der Start-Position(en)
     list_start_pos = get_start_pos(pro_df.iloc[:,-1]) # Speichert nur Index der Start-Position(en)
     list_start_pos = [[i,len(seq)-1] for i in list_start_pos] # Speichert die Koordination in Tracebackmatrix
@@ -199,33 +207,26 @@ def get_results(seq, transition, emission):
     paths = []
     for start_pos in list_start_pos:
         paths.extend(get_path(traceback_df,start_pos))
-    #print('paths in viterbi',paths)
+    #print('paths in viterbi',len(paths))
 
     # Zustände der Sequenz: Dictionary {'states': Liste der Zustände (vorwärts),
     #                                   'path': Pfad (rückwärts)}
     states = [{'states': get_states(trans_states, path),
                'path': path} 
                for path in paths]
-    
-    
-    '''print(pro_df)
-    print(logpro_df)
-    print(traceback_df)
 
-    for i in states: print(i)'''
+    #for i in states: print(i)
     
-
     return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
             'states': states,
             'traceback': to_nestedlist(traceback_df)}
     
 
 # Beispiel
-trans = [(' ',['+','-','$']),
-      ('Start',[0.5,0.25,0.25]),
-      ('+',[0.6,0.3,0.1]),
-      ('-',[0.2,0.5,0.3]),
-      ('$',[0.4,0.5,0.1])]
+trans = [(' ',['+','-']),
+      ('Start',[0.5,0.5]),
+      ('+',[0.4,0.6]),
+      ('-',[0.5,0.5])]
 
 df = to_dataframe(trans)
 #print(df)
@@ -233,8 +234,7 @@ df = to_dataframe(trans)
 
 em = [(' ',[*'ATGC']),
       ('+',[0.25,0.25,0.25,0.25]),
-      ('-',[0.125,0.125,0.375,0.375]),
-      ('$',[0.1,0.6,0.2,0.1])]
+      ('-',[0.25,0.25,0.25,0.25])]
 
 seq = 'TGTACAA'
 get_results(seq,trans,em)
