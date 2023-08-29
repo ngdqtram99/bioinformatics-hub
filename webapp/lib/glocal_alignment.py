@@ -65,7 +65,7 @@ def get_alignment(seq1 : str, seq2: str, path : list, start_pos : list):
         alg = ' ' + alg
         i -= 1
 
-    print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
+    #print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
     
     return [s1_alg,alg,s2_alg]
 
