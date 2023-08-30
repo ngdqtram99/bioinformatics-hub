@@ -2,7 +2,7 @@
 {% load static %}
 {% block title%} Viterbi {% endblock %}
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/phylo.css' %}">
+<link rel="stylesheet" href="{% static 'css/viterbi.css' %}">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -29,7 +29,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
 
     {% if sequence and states %}
         <h3>Übergangsmatrix</h3>
-        <table>
+        <table class = "transition-input">
             <tr>
                 <th></th>
                 {% for state in states %}
@@ -44,14 +44,14 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
                 <tr>
                     <td>{{ state }}</td>
                     {% for probability in probabilities %}
-                        <td><input type="number" step="any" name="state_probabilities" value="{{ probability }}"></td>
+                        <td><input type="number" step="any" max="1" min="0" name="state_probabilities" value="{{ probability }}"></td>
                     {% endfor %}
                 </tr>
             {% endfor %}
         </table>
 
         <h3>Emissionsmatrix</h3>
-        <table>
+        <table class = "emission-input">
             <tr>
                 <th></th>
                 {% for symbol in symbols %}
@@ -64,7 +64,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
                         {{ state }} 
                     </td>
                     {% for probability in probabilities %}
-                        <td><input type="number" step="any" name="symbol_probabilities" value="{{ probability }}"></td>
+                        <td><input type="number" step="any" max="1" min="0" name="symbol_probabilities" value="{{ probability }}"></td>
                     {% endfor %}
                 </tr>
             {% endfor %}
@@ -85,7 +85,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
 
     <input type="checkbox" id="logCheckbox" onclick="toggleTableVisibility()"> Logarithmische Skala
 
-    <table border="1" id="probabilityMatrixTable">
+    <table id="probabilityMatrixTable">
         {% for row in probability_matrix_result %}
         <tr>
             {% for cell in row %}
@@ -97,7 +97,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
 
     <br>
 
-    <table border="1" id="logProbabilityMatrixTable" style="display: none;">
+    <table  id="logProbabilityMatrixTable" style="display: none;">
         {% for row in log_probability_matrix_result %}
         <tr>
             {% for cell in row %}
@@ -107,15 +107,9 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
         {% endfor %}
     </table>
 <br>
-<table border="1">
-    {% for row in path_matrix_result %}
-    <tr>
-        {% for cell in row %}
-        <td>{{ cell }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+<div id="pathsContainer"> <table id="paths-table"> </table></div>
+
+
     {% endif%}
 
 <script>
@@ -133,4 +127,13 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
         }
     }
 </script>
+
+    <script>
+        var data = {{paths|safe}};
+        var pathTable = document.getElementById('paths-table');
+        var symbols = {{symbols|safe}}
+
+      </script>  
+
+<script src="{% static 'js/viterbi.js' %}"></script>  
 {% endblock %}
