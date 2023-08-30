@@ -12,18 +12,18 @@
   {% block content %}
 
     <h1>Smith-Waterman Alignment</h1>
-    <p>
+    <p class="custom-paragraph">
       Smith Waterman berechnet den optimalen lokalen Alignement score bzw. da optimale lokale Alignement zwischen
 Nukleotidsequenzen oder Aminosäurensequenzen. Er ist eine Abwandlung des Needleman-wunsch Algorithmus in
 dem das globale Alignement berechnet wird.
       
     </p>
 
-    <p>
+    <p class="custom-paragraph">
     Als Eingabe werden zwei Sequenzen benötigt (Nukleotidsequenz oder Aminosäuresequenz), Match, Missmatch und
 Gap-penalty. Für jeden Buchstaben der Sequenz wird nun der Score mit folgender Funktion berechnet.
     </p>
-    <p>
+    <p class="custom-paragraph">
       Daraus ergibt sich eine Matrix. Zusätzlich wird sich zu jedem berechneten Score der Vorgänger gemerkt, welcher
 im Anschluss zurück verfolgt wird. In der Letzten Spalte wird nach dem Höchsten Score gesucht und von diesem
 aus zurück gegangen, bis es keinen Vorgänger mehr gibt.

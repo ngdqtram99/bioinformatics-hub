@@ -3,16 +3,42 @@
 {% block title%} UPGMA {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/phylo.css' %}">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 {% endblock %}
   {% block content %}
 
    
     <h1> UPGMA</h1>
+    <p class="custom-paragraph">
+      UPGMA steht für "Unweighted Pair Group Method with Arithmetic Mean" und repräsentiert eine Methode des hierarchischen Clusterings. Mithilfe gegebener Distanzen zwischen Objekten erfolgt die rekursive Bildung von Clustern, wobei jeweils zwei Objekte mit der kürzesten Distanz zusammengeführt werden. Die Längen der Äste im resultierenden Clusterbaum entsprechen den durchschnittlichen Distanzen der beteiligten Objekte.
+Dieser Algorithmus führt zur Erstellung eines phylogenetischen Baums mit einer Wurzel. Zusätzlich wird ein Newick-String generiert, welcher den Baum in Textform beschreibt und somit die Verzweigungen und Hierarchien der Objekte widerspiegelt.
+      </p>
+      <p class="custom-paragraph"> 
+In dieser Methode werden die Längen der Äste sowie die aktualisierte Distanzmatrix mithilfe folgender Formeln berechnet:
+Cluster zweier Objekte \( i \) und \( j \), deren Distanz minimal in der Matrix ist.
+Die Länge von \( i \) , \( j \) zu \( k \) (\( k \) ist ein Objekt in der neuen Distanzmatrix):
+    
+      
+    </p>
     <p>
-      Beschreibung
-      <ul> 
-     
-    </ul>
+      \( L_i = L_j = \frac{D(i,j)}{2} \)
+    </p>
+    <p class="custom-paragraph">
+      Nach dem Zusammenfügen von \( i \), \( j \) wird die Distanzmatrix D aktualisiert, indem die neuen Distanzen zwischen dem Objekt \( k \) und dem Cluster von \( i \), \( j \) jeweils gerechnet:
+
+    </p>
+    
+    <p>wobei</p>
+    <p>
+      \(
+        I \text{ oder } J = \begin{cases}
+        1, \text{ wenn } i \text{ oder } j \text{ ein Objekt}  \\
+        \text{Anzahl der Objekte}, \text{ wenn } i \text{ oder } j \text{ ein Cluster}
+        \end{cases}
+        \)
     </p>
     <h2> Input </h2>
     <form method="POST" action="{% url 'upgma' %}">

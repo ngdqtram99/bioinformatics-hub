@@ -1,8 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title%} Viterbi {% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/phylo.css' %}">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+{% endblock %}
   {% block content %}
   <h1>Viterbi</h1>
+  <p class="custom-paragraph">
+    Eine Markov-Kette ist ein mathematisches Modell, das eine Sequenz von Zuständen beschreibt, wobei der Übergang von einem Zustand zum nächsten auf der Grundlage einer probabilistischen Bedingung erfolgt. Durch die Verknüpfung mehrerer Markov-Ketten entstehen komplexe Modelle, in denen Zustände und Zustandsübergänge nicht direkt beobachtbar sind. Dieses Konzept wird als Hidden Markov Model (HMM) bezeichnet.
+Der Viterbi-Algorithmus ist ein Verfahren, das zur Bestimmung der wahrscheinlichsten Sequenz von versteckten Zuständen in einem HMM verwendet wird. Hierbei werden die Wahrscheinlichkeiten der Zustandsübergänge sowie die Emission von Symbolen in einem Zustand genutzt, um den wahrscheinlichsten Pfad zu ermitteln. Während der Berechnung speichert der Algorithmus die vorherigen Zustände, aus denen sich die maximale Wahrscheinlichkeit für den aktuellen Zustand ergibt, in einer Traceback-Matrix. Der Pfad wird anhand der maximalen Wahrscheinlichkeit des letzten Symbols der Sequenz bestimmt und durch die Traceback-Matrix zurückverfolgt.
+</p>
+<p class="custom-paragraph">
+
+Für den Algorithmus sind eine Sequenz \( a \), eine Menge der verborgenen Zustände \( M \), eine Übergangswahrscheinlichkeitsmatrix \( Ü \) und eine Emissionswahrscheinlichkeitsmatrix \( E \) erforderlich. Die Übergangswahrscheinlichkeitsmatrix \( Ü \) enthält die Wahrscheinlichkeiten für den Übergang von einem Zustand zu einem anderen, während die Emissionswahrscheinlichkeitsmatrix \( E \) die Wahrscheinlichkeiten jedes Symbols in der Sequenz \( a \) für jeden Zustand enthält.
+Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \( i \) im Zustand \( s \) lautet:
+  </p>
+  <p>
+    \( P_{a(i),s} = \max_{x \in M} \left( P_{a(i-1),x} \cdot Ü(x,s) \cdot E(a(i),s) \right) \)
+</p>
+
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}

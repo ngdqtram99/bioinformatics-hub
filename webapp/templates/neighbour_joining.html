@@ -3,16 +3,58 @@
 {% block title%} Neighbour Joining {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/phylo.css' %}">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 {% endblock %}
   {% block content %}
 
     <h1> Neighbour Joining</h1>
-    <p>
-      Beschreibung
-      <ul> 
+    <p class="custom-paragraph">
+      Neighbour Joining ist eine Methode des hierarchischen Clusterings, 
+      die sich auf die Mutationsgeschwindigkeiten und Verwandtschaftsbeziehungen der Taxa \( k \)
+      onzentriert. Die gegebene Distanzmatrix \( D\) reicht nicht aus, um die Verwandtschaft 
+      aller Taxa darzustellen, sondern erfasst lediglich die Distanzen zwischen je zwei Taxa. Daher ist es erforderlich, die Distanzen zu korrigieren, wobei die durchschnittlichen Distanzen von jedem Taxon \( x \) zu jedem anderen berechnet werden. Diese Durchschnittsdistanzen werden als Netto-Divergenz \( rx \) bezeichnet, wobei
       
-    </ul>
+      
     </p>
+    
+      <p>
+        \( r(x) = \frac{1}{N-2} \cdot \sum_{k=1}^{N} D(x,k) \)
+    </p>
+    
+    <p class="custom-paragraph">
+      ist (\( N \) steht für die Anzahl der Taxa in der aktuellen Distanzmatrix, und \( N \) ändert sich nach jedem Cluster; \( k \) ist ein Taxon in der neuen Distanzmatrix).
+Danach wird die korrigierte Distanzmatrix \( M \) mithilfe folgender Formel berechnet:
+    </p>
+
+    <p> 
+      \( M(i,j) = D(i,j) - (r(i) + r(j)) \)
+    </p>
+    <p class="custom-paragraph">
+      Zwei Taxa \( i \) und \( j \) mit der minimalen Distanz in der Matrix \( M \) werden zu einem Cluster zusammengefügt. Die Länge der Kanten für \( i \) und \( j \) im Cluster wird wie folgt berechnet:
+
+    </p>
+    <p>
+      \( L(i) = \frac{D(i,j) + r(i) - r(j)}{2} \)
+  </p>
+  <p>
+      \( L(j) = D(i,j) - L(i) \)
+  </p>
+  
+    <p class="custom-paragraph">
+      Nach der Bildung des Clusters wird die Distanzmatrix \( D \) aktualisiert und die neuen Distanzen wie folgt berechnet:
+
+    </p>
+    <p>
+      \( D((i,j),k) = \frac{D(i,k) + D(j,k) - D(i,j)}{2} \)
+  </p>
+  
+    <p class="custom-paragraph">
+      Diese iterative Vorgehensweise führt zur Erstellung eines phylogenetischen Baums ohne Wurzel. Gleichzeitig wird ein Newick-String generiert, welcher den Baum in Textform beschreibt und somit die Verzweigungen und Hierarchien der Taxa widerspiegelt.
+    </p>
+
     <h2> Input </h2>
     <form method="POST" action="{% url 'neighbour_joining' %}">
       {% csrf_token %}

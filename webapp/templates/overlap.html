@@ -8,11 +8,11 @@
 
  
         <h1>Überlapp Alignment</h1>
-        <p>
+        <p class="custom-paragraph">
           Das Überlapp-Alignment ist eine Variante des Needleman-Wunsch-Algorithmus und konzentriert sich nur auf die Übereinstimmung zwischen dem Endteil der ersten Sequenz und dem Startteil der zweiten Sequenz. Der Algorithmus funktioniert, indem er eine Score-Matrix erstellt, ähnlich wie beim klassischen Needleman-Wunsch-Algorithmus.
 
         </p>
-        <p>Das beste Alignment wird dann anhand der besten Scores in der letzten Zeile der Score-Matrix ermittelt. Diese Score-Werte repräsentieren die bestmögliche Überlappung zweier Sequenzen. Das entsprechende Alignment kann durch Rückverfolgung der Pfade in der Score-Matrix gefunden werden, die zu den besten Scores führen.</p>
+        <p class="custom-paragraph">Das beste Alignment wird dann anhand der besten Scores in der letzten Zeile der Score-Matrix ermittelt. Diese Score-Werte repräsentieren die bestmögliche Überlappung zweier Sequenzen. Das entsprechende Alignment kann durch Rückverfolgung der Pfade in der Score-Matrix gefunden werden, die zu den besten Scores führen.</p>
         <h2> Input </h2>
         <form method="POST" action="{% url 'overlap' %}">
             {% csrf_token %}

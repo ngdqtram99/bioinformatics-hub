@@ -149,3 +149,7 @@ div.algo {
 .form-group {
   margin-bottom: 10px;
 }
+
+.custom-paragraph {
+  line-height: 1.5; /* You can adjust this value */
+}
