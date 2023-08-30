@@ -45,7 +45,6 @@ def create_digraph(trie: TrieNode, hits_pos:list):
         for i in positions:
             for j in hits_pos:
                 if i == j: 
-                    print('positions', positions)
                     return True
         return False
 
@@ -56,9 +55,10 @@ def create_digraph(trie: TrieNode, hits_pos:list):
         node_id += 1
         
         if node.is_end_node():
-
+            # Färbt das Node, dessen Position-Liste die Positionen der Treffer enthält
             if has_hits_pos(node.positions):
                 dot.node(name=f"{current_id}",label=f"{node.positions[-1]}",style='filled',fillcolor='lightblue')
+            # Normale Noden werden nicht gefärbt
             else:
                 dot.node(name=f"{current_id}",label=f"{node.positions[-1]}")
             
@@ -69,6 +69,7 @@ def create_digraph(trie: TrieNode, hits_pos:list):
         for edge_label, child_node in node.children.items():
 
             child_id = generate_dot(child_node,current_id)
+            # Färbt die Kanten, die zur Position der Treffer leiten
             if has_hits_pos(child_node.positions):
                 dot.edge(f"{current_id}", f"{child_id}",label = f"{edge_label}", color='blue')
             else:
@@ -77,6 +78,8 @@ def create_digraph(trie: TrieNode, hits_pos:list):
         return current_id
     
     generate_dot(trie, -1)
+
+    # Speichert das Trie in PNG-Datei
     dot.render('suffix_trie',format='png',cleanup=True, view= True)
 
 import base64
@@ -89,7 +92,7 @@ def create_image_base64(png_file_name):
 
 # Gibt das Ergebnis zurück
 def get_result(text: str, pattern: str, endchar: str):
-    trie = build_suffix_trie(text)
+    trie = build_suffix_trie(text, endchar)
     hits_pos = find_hits(trie,pattern)
     create_digraph(trie,hits_pos)
     
@@ -100,7 +103,7 @@ text = "banana"
 pattern = "na"
 
 # Sucht nach die Positionen der Treffer
-trie = build_suffix_trie(text)
+trie = build_suffix_trie(text, '§')
 all_hits = find_hits(trie, pattern)
 #print("Pattern hits at positions:", all_hits)
 
