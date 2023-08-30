@@ -1,0 +1,26 @@
+.path {
+    background-color: #c7dff8;
+  }
+  #paths-table{
+    white-space: pre;
+    font-family: monospace;
+    font-size: 16px;
+    min-width: 100px;
+    text-align: center;
+    background-color: #f2f3f1;
+}
+#paths-table td{
+    border-bottom: 2px solid rgb(0,0,0,30%);
+}
+
+.path-element:hover {
+    background-color:  #88bdf5;
+    }
+.path-element.selected {
+background-color: #007bff;
+color: white;
+}
+.selectedcell {
+  background-color: #007bff;
+  color: white;
+  }
