@@ -9,6 +9,15 @@
 </script>
 {% endblock %}
   {% block content %}
+  <script>
+    function resizeContainer() {
+        const container = document.getElementById('pathsContainer');
+        const table = document.getElementById('paths-table');
+    
+        container.style.maxHeight = (table.scrollHeight + 10) + 'px';
+        container.style.maxWidth = (table.scrollWidth + 10) + 'px';
+    }
+    </script>
   <h1>Viterbi</h1>
   <p class="custom-paragraph">
     Eine Markov-Kette ist ein mathematisches Modell, das eine Sequenz von Zuständen beschreibt, wobei der Übergang von einem Zustand zum nächsten auf der Grundlage einer probabilistischen Bedingung erfolgt. Durch die Verknüpfung mehrerer Markov-Ketten entstehen komplexe Modelle, in denen Zustände und Zustandsübergänge nicht direkt beobachtbar sind. Dieses Konzept wird als Hidden Markov Model (HMM) bezeichnet.
@@ -107,7 +116,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
         {% endfor %}
     </table>
 <br>
-<div id="pathsContainer"> <table id="paths-table"> </table></div>
+<div id="pathsContainer"  oninput="resizeContainer()"> <table id="paths-table"> </table></div>
 
 
     {% endif%}
@@ -129,9 +138,10 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
 </script>
 
     <script>
+        var seq = "{{sequence}}";
         var data = {{paths|safe}};
         var pathTable = document.getElementById('paths-table');
-        var symbols = {{symbols|safe}}
+        
 
       </script>  
 

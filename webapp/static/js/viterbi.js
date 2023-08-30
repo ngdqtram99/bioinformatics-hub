@@ -2,7 +2,7 @@ var selectedPathRow = document.querySelector(".path-element.selected");
       
 for (var i = 0; i < data.length; i++) {
     var row = pathTable.insertRow();        
-    var combinedStrings = symbols.join('') + "<br>" + data[i].states.join('');
+    var combinedStrings = seq + "<br>" + data[i].states.join('');
 
     var combinedCell = row.insertCell();
     combinedCell.innerHTML = combinedStrings;
