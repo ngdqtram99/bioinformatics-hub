@@ -305,6 +305,7 @@ def neighbour_joining_view(request):
             csv_data = form.cleaned_data['csv_data']
             names = form.cleaned_data['names']
             result = neighbour_joining.get_results(names, csv_data)
+            print(result['intermatrixes'])
             if result is not None:
                 context = {
                     'form': form,
@@ -382,9 +383,7 @@ def viterbi_view(request):
                     'sum_is_valid' : sum_is_valid,
                     'probability_matrix_result' : results['probability'],
                     'log_probability_matrix_result' : results['log_probability'],
-                    'path_matrix_result' : results['path_matrix'],
-                    'path_max_value' : results['path'],
-                    'path_log_max_value' : results['log_path'],
+                    'paths' : results['states'],
                     'states': states,
                     'state_probabilities': state_probabilities,
                     'symbols': symbols,
