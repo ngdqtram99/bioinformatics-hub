@@ -12,7 +12,18 @@
 #paths-table td{
     border-bottom: 2px solid rgb(0,0,0,30%);
 }
+#pathsContainer {
+    
+    width: 35%;
+    max-width:max-content;
+    resize: both;
+    display: inline-block;
+    height: 130px;
+    max-height: 50vh;
+    display: block;
+    overflow: auto;
 
+}
 .path-element:hover {
     background-color:  #88bdf5;
     }
