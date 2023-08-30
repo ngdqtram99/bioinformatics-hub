@@ -51,7 +51,7 @@ def get_alignment(sequence1 : str, sequence2 : str, path : list, start_pos: list
         alg = " " + alg
         i -= 1
 
-    print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
+    #print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
 
     return [s1_alg,alg,s2_alg]
 
@@ -120,4 +120,4 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
 
 # Beispiel
 res = get_result('tramnguyen','nguyntram', -1, 1 , 1, False)
-for i in res: print(res[i])
+#for i in res: print(res[i])
