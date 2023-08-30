@@ -62,7 +62,7 @@ print('result',get_id_pre_state(tem_pro))
 '''
 
 # Gibt das Pfad von einer Start-Position zurück
-def get_path(traceback: DataFrame, start_pos: list):
+def get_path(traceback: DataFrame, start_pos: list, limited_number_of_paths: int):
     result = []
     path = []
 
@@ -70,7 +70,7 @@ def get_path(traceback: DataFrame, start_pos: list):
         
         path.append(copy.copy(pos))
         #print('check path', path)
-  
+               
         if isinstance(traceback.iloc[pos[0]][pos[1]], list):
             # Vermehrt die aktuellen Pfade wegen vieler Möglichkeiten für die nächste Richtung
             path = [path.copy() for _ in range(len(traceback.iloc[pos[0]][pos[1]]))]
@@ -89,7 +89,7 @@ def get_path(traceback: DataFrame, start_pos: list):
                     #print('check path after stop', path)
                     return path
             while pos[0] > 0 and pos[1] > 0:
-
+                if len(result) >= limited_number_of_paths: break # Generiert maximal eine bestimmte Menge der Pfade
                 pos[0] = traceback.iloc[pos[0]][pos[1]]
                 pos[1] -= 1
                 #print('pos next',pos)                
@@ -205,8 +205,19 @@ def get_results(seq, transition, emission):
 
     # Speichert alle Pfade aus der Start-Position(en) 
     paths = []
+    count = 100 # Zählt Menge der Pfade. Der Algorithmus begrenzt die Menge in 100 Pfade
     for start_pos in list_start_pos:
-        paths.extend(get_path(traceback_df,start_pos))
+        #print('b4',len(paths))
+
+        if count <= 0: break # Generiert maximal nur 100 Pfade
+        
+        paths.extend(get_path(traceback_df,start_pos, count))
+        
+        #print('after',len(paths))
+        
+        count = count-len(paths)
+        #print('count',count)
+    assert len(paths) <= 100
     #print('paths in viterbi',len(paths))
 
     # Zustände der Sequenz: Dictionary {'states': Liste der Zustände (vorwärts),
@@ -237,4 +248,5 @@ em = [(' ',[*'ATGC']),
       ('-',[0.25,0.25,0.25,0.25])]
 
 seq = 'TGTACAA'
-get_results(seq,trans,em)
+res = get_results(seq,trans,em)
+#print((res['states']))
