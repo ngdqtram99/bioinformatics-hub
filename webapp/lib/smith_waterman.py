@@ -82,7 +82,7 @@ def get_alignment(seq1: str, seq2: str, path: list, start_pos: list):
         alg = ' ' + alg
         j -= 1
     
-    print('\nalignment\n',s1_alg,'\n',alg,'\n',s2_alg,'\n')
+    #print('\nalignment\n',s1_alg,'\n',alg,'\n',s2_alg,'\n')
 
     return [s1_alg, alg, s2_alg]
 
@@ -151,6 +151,6 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
             'score': score}
 
 res = get_result('fcggcggccggcagfc','atfdggcdad',2,-1,1)
-print(res['alignments'])
+#print(res['alignments'])
 
 
