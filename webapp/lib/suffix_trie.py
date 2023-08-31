@@ -80,14 +80,19 @@ def create_digraph(trie: TrieNode, hits_pos:list):
     generate_dot(trie, -1)
 
     # Speichert das Trie in PNG-Datei
-    dot.render('suffix_trie',format='png',cleanup=True, view= True)
+    dot.render('suffix_trie',format='png',cleanup=True, view= False)
 
 import base64
+from pathlib import Path
 # Erzeugt ein Code des Bildes des Suffix-Tries
 def create_image_base64(png_file_name):
+    tem_png_file = Path(png_file_name)
+
     image = open(png_file_name, 'rb')
     image_64_decode = base64.b64encode(image.read()).decode()
     image.close()
+
+    tem_png_file.unlink() # Löscht die PNG-Datei nach dem Speichern in base64
     return(image_64_decode)
 
 # Gibt das Ergebnis zurück
