@@ -60,9 +60,9 @@ hit = suffix_array_search('nn','anannas')
 #print(hit)
 
 # Gibt die Suffix-Array in der definierten Format und einen boolean-Wert, ob der Pattern gefunden ist, zurück
-def get_results(pattern: str, sequence: str):
-    sa = build_suffix_array(sequence)
-    sa_search = suffix_array_search(pattern,sequence)
+def get_results(pattern: str, text: str):
+    sa = build_suffix_array(text)
+    sa_search = suffix_array_search(pattern,text)
     formated_sa = format_suffix_array(sa)
 
     if len(sa) == sa_search: 
@@ -80,11 +80,11 @@ def get_results(pattern: str, sequence: str):
         
     #print("Pattern in the sequence")
     return {'suffix_array': formated_sa, 
-            'found': True}
+            'found': True if len(pattern) > 0 else None}
 
 # Beispiel
 res = get_results('ana','ananas')
-print(res['found'])
+#print(res['found'])
 
 '''
 Ergebnis
