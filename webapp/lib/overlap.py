@@ -31,7 +31,7 @@ def get_alignment(sequence1 : str, sequence2 : str, path : list, start_pos: list
         if p == "diag":
             s1_alg = sequence1[i] + s1_alg
             s2_alg = sequence2[j] + s2_alg
-            alg = "|" + alg if sequence1[i] == sequence2[j] else "_" + alg
+            alg = "|" + alg if sequence1[i] == sequence2[j] else " " + alg
             i -= 1 ; j -= 1
         elif p == "vert":
             s1_alg = sequence1[i] + s1_alg
@@ -51,9 +51,10 @@ def get_alignment(sequence1 : str, sequence2 : str, path : list, start_pos: list
         alg = " " + alg
         i -= 1
 
-    #print('alignment\n',s1_alg,'\n',alg,'\n',s2_alg)
-
-    return [s1_alg,alg,s2_alg]
+    # Entsorgt den Fälle, wenn kein Überlappung trotzdem das beste Score erreicht
+    for i in range(len(s1_alg)): 
+        if s2_alg[i] != ' ': return [s1_alg,alg,s2_alg]
+    return [] # Fall ohne Überlappung
 
 # Überlapp-Algorithmus
 def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, gap_penalty:float, similarity: bool):
@@ -80,7 +81,7 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
             traceback[i][j] = traceback_value(dia,ver,hor,similarity)
     
     # Bestes Score der letzten Zeile der Scorematrix
-    max_value = max(matrix[-1])
+    max_value = max(matrix[-1]) if similarity else min(matrix[-1])
 
     '''print('matrix')
     for i in matrix: print(i)
@@ -108,7 +109,12 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     # Ertstellt eine Liste der Dictionaries der Alignments wie im Entwurf des Algorithmus
     alignments = []
     for i in range(len(list_start_pos)):
-        alignments.extend([{'alignment':get_alignment(seq1,seq2,path, list_start_pos[i]),'path':_modify_path(path,list_start_pos[i])} for path in unmodified_paths[i]])    
+        alignments.extend([{'alignment':get_alignment(seq1,seq2,path, list_start_pos[i]),
+                            'path':_modify_path(path,list_start_pos[i])} 
+                           for path in unmodified_paths[i] 
+                           if get_alignment(seq1,seq2,path, list_start_pos[i]) != []]) 
+                            # Bedingung um den Fälle ohne Überlappung trotz des besten Score zu entfernen
+                               
     
     '''print('alignments')
     for i in alignments: print(i)'''
@@ -119,5 +125,5 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
             'score': max_value}
 
 # Beispiel
-res = get_result('tramnguyen','nguyntram', -1, 1 , 1, False)
-#for i in res: print(res[i])
+res = get_result('tramnguyen','nguyntram', -1, 1 , 3, False)
+#for i in res['alignments']: print(i)
