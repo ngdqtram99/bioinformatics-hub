@@ -166,6 +166,7 @@ def create_image_base64(png_file_name):
     tem_png_file.unlink() # Löscht die PNG-Datei nach dem Speichern in base64
     return(image_64_decode)'''
 
+import base64
 # Gibt das Ergebnis zurück
 def get_results(text: str, pattern: str, endchar: str):
     trie = build_suffix_trie(text, endchar)
@@ -173,9 +174,10 @@ def get_results(text: str, pattern: str, endchar: str):
     hits_pos = find_hits(tree,pattern)
     dot = create_digraph(tree,hits_pos)
     found = None if len(pattern) == 0 else (True if len(hits_pos) > 0 else False)
+    png_bytes = dot.pipe(format='png')
 
     return {'svg': dot.pipe(format='svg').decode(),
-            'png': dot.pipe(format='png').decode(),
+            'png': base64.b64encode(png_bytes).decode("utf-8"),
             'found': found}
 
 
@@ -184,4 +186,4 @@ text = "banana"
 pattern = "an"
 
 res = get_results(text,pattern,"§")
-print(res['check'])
+#print(res['png'])

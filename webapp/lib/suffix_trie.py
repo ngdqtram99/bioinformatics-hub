@@ -94,14 +94,16 @@ def create_image_base64(png_file_name):
     tem_png_file.unlink() # Löscht die PNG-Datei nach dem Speichern in base64
     return(image_64_decode)'''
 
+import base64
 # Gibt das Ergebnis zurück
 def get_results(text: str, pattern: str, endchar: str):
     trie = build_suffix_trie(text, endchar)
     hits_pos = find_hits(trie,pattern)
     dot = create_digraph(trie,hits_pos)
     found = None if len(endchar) == 0 else (True if len(hits_pos) > 0 else False)
+    png_bytes = dot.pipe(format='png')
     
-    return {'png': dot.pipe(format='png').decode(),
+    return {'png': base64.b64encode(png_bytes).decode("utf-8"),
             'svg': dot.pipe(format='svg').decode(),
             'found': found}
 
