@@ -108,7 +108,7 @@ def find_hits(node: Node, pattern: str):
         return []
             
 import graphviz
-# Erzeugt Digraph und speichert das Bild des Suffix-Baumes in PNG-Datei
+# Erzeugt Digraph und gibt es zurück
 def create_digraph(trie: Node, hits_pos:list):
     dot = graphviz.Digraph()
     node_id = 0
@@ -151,10 +151,9 @@ def create_digraph(trie: Node, hits_pos:list):
     
     generate_dot(trie, -1)
 
-    # Speichert das Trie in PNG-Datei
-    dot.render('suffix_tree',format='png',cleanup=True, view= False)
+    return dot
 
-import base64
+'''import base64
 from pathlib import Path
 # Erzeugt ein Code des Bildes des Suffix-Tries
 def create_image_base64(png_file_name):
@@ -165,17 +164,18 @@ def create_image_base64(png_file_name):
     image.close()
 
     tem_png_file.unlink() # Löscht die PNG-Datei nach dem Speichern in base64
-    return(image_64_decode)
+    return(image_64_decode)'''
 
 # Gibt das Ergebnis zurück
 def get_results(text: str, pattern: str, endchar: str):
     trie = build_suffix_trie(text, endchar)
     tree = build_tree(trie)
     hits_pos = find_hits(tree,pattern)
-    create_digraph(tree,hits_pos)
+    dot = create_digraph(tree,hits_pos)
     found = None if len(pattern) == 0 else (True if len(hits_pos) > 0 else False)
-    
-    return {'image': create_image_base64('suffix_tree.png'),
+
+    return {'svg': dot.pipe(format='svg').decode(),
+            'png': dot.pipe(format='png').decode(),
             'found': found}
 
 
@@ -184,4 +184,4 @@ text = "banana"
 pattern = "an"
 
 res = get_results(text,pattern,"§")
-#print(res['found'])
+print(res['check'])
