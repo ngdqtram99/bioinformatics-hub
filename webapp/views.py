@@ -10,6 +10,9 @@ from .lib import viterbi
 from .lib import smith_waterman
 from .lib import upgma
 from .lib import neighbour_joining
+from .lib import suffix_array
+from .lib import suffix_tree
+from .lib import suffix_trie
 
 def horspool_view(request):
     form = HorspoolForm()  
@@ -281,7 +284,6 @@ def upgma_view(request):
         if form.is_valid():
             csv_data = form.cleaned_data['csv_data']
             names = form.cleaned_data['names']
-            
             result = upgma.get_results(names, csv_data)
             if result is not None:
                 context = {
@@ -320,13 +322,71 @@ def neighbour_joining_view(request):
     return render(request, 'neighbour_joining.html', context)
 
 def suffix_tree_view(request):
-    return render(request, 'suffix_tree.html')    
+    form = SuffixTreeTrieForm()
+    if request.method == 'POST':
+        form = SuffixTreeTrieForm(request.POST)
+        if form.is_valid():
+            sequence = form.cleaned_data['sequence']
+            pattern = form.cleaned_data['pattern']  
+            endchar = form.cleaned_data['endchar']
+            result = suffix_tree.get_results(sequence, pattern, endchar)
+            if result is not None:
+                context = {
+                    'form': form,
+                    'base64_plot' : result['image'],
+                    'found': result['found']                
+                } 
+
+                return render(request, 'suffix_tree.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'suffix_tree.html', context)    
 
 def suffix_trie_view(request):
-    return render(request, 'suffix_trie.html')  
+    form = SuffixTreeTrieForm()
+    if request.method == 'POST':
+        form = SuffixTreeTrieForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            print('valid')
+            sequence = form.cleaned_data['sequence']
+            pattern = form.cleaned_data['pattern'] 
+            endchar = form.cleaned_data['endchar']
+            result = suffix_trie.get_results(sequence, pattern, endchar)
+            if result is not None:
+                context = {
+                    'form': form,
+                    'base64_plot' : result['image'],
+                    'found': result['found']                
+                } 
+
+                return render(request, 'suffix_trie.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'suffix_trie.html', context)   
 
 def suffix_array_view(request):
-    return render(request, 'suffix_array.html')      
+    form = SuffixArrayForm()
+    if request.method == 'POST':
+        form = SuffixArrayForm(request.POST)
+        if form.is_valid():
+            sequence = form.cleaned_data['sequence']
+            pattern = form.cleaned_data['pattern']  
+            result = suffix_array.get_results(pattern, sequence)
+            if result is not None:
+                context = {
+                    'form': form,
+                    'suffix_array' : result['suffix_array'],
+                    'found': result['found']                
+                } 
+
+                return render(request, 'suffix_array.html', context)
+    context = {
+        'form': form,
+    }
+    return render(request, 'suffix_array.html', context)   
 
 def homepage_view(request):
     return render(request, 'homepage.html') 
