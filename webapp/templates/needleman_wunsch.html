@@ -55,12 +55,16 @@
           \)
       </p>
       <h2> Input </h2>
+      <ul>
+        <li>
       <p class="custom-paragraph">
         Die Sequenzen dürfen maximal 500 Zeichen lang sein, es sind nur lateinische Buchstaben erlaubt
-      </p>
+      </p> </li>
+      <li> 
       <p class="custom-paragraph">
        Die Scores für Match, Mismatch und Gap müssen im Bereich zwischen -1000.0 und 1000.0 sein
-      </p>
+      </p> </li>
+      </ul>
       <form method="POST" action="{% url 'needleman_wunsch' %}">
         {% csrf_token %}
         <!--{{form.as_p}} -->

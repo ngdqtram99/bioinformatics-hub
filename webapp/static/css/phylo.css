@@ -11,3 +11,7 @@
     text-align: center;
     
 }
+
+.max-width-input {
+    width: 100%; 
+}

@@ -35,3 +35,8 @@ color: white;
   background-color: #007bff;
   color: white;
   }
+
+  .max-width-input {
+    width: 100%; 
+    }
+    

@@ -13,3 +13,8 @@
 .suffix-array {
     border-collapse: collapse;
 }
+
+.max-width-input {
+    width: 100%; 
+    }
+    

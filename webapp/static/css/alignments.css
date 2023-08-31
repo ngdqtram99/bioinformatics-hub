@@ -100,3 +100,7 @@
       overflow: auto;
    
     }
+
+    .max-width-input {
+      width: 100%; 
+    }

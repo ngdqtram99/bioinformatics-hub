@@ -143,7 +143,7 @@ div.algo {
   font-family: Arial, sans-serif;
   font-size: inherit;
   font-weight: inherit;
-  
+  width: 100%; 
 }
 
 .form-group {
@@ -158,6 +158,4 @@ div.algo {
   line-height: 1.5;
 }
 
-.output{
-  line-height: 1.5;
-}
+
