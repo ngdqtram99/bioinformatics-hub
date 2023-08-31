@@ -154,7 +154,7 @@ def get_results(seq, transition, emission):
     # Initialisierung
     #----------------
     # Sequenz: Fügt Start-Symbol ein
-    seq = 's' + seq
+    seq = chr(1) + seq
     
     # Matrizen: Konvertiert zu DataFrame 
     trans_df = to_dataframe(transition)
@@ -163,7 +163,7 @@ def get_results(seq, transition, emission):
 
     # Wahrscheinlichkeitsmatrix (DataFrame), Traceback-Pfad und Zustand-Pfad
     pro_df = DataFrame(0.0, index= trans_states, columns= [*seq])
-    pro_df.loc['Start','s'] = 1 
+    pro_df.loc['Start',chr(1)] = 1 
     traceback_df = DataFrame(None, index= trans_states, columns=[*seq]) # Traceback-Pfad
 
     #print(em_df)
@@ -177,7 +177,7 @@ def get_results(seq, transition, emission):
         if id_symbol == 1:            
 
             for state in trans_states[1:]: # Außer Start-Zustand
-                pro_df.loc[state][id_symbol] = pro_df.loc['Start']['s'] * trans_df.loc['Start'][state] * em_df.loc[state][symbol]
+                pro_df.loc[state][id_symbol] = pro_df.loc['Start'][chr(1)] * trans_df.loc['Start'][state] * em_df.loc[state][symbol]
                 traceback_df.loc[state][id_symbol] = 0 # alle wird aus dem Start-Zustand berechnet
             
 
