@@ -8,15 +8,18 @@
     <div class ="description"> 
     <p>
       Beim Dotplot wird die Ähnlichkeit von zwei Sequenzen betrachtet. Die erste Sequenz ist oben in der Matrix und die zweite links.
-      Jeder Buchstabe der ersten Sequenz wird mit jedem Buchstaben der zweiten Sequenz verglichen. Wenn die Buchstaben gleich sind, wird die entsperchende Zelle der Matrix makiert.
+      Jeder Buchstabe der ersten Sequenz wird mit jedem Buchstaben der zweiten Sequenz verglichen. Wenn die Buchstaben gleich sind, wird die entsprechende Zelle der Matrix markiert.
       Die Sequenzen können maximal 200 Zeichen lang sein.
-      <ul> 
+     
+    </p>
+    </div>
+    <div class = "input">  
+  
+    <h2> Input </h2>
+    <ul> 
       <li>Als Eingabe für die Sequenzen sind nur lateinsche Buchstaben erlaubt.</li>
       <li>Die Ausgabe ist die Dotplot-Matrix.</li>
     </ul>
-    </p>
-    </div>
-    <h2> Input </h2>
     <form method="POST" action="{% url 'dotplot' %}">
         {% csrf_token %}
         <div class="form-field {% if form.sequence1.errors %}has-error{% endif %}">
@@ -38,14 +41,14 @@
           {% endif %}
       </div>
 
-      <div class="form-field">
-        {{ form.ignore_case_choice }}
-        <label for="{{ form.ignore_case_choice.id_for_label }}">Groß-/Kleinschreibung ignorieren</label>
-    </div>
+     
       <div class="button-container">
         <button type="submit">Ausführen</button>
         </div>
     </form>
+  </div>
+
+  <div class = "output">  
 
     {% if results is not None %}
         <h2>Output</h2>
@@ -78,6 +81,7 @@
             <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Tabelle herunterladen</a>
         </p>
     {% endif %}
+    </div>
      
 
 {% endblock %}

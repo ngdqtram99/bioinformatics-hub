@@ -55,12 +55,16 @@
           \)
       </p>
       <h2> Input </h2>
+      <ul>
+        <li>
       <p class="custom-paragraph">
         Die Sequenzen dürfen maximal 500 Zeichen lang sein, es sind nur lateinische Buchstaben erlaubt
-      </p>
+      </p> </li>
+      <li> 
       <p class="custom-paragraph">
        Die Scores für Match, Mismatch und Gap müssen im Bereich zwischen -1000.0 und 1000.0 sein
-      </p>
+      </p> </li>
+      </ul>
       <form method="POST" action="{% url 'needleman_wunsch' %}">
         {% csrf_token %}
         <!--{{form.as_p}} -->
@@ -128,13 +132,17 @@
       
       </form>
 
-
       {% if matrix is not None %} 
-      <h2>Output</h2>  
-      <table id="matrixTable"> </table>
-        
+      <h2>Output</h2> 
+      <p> Matrix </p> 
+      <div class="main_output">
+          
+          <table id="matrixTable"> </table>
+      </div>
       <br>
+      <div class="main_output">
       <div id="alignmentsContainer"> </div>
+      </div>
       <br>
       <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
       <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  

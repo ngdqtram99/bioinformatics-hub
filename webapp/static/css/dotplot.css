@@ -8,6 +8,7 @@
   }
   
     .main_output {
+      line-height: 1.5; 
       width: fit-content;
       background-color: #f2f3f1;    
       text-align: left;
