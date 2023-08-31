@@ -1,7 +1,9 @@
+import random
+import string
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman
 import unittest
-from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm
+from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm
 
 
 class TestDotplot(TestCase):
@@ -324,7 +326,7 @@ class TestNeedlemanWunsch(TestCase):
         result = needleman_wunsch.get_result('GCTAGC', 'GC', 0, 1, 1, False)
         self.assertEquals(len(result['alignments']), 3)
 
-        # Es sollen die Grenze von 100 Alignments erreicht werden
+        # Es soll die Grenze von 100 Alignments erreicht werden
         result = needleman_wunsch.get_result('GCTAGCCTTGAACTGCATGCATGCCGCTAGCG', 'GCG', 0, 1, 1, False)
         self.assertEquals(len(result['alignments']), 100)
 
@@ -410,13 +412,113 @@ class TestNeedlemanWunschForm(TestCase):
 
     # nicht korrekte Eingabe soll Fehler zurück geben
     def test_latin_letters(self):
-        form = GlocalAlignmentForm(data={'sequence1': 'GTC_BCD', 'sequence2': 'V*?RT'})
+        form = NeedlemanWunschForm(data={'sequence1': 'GTC_BCD', 'sequence2': 'V*?RT'})
         form.is_valid()
         self.assertEquals(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
         self.assertEquals(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
 
+# tests für Smith Waterman
+class TestSmithWaterman(TestCase):
+
+    # testet ob das richtige Alignment zurück kommt
+    def test_get_aignment(self):
+        # Gap in Sequenz 1
+        alignment = smith_waterman.get_alignment('-ATGGTG', '-ATCG', ['diag', 'hor', 'diag', 'diag'], [3, 4])
+        self.assertEquals(alignment, ['AT-GGTG', '|| |   ', 'ATCG   '])
+
+        # Gap in Sequenz 2
+        alignment = smith_waterman.get_alignment('-ATCGGTG', '-ATG', ['diag', 'vert', 'diag', 'diag'], [4, 3])
+        self.assertEquals(alignment, ['ATCGGTG', '|| |   ', 'AT-G   '])
+
+    def test_number_of_alignments(self):
+        # es sollen 4 Alignments gefunden werden
+        result = smith_waterman.get_result('ATGGTGCAT', 'ATGCGGTGC', 1, -1, 1)
+        self.assertEquals(len(result['alignments']), 4)
+
+        #TODO:
+        # es soll die Grenze von 100 Alignments erreicht werden
+        longSeq = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
+        result = smith_waterman.get_result(longSeq, 'C', 1, -1, 1)
+        print(len(result['alignments']))
+
+    # testet ob der richtige Score zurück gegeben wird
+    def test_score(self):
+
+        result = smith_waterman.get_result('ATGGTGCAT', 'ATGCGGTGC', 1, -1, 1)
+        self.assertEquals(result['score'], 5)
+
+        # es existiert mehrfach der gleiche Score
+        result = smith_waterman.get_result('AGCTAGCT', 'AGC', 1, -1, 1)
+        self.assertEquals(result['score'], 3)
+
+    def test_traceback_value(self):
+
+        # größter Wert wird gewählt - hor
+        traceback_value = smith_waterman.traceback_value(2, 1, 3, 0)
+        self.assertEquals(traceback_value, 'hor')
+
+        # mehrere Werte sind gleich
+        traceback_value = smith_waterman.traceback_value(0 ,0 ,0, 0)
+        self.assertEquals(traceback_value, ['diag', 'vert', 'hor', None])
+
+        traceback_value = smith_waterman.traceback_value(2, 1, 2, 2)
+        self.assertEquals(traceback_value, ['diag', 'hor', None])
 
 
+    def test_matrix(self):
+
+        result = smith_waterman.get_result('ATGGTGCAT', 'ATGCGGTGC', 1, -1, 1)
+
+        matrix = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 2, 1, 0, 0, 0, 1, 0, 0],
+                  [0, 0, 1, 3, 2, 1, 1, 0, 2, 1],
+                  [0, 0, 0, 2, 2, 3, 2, 1, 1, 1],
+                  [0, 0, 1, 1, 1, 2, 2, 3, 2, 1],
+                  [0, 0, 0, 2, 1, 2, 3, 2, 4, 3],
+                  [0, 0, 0, 1, 3, 2, 2, 2, 3, 5],
+                  [0, 1, 0, 0, 2, 2, 1, 1, 2, 4],
+                  [0, 0, 2, 1, 1, 1, 1, 2, 1, 3]]
+
+        self.assertEquals(result['matrix'], matrix)
+
+# test für SmithWatermanForm
+class TestSmithWatermanForm(TestCase):
+
+    # testet die Eingaben
+    def test_input(self):
+        # Sequenz darf nicht leer sein
+        form = SmithWatermanForm(data={'sequence1': '', 'sequence2': 'CGT'})
+        self.assertEquals(form.errors['sequence1'], ['This field is required.'])
+
+        # match Input darf nicht über 1000 oder unter -1000 sein
+        form = SmithWatermanForm(data={'match': 1001})
+        self.assertEquals(form.errors['match'], ['Ensure this value is less than or equal to 1000.'])
+
+        form = SmithWatermanForm(data={'match': -1001})
+        self.assertEquals(form.errors['match'], ['Ensure this value is greater than or equal to -1000.'])
+
+        # missmatch Input darf nicht über 1000 oder unter -1000 sein
+        form = SmithWatermanForm(data={'mismatch': 1001})
+        self.assertEquals(form.errors['mismatch'], ['Ensure this value is less than or equal to 1000.'])
+
+        form = SmithWatermanForm(data={'mismatch': -1001})
+        self.assertEquals(form.errors['mismatch'], ['Ensure this value is greater than or equal to -1000.'])
+
+        # gap-penalty darf nicht über 1000 oder unter -1000 sein
+        form = SmithWatermanForm(data={'gap_penalty': 1001})
+        self.assertEquals(form.errors['gap_penalty'], ['Ensure this value is less than or equal to 1000.'])
+
+        form = SmithWatermanForm(data={'gap_penalty': -1001})
+        self.assertEquals(form.errors['gap_penalty'], ['Ensure this value is greater than or equal to -1000.'])
+
+
+    # nicht korrekte Eingabe soll Fehler zurück geben
+    def test_latin_letters(self):
+        form = SmithWatermanForm(data={'sequence1': 'GTC_BCD', 'sequence2': 'V*?RT'})
+        form.is_valid()
+        self.assertEquals(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
+        self.assertEquals(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
 
 
 
