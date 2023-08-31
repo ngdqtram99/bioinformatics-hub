@@ -91,25 +91,17 @@ def create_image_base64(png_file_name):
     return(image_64_decode)
 
 # Gibt das Ergebnis zurück
-def get_result(text: str, pattern: str, endchar: str):
+def get_results(text: str, pattern: str, endchar: str):
     trie = build_suffix_trie(text, endchar)
     hits_pos = find_hits(trie,pattern)
     create_digraph(trie,hits_pos)
+    found = None if len(endchar) == 0 else (True if len(hits_pos) > 0 else False)
     
-    return create_image_base64('suffix_trie.png')
+    return {'image': create_image_base64('suffix_trie.png'),
+            'found': found}
 
 # Beispiel
 text = "banana"
 pattern = "na"
 
-# Sucht nach die Positionen der Treffer
-trie = build_suffix_trie(text, '§')
-all_hits = find_hits(trie, pattern)
-#print("Pattern hits at positions:", all_hits)
-
-# Erzeugt Digraph und Image des Suffix-Tries
-create_digraph(trie,all_hits)
-
-# Erzeugt base64 Image
-base64_image = create_image_base64('suffix_trie.png')
-#print(base64_image)
+get_results(text,pattern,"$")
