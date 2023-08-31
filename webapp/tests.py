@@ -1,7 +1,7 @@
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch
 import unittest
-from .forms import DotplotForm
+from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm
 
 
 class TestDotplot(TestCase):
@@ -189,9 +189,6 @@ class TestHorspool(TestCase):
 # glocal_alignment tests
 class TestGlocalAlignment(TestCase):
 
-    # testet Form
-
-
     # testet ob das richtige Alignment zurück kommt
     def test_get_alignment(self):
         # alignment mit Gap in der Sequenz
@@ -280,6 +277,147 @@ class TestGlocalAlignment(TestCase):
                              [0, 11, 12, 13, 14]]
 
         self.assertEquals(similarity_matrix, result['matrix'])
+
+# testet Form von Glocal Alignments
+class TestGlocalAlignmentForm(TestCase):
+
+    # nicht korrekte Eingabe soll Fehler zurück geben
+    def test_latin_letters(self):
+        form = GlocalAlignmentForm(data={'sequence1': 'GTC_BCD', 'sequence2': 'V*?RT'})
+        form.is_valid()
+        self.assertEqual(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
+        self.assertEqual(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
+
+# tests für Needleman wunsch
+class TestNeedlemanWunsch(TestCase):
+
+    # testet ob das richtige Alignment zurück kommt
+    def test_get_alignment(self):
+        # alignment mit Gap in Sequenz 1
+        path = ['vert', 'vert', 'diag', 'hor', 'diag', 'vert']
+        alignment = needleman_wunsch.get_alignment('-GCAGC', '-CTA', path)
+
+        self.assertEquals(alignment, ['GC-AGC', ' | |  ', '-CTA--'])
+
+        # alignment mit Gap in der Sequenz 2
+        path = ['vert', 'vert', 'vert', 'diag', 'vert', 'diag']
+        alignment = needleman_wunsch.get_alignment('-GCTAGC', '-GT', path)
+
+        self.assertEquals(alignment, ['GCTAGC', '| |   ', 'G-T---'])
+
+        # alignment ohne Gap
+        path = ['vert', 'vert', 'vert', 'diag', 'diag', 'diag']
+        alignment = needleman_wunsch.get_alignment('-GCTAGC', '-GCT', path)
+
+        self.assertEquals(alignment, ['GCTAGC', '|||   ', 'GCT---'])
+
+        # obwohl alles diag ist sollen nur bei den Matches Striche stehen
+        path = ['diag', 'diag', 'diag', 'diag']
+        alignment = needleman_wunsch.get_alignment('-CTSS', 'AGSS', path)
+
+        self.assertEquals(alignment, ['CTSS', '  ||', 'AGSS'])
+
+    # testet ob alle Alignments gefunden wurden
+    def test_number_of_alignments(self):
+
+        # Es sollen drei Alignments gefunden werden
+        result = needleman_wunsch.get_result('GCTAGC', 'GC', 0, 1, 1, False)
+        self.assertEquals(len(result['alignments']), 3)
+
+        # Es sollen die Grenze von 100 Alignments erreicht werden
+        result = needleman_wunsch.get_result('GCTAGCCTTGAACTGCATGCATGCCGCTAGCG', 'GCG', 0, 1, 1, False)
+        self.assertEquals(len(result['alignments']), 100)
+
+    # testet ob der richtige Score zurück gegeben wird
+    def test_score(self):
+        result = needleman_wunsch.get_result('AGCTAG', 'ATGCTS', 0, 1, 1, False)
+        self.assertEquals(result['score'], 3)
+
+        result = needleman_wunsch.get_result('GCTASAST', 'ATGCTS', 0, 1, 1, False)
+        self.assertEquals(result['score'], 6)
+
+    # testet ob die richtige traceback value zurück gegeben wird
+    def test_traceback_value(self):
+        # Similarity ist auf False, der kleinste Wert wird gewählt - hier vert
+        traceback_value = needleman_wunsch.traceback_value(2, 1, 3, False)
+        self.assertEquals(traceback_value, 'vert')
+
+        # Similarity ist auf True, der größte Wert wird gewählt - hier diag
+        traceback_value = needleman_wunsch.traceback_value(6, 2, 3, True)
+        self.assertEquals(traceback_value, 'diag')
+
+        # mehrere Werte sind gleich
+        traceback_value = needleman_wunsch.traceback_value(3, 3, 5, False)
+        self.assertEquals(traceback_value, ['diag', 'vert'])
+
+        traceback_value = needleman_wunsch.traceback_value(4, 5, 4, False)
+        self.assertEquals(traceback_value, ['diag', 'hor'])
+
+        traceback_value = needleman_wunsch.traceback_value(5, 3, 3, False)
+        self.assertEquals(traceback_value, ['vert', 'hor'])
+
+    # testet die Funktion similarity
+    def test_similarity_matrix(self):
+        result = needleman_wunsch.get_result('AGTC', 'ACGTC', 0, 1, 1, False)
+
+        distance_matrix = [[0, 1, 2, 3, 4, 5],
+                           [1, 0, 1, 2, 3, 4],
+                           [2, 1, 1, 1, 2, 3],
+                           [3, 2, 2, 2, 1, 2],
+                           [4, 3, 2, 3, 2, 1]]
+
+        self.assertEquals(result['matrix'], distance_matrix)
+
+        result = needleman_wunsch.get_result('AGTC', 'ACGTC', 0, 1, 1, True)
+
+        similarity_matrix = [[0, 1, 2, 3, 4, 5],
+                             [1, 2, 3, 4, 5, 6],
+                             [2, 3, 4, 5, 6, 7],
+                             [3, 4, 5, 6, 7, 8],
+                             [4, 5, 6, 7, 8, 9]]
+
+        self.assertEquals(result['matrix'], similarity_matrix)
+
+# testet die Form von Needleman Wunsch
+class TestNeedlemanWunschForm(TestCase):
+
+    # testet korrekten Input
+    def test_input(self):
+        # Sequenz darf nicht leer sein
+        form = NeedlemanWunschForm(data={'sequence1': '', 'sequence2': 'CGT'})
+        self.assertEquals(form.errors['sequence1'], ['This field is required.'])
+
+        # match Input darf nicht über 1000 oder unter -1000 sein
+        form = NeedlemanWunschForm(data={'match': 1001})
+        self.assertEquals(form.errors['match'], ['Ensure this value is less than or equal to 1000.'])
+
+        form = NeedlemanWunschForm(data={'match': -1001})
+        self.assertEquals(form.errors['match'], ['Ensure this value is greater than or equal to -1000.'])
+
+        # missmatch Input darf nicht über 1000 oder unter -1000 sein
+        form = NeedlemanWunschForm(data={'mismatch': 1001})
+        self.assertEquals(form.errors['mismatch'], ['Ensure this value is less than or equal to 1000.'])
+
+        form = NeedlemanWunschForm(data={'mismatch': -1001})
+        self.assertEquals(form.errors['mismatch'], ['Ensure this value is greater than or equal to -1000.'])
+
+        # gap-penalty darf nicht über 1000 oder unter -1000 sein
+        form = NeedlemanWunschForm(data={'gap_penalty': 1001})
+        self.assertEquals(form.errors['gap_penalty'], ['Ensure this value is less than or equal to 1000.'])
+
+        form = NeedlemanWunschForm(data={'gap_penalty': -1001})
+        self.assertEquals(form.errors['gap_penalty'], ['Ensure this value is greater than or equal to -1000.'])
+
+    # nicht korrekte Eingabe soll Fehler zurück geben
+    def test_latin_letters(self):
+        form = GlocalAlignmentForm(data={'sequence1': 'GTC_BCD', 'sequence2': 'V*?RT'})
+        form.is_valid()
+        self.assertEquals(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
+        self.assertEquals(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
+
+
+
+
 
 
 
