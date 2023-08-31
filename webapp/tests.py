@@ -1,8 +1,5 @@
-import random
-import string
 from django.test import TestCase
 from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman
-import unittest
 from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm
 
 
@@ -49,48 +46,48 @@ class TestDotplotForm(TestCase):
 
 
 # Simple Search Tests
-class TestSimpleSearch(unittest.TestCase):
+class TestSimpleSearch(TestCase):
     def test_comparsions_count(self):
-        # one comparsions
-        # no results
+        # ein Vergleich
+        # kein Ergebnis
         result = simple_search.get_result('T', 'A')
 
         self.assertEquals(result['comparisons_count'], 1)
         self.assertEquals(result['results'], [])
 
-        # one result
+        # ein Ergebnis
         result = simple_search.get_result('A', 'A')
 
         self.assertEquals(result['comparisons_count'], 1)
         self.assertEquals(result['results'], [0])
 
-        # multiple comparisons
-        # no results
+        # mehrere Vergleiche
+        # kein Ergebnis
         result = simple_search.get_result('UA', 'ACGUCAC')
 
         self.assertEquals(result['comparisons_count'], 7)
         self.assertEquals(result['results'], [])
 
-        # one result
+        # ein Ergebnis
         result = simple_search.get_result('UA', 'ACGUUAC')
 
         self.assertEquals(result['comparisons_count'], 8)
         self.assertEquals(result['results'], [4])
 
-        # multiple results
+        # mehrere Ergebnisse
         result = simple_search.get_result('UA', 'AUACGUUAUA')
 
         self.assertEquals(result['comparisons_count'], 13)
         self.assertEquals(result['results'], [1, 6, 8])
 
     def test_no_result(self):
-        # Sequence to short
+        # Sequenz zu kurz
         result = simple_search.get_result('ACA', 'U')
 
         self.assertEquals(result['comparisons_count'], 0)
         self.assertEquals(result['results'], [])
 
-        # Pattern not in Sequence
+        # Pattern nicht in Sequenz
         result = simple_search.get_result('U', 'ACA')
 
         self.assertEquals(result['comparisons_count'], 3)
