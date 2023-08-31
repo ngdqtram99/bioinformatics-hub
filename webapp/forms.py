@@ -286,8 +286,8 @@ class UpgmaNjForm (forms.Form):
         return valid
     
 class SuffixArrayForm(forms.Form):
-    sequence = forms.CharField(label='Text',widget=forms.TextInput(attrs={"class": "max-width-input"}), strip=False)
-    pattern = forms.CharField(label='Muster', required=False, strip=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Text',widget=forms.TextInput(attrs={"size": "167"}), strip=False)
+    pattern = forms.CharField(label='Muster', required=False, strip=False, widget=forms.TextInput(attrs={"size": "167"}))
 
     def is_valid(self):
         valid = super().is_valid()

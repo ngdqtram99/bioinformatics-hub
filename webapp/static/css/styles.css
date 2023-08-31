@@ -151,5 +151,13 @@ div.algo {
 }
 
 .custom-paragraph {
-  line-height: 1.5; /* You can adjust this value */
+  line-height: 1.5; 
+}
+
+.input{
+  line-height: 1.5;
+}
+
+.output{
+  line-height: 1.5;
 }
