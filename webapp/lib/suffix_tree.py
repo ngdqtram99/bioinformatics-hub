@@ -24,7 +24,6 @@ def build_suffix_trie(text: str, endchar: str):
     return root
 
 def build_tree(trie: Node):
-    root = trie
     def merge_node(node: Node):
         #print('node',node.children.keys(), node.positions)
         #print('--------------------------')
@@ -50,7 +49,7 @@ def build_tree(trie: Node):
             
             for name, child in node.children.items():
                 node.children[name] = merge_node(child)
-                return node
+            return node
         else: 
             return merge_node(node)
     merge_node(trie)
@@ -93,6 +92,7 @@ def find_hits(node: Node, pattern: str):
                 else:
                     #print('check positions',node.children[name].positions)
                     return node.children[name].positions
+            else: return []
             
 import graphviz
 # Erzeugt Digraph und speichert das Bild des Suffix-Tries in PNG-Datei
