@@ -128,13 +128,17 @@
       
       </form>
 
-
       {% if matrix is not None %} 
-      <h2>Output</h2>  
-      <table id="matrixTable"> </table>
-        
+      <h2>Output</h2> 
+      <p> Matrix </p> 
+      <div class="main_output">
+          
+          <table id="matrixTable"> </table>
+      </div>
       <br>
+      <div class="main_output">
       <div id="alignmentsContainer"> </div>
+      </div>
       <br>
       <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
       <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
