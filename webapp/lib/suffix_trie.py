@@ -57,7 +57,7 @@ def create_digraph(trie: TrieNode, hits_pos:list):
         if node.is_end_node():
             # Färbt das Node, dessen Position-Liste die Positionen der Treffer enthält
             if has_hits_pos(node.positions):
-                dot.node(name=f"{current_id}",label=f"{node.positions[-1]}",style='filled',fillcolor='lightblue')
+                dot.node(name=f"{current_id}",label=f"{node.positions[-1]}",style='filled',fillcolor='#c7dff8')
             # Normale Noden werden nicht gefärbt
             else:
                 dot.node(name=f"{current_id}",label=f"{node.positions[-1]}")
@@ -71,7 +71,7 @@ def create_digraph(trie: TrieNode, hits_pos:list):
             child_id = generate_dot(child_node,current_id)
             # Färbt die Kanten, die zur Position der Treffer leiten
             if has_hits_pos(child_node.positions):
-                dot.edge(f"{current_id}", f"{child_id}",label = f"{edge_label}", color='blue')
+                dot.edge(f"{current_id}", f"{child_id}",label = f"{edge_label}", color='#007bff')
             else:
                 dot.edge(f"{current_id}", f"{child_id}",label = f"{edge_label}")
             
