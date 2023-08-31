@@ -22,9 +22,6 @@
   </form>
     
   {% if base64_plot is not None %} 
-  <p>Tree-Plot</p>
-  <br>
-  <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>
   {% if found is not None %}
   {% if found is True %}
   <p>Das Muster ist im Text enthalten.</p>
@@ -32,5 +29,9 @@
   <p>Das Muster ist im Text nicht enthalten.</p>
   {% endif %}
   {% endif %}
+  <p>Tree-Plot:</p>
+  <br>
+  <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>
+
   {% endif %}
 {% endblock %}

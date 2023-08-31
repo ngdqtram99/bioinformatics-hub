@@ -1,0 +1,15 @@
+.suffix-array-container {
+    max-height: 70vh;
+    max-width: 90%;
+    overflow: auto;
+
+}
+.suffix-array th, .suffix-array td{
+    text-align: left;
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+    
+}
+.suffix-array {
+    border-collapse: collapse;
+}

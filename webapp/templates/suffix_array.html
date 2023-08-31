@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title%} Suffixarray {% endblock %}
+{% block extra_head %} <link rel="stylesheet" href="{% static 'css/suffix_array.css' %}"> {% endblock %}
 {% block content %}
 
-
-
-  
     <h1> Suffixarray</h1>
     <p>
       Beschreibung
@@ -23,6 +21,38 @@
     </div>
   </form>
     
+{% if suffix_array is not None %}
+<h2> Output </h2>
+{% if found is not None %}
+{% if found is True %}
+<p>Das Muster ist im Text enthalten.</p>
+{% elif found is False %}
+<p>Das Muster ist im Text nicht enthalten.</p>
+{% endif %}
+{% endif %}
+<br>
+<div class="suffix-array-container">
+<table class="suffix-array">
+  <tbody>
+    {% for row in suffix_array %}
+      <tr>
+        {% if forloop.first %}
+          {% for item in row %}
+            <th>{{ item }}</th>
+          {% endfor %}
+        {% else %}
+          {% for item in row %}
+            <td>{{ item }}</td>
+          {% endfor %}
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
 
+
+
+{% endif %}
 
 {% endblock %}
