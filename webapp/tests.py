@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining, suffix_array
 from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm, UpgmaNjForm
 
 
@@ -541,6 +541,44 @@ class TestViterbiForm(TestCase):
         self.assertEqual(form.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
         self.assertEqual(form2.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
         self.assertEqual(form3.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
+
+# test für Suffix Array
+class TestSuffixArray(TestCase):
+    def test_suffix_array(self):
+        text = "brandenburg"
+        test_sa = [['', 'Suffix', 'Position'],
+                   [0, 'andenburg', 2], 
+                   [1, 'brandenburg', 0], 
+                   [2, 'burg', 7], 
+                   [3, 'denburg', 4], 
+                   [4, 'enburg', 5], 
+                   [5, 'g', 10], 
+                   [6, 'nburg', 6], 
+                   [7, 'ndenburg', 3], 
+                   [8, 'randenburg', 1], 
+                   [9, 'rg', 9], 
+                   [10, 'urg', 8]]
+        res = suffix_array.get_results('',text)
+        sa = res['suffix_array']
+        self.assertEqual(test_sa, sa)
+
+    def test_found(self):
+        text = 'lamborghini'
+        pattern1 = 'ghin'
+        res1 = suffix_array.get_results(pattern1,text)
+        self.assertTrue(res1['found'])
+
+        pattern2 = 'nini'
+        res2 = suffix_array.get_results(pattern2,text)
+        self.assertFalse(res2['found'])   
+
+        pattern3 = 'lamborghinin' # Pattern ist länger als Text
+        res3 = suffix_array.get_results(pattern3,text)
+        self.assertFalse(res3['found'])  
+
+        pattern4 = ''
+        res4 = suffix_array.get_results(pattern4,text)
+        self.assertIsNone(res4['found'])  
 
 # test für SuffixTreeTrieForm
 class TestSuffixTreeTrieForm(TestCase):
