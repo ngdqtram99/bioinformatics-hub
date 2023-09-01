@@ -186,13 +186,15 @@ class GlocalAlignmentForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid    
 
 class ViterbiForm(forms.Form):
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "textarea-input"}))
-    states = forms.CharField(label='Zustände',  widget=forms.TextInput(attrs={'size': '10'}))
+    sequence = forms.CharField(label='Sequenz', max_length=100, widget=forms.Textarea(attrs={"class": "textarea-input"}))
+    states = forms.CharField(label='Zustände', max_length=200, widget=forms.TextInput(attrs={'size': '50'}))
 
     def clean(self):
         cleaned_data = super().clean()
         states = cleaned_data.get('states')
         states = states.split(';')
+        states = list(set(states))
+        states = [state.strip() for state in states if len(state.strip()) > 0]
         states_to_remove = []
         for state in states:
             if state.lower() == 'start':
