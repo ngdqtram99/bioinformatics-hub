@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining
 from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm
 
 
@@ -565,4 +565,26 @@ class TestOverlapForm(TestCase):
         self.assertEqual(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
         self.assertEqual(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
 
+# tests für Neighbour joining
+class TestNeighbourJoining(TestCase):
+
+    # testet newick
+    def test_newick(self):
+        matrix = [[0],
+                  [5, 0],
+                  [9, 10, 0],
+                  [9, 10, 8, 0],
+                  [8, 9, 7, 3, 0]]
+
+        result = neighbour_joining.get_results(['A', 'B', 'C', 'D', 'E'], matrix)
+        self.assertEquals(result['newick'], '(((((((A:2.0,B:3.0):3.0),C:4.0):2.0),D:2.0):0),E:1.0)')
+
+        matrix = [[0],
+                  [17, 0],
+                  [21, 30, 0],
+                  [31, 34, 28, 0],
+                  [23, 21, 39, 43, 0]]
+
+        result = neighbour_joining.get_results(['A', 'B', 'C', 'D', 'E'], matrix)
+        self.assertEquals(result['newick'], '(((E:14.5,((((D:17.0,C:11.0):7.0),A:5.0):4.5)):0),B:6.75)')
 
