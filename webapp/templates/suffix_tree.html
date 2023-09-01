@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title%} Suffixtree {% endblock %}
+{% block extra_head %} <link rel="stylesheet" href="{% static 'css/suffix_tree_trie.css' %}"> {% endblock %}
 {% block content %}
 
 
@@ -29,9 +30,11 @@
   <p>Das Muster ist im Text nicht enthalten.</p>
   {% endif %}
   {% endif %}
-  <p>Tree-Plot:</p>
-  <br>
-  <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>
-
+  <p>Suffixbaum:</p>
+  <br>  
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom-container@0.6.1"></script>
+  <div id="svg-container" data-pan-on-drag="" data-zoom-on-wheel="min-scale: 0.1; max-scale: 1000;">{{svg|safe}}</div>
+  <p>Suffixbaum als <a href="data:image/png;base64,{{base64_plot}}" download="suffix_tree_plot.png">png</a> herunterladen</p>
   {% endif %}
+
 {% endblock %}
