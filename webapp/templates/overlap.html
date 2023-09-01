@@ -3,6 +3,7 @@
 {% block title%} Überlapp Alignment {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock %}
     {% block content %}
 
@@ -14,6 +15,16 @@
         </p>
         <p class="custom-paragraph">Das beste Alignment wird dann anhand der besten Scores in der letzten Zeile der Score-Matrix ermittelt. Diese Score-Werte repräsentieren die bestmögliche Überlappung zweier Sequenzen. Das entsprechende Alignment kann durch Rückverfolgung der Pfade in der Score-Matrix gefunden werden, die zu den besten Scores führen.</p>
         <h2> Input </h2>
+        <ul>
+          <li>
+        <p class="custom-paragraph">
+          Die Sequenzen dürfen maximal 500 Zeichen lang sein, es sind nur lateinische Buchstaben erlaubt
+        </p> </li>
+        <li> 
+        <p class="custom-paragraph">
+         Die Scores für Match, Mismatch und Gap müssen im Bereich zwischen -1000.0 und 1000.0 sein
+        </p> </li>
+        </ul>
         <form method="POST" action="{% url 'overlap' %}">
             {% csrf_token %}
             <div class="form-field {% if form.sequence1.errors %}has-error{% endif %}">
@@ -80,6 +91,13 @@
       </div>
       
       <br>
+      {% if alignments|length >= 100 %}
+      <p>Anzahl der Alignments >= 100</p>
+          {% else %}
+      <p>Anzahl der Alignments: {{ alignments|length }}</p>
+          {% endif %}
+      <p> Alignments: </p> 
+     
      
       <div id="alignmentsContainer"> </div>
       

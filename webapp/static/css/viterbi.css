@@ -41,4 +41,7 @@ color: white;
     height: 50px;
     font-family: Arial, sans-serif;
     }
+    .has-error .textarea-input {
+      border: 1px solid red; 
+    }
     

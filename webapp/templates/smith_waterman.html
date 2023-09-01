@@ -3,6 +3,7 @@
 {% block title%} Smith Waterman {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -51,6 +52,16 @@ aus zurück gegangen, bis es keinen Vorgänger mehr gibt.
       \)
     </p>
     <h2> Input </h2>
+    <ul>
+      <li>
+    <p class="custom-paragraph">
+      Die Sequenzen dürfen maximal 500 Zeichen lang sein, es sind nur lateinische Buchstaben erlaubt
+    </p> </li>
+    <li> 
+    <p class="custom-paragraph">
+     Die Scores für Match, Mismatch und Gap müssen im Bereich zwischen -1000.0 und 1000.0 sein
+    </p> </li>
+    </ul>
     <form method="POST" action="{% url 'smith_waterman' %}">
       {% csrf_token %}
       <div class="form-field {% if form.sequence1.errors %}has-error{% endif %}">
@@ -111,6 +122,12 @@ aus zurück gegangen, bis es keinen Vorgänger mehr gibt.
   <table id="matrixTable"> </table>
   </div>
   <br>
+  {% if alignments|length >= 100 %}
+  <p>Anzahl der Alignments >= 100</p>
+      {% else %}
+  <p>Anzahl der Alignments: {{ alignments|length }}</p>
+      {% endif %}
+  <p> Alignments: </p> 
  
   <div id="alignmentsContainer"> </div>
   

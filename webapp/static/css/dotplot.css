@@ -45,3 +45,8 @@
     border-spacing: 0px;
     
   }
+
+  .has-error .textarea-input {
+    border: 1px solid red; 
+  }
+  

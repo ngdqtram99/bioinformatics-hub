@@ -3,6 +3,7 @@
 {% block title%} Glokales Alignment {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/alignments.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% endblock %}
 
   {% block content %}
@@ -18,6 +19,16 @@
       
     </p>
     <h2> Input </h2>
+    <ul>
+      <li>
+    <p class="custom-paragraph">
+      Die Sequenzen dürfen maximal 500 Zeichen lang sein, es sind nur lateinische Buchstaben erlaubt
+    </p> </li>
+    <li> 
+    <p class="custom-paragraph">
+     Die Scores für Match, Mismatch und Gap müssen im Bereich zwischen -1000.0 und 1000.0 sein
+    </p> </li>
+    </ul>
     <form method="POST" action="{% url 'glocal_alignment' %}">
       {% csrf_token %}
 
@@ -99,8 +110,12 @@
  
  <br>
  
- {% if alignments|length > 0 %}
-
+ {% if alignments|length >= 100 %}
+ <p>Anzahl der Alignments >= 100</p>
+     {% else %}
+ <p>Anzahl der Alignments: {{ alignments|length }}</p>
+     {% endif %}
+  <p> Alignments: </p> 
   
  <div id="alignmentsContainer"> </div>
 
@@ -126,7 +141,7 @@
   secondSequence.unshift("M"); 
 </script>
 <script src="{% static 'js/pairwise.js' %}"></script> 
-{% endif %}    
+ 
 
 
 {% endblock %}

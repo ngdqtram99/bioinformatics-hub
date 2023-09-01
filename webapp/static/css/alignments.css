@@ -116,3 +116,8 @@
       font-family: Arial, sans-serif;
       width: 100%; 
     }
+
+    .has-error .textarea-input {
+      border: 1px solid red; 
+    }
+    

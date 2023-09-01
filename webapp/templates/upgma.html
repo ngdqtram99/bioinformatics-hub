@@ -3,6 +3,7 @@
 {% block title%} UPGMA {% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/phylo.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -47,11 +48,21 @@ Die Länge von \( i \) , \( j \) zu \( k \) (\( k \) ist ein Objekt in der neuen
         <label for="{{ form.names.id_for_label }}">Namen:</label>
         <br>
         {{form.names}}
+        {% if form.names.errors %}
+              <div class="error-message">
+                  {{ form.names.errors.as_text }}
+              </div>
+        {% endif %}
       </div>
       <div class = "form-field">
         <label for="{{ form.csv_data.id_for_label }}">CSV-Data:</label>
         <br>
         {{form.csv_data}}
+        {% if form.csv_data.errors %}
+              <div class="error-message">
+                  {{ form.csv_data.errors.as_text }}
+              </div>
+        {% endif %}
       </div>
       
       
