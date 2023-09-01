@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi
-from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm
+from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm
 
 
 class TestDotplot(TestCase):
@@ -521,33 +521,48 @@ class TestSmithWatermanForm(TestCase):
 class TestViterbiForm(TestCase):
     
     def test_sequence_is_alphabet(self):
-        form = ViterbiForm(data={'sequence': 'XazÄ*'}) # * ist keine Buchstabe
-        form2 = ViterbiForm(data={'sequence': 'XazÄ2' }) # 2 ist keine Buchstabe
-        form3 = ViterbiForm(data={'sequence': '' }) # leer nicht erlaubt, weil es kein Buchstabe gibt
-        form4 = ViterbiForm(data={'sequence': 'ÄRAEdfea' }) # Erlaubt Umlaut-Buchstabe
+        form = ViterbiForm(data={'sequence': 'XazÄ*', 'states': '+;-'}) # * ist keine Buchstabe
+        form2 = ViterbiForm(data={'sequence': 'XazÄ2', 'states': '+;-' }) # 2 ist keine Buchstabe
+        form3 = ViterbiForm(data={'sequence': '', 'states': '+;-' }) # leer nicht erlaubt
 
         form.is_valid()
         form2.is_valid()
         form3.is_valid()
-        form4.is_valid()
         self.assertEqual(form.errors['sequence'],["Nur Buchstaben sind erlaubt."] ) 
         self.assertEqual(form2.errors['sequence'],["Nur Buchstaben sind erlaubt."] )
-        self.assertEqual(form3.errors['sequence'],["Nur Buchstaben sind erlaubt."] ) 
-        self.assertNotEqual(form4.errors['sequence'],["Nur Buchstaben sind erlaubt."] )  
+        self.assertEqual(form3.errors['sequence'],["This field is required."] ) 
 
     def test_number_of_states(self):
-        form = ViterbiForm(data={ 'states': 'q;w;e;r;T;%&;$;i;o;s;tr;sr;er'}) # Mehr als 10 Zustände
-        form2 = ViterbiForm(data={'states': '1;' }) # Weniger als 2 Zutände
-        form3 = ViterbiForm(data={'states': 'a,b,v,c' }) # Zustände werden nicht durch Semikolon getrennt
-        form4 = ViterbiForm(data={'states': '' }) # nichts eingegeben
+        form = ViterbiForm(data={'sequence':'abcd', 'states': 'q;w;e;r;T;%&;$;i;o;s;tr;sr;er'}) # Mehr als 10 Zustände
+        form2 = ViterbiForm(data={'sequence':'abcd', 'states': 'a' }) # Weniger als 2 Zutände
+        form3 = ViterbiForm(data={'sequence':'abcd', 'states': 'a,b,v,c' }) # Zustände werden nicht durch Semikolon getrennt
         form.is_valid()
         form2.is_valid()
         form3.is_valid()
-        form4.is_valid()
-        self.assertEqual(form.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
-        self.assertEqual(form2.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
-        self.assertEqual(form3.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
-        self.assertEqual(form4.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
+        self.assertEqual(form.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
+        self.assertEqual(form2.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
+        self.assertEqual(form3.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
 
+# test für SuffixTreeTrieForm
+class TestSuffixTreeTrieForm(TestCase):
+    
+    def test_endchar_not_in_sequence(self):
+        form = SuffixTreeTrieForm({'sequence': 'anaRna', 'endchar':'R'}) 
+        form.is_valid()
+        self.assertEqual(form.errors['sequence'], ['Endzeichen darf nicht im Text enthalten sein'])
+    
+    def test_endchar_not_in_pattern(self):
+        form2 = SuffixTreeTrieForm({'pattern':'Alf§f', 'endchar':'§'})
+        form2.is_valid()
+        self.assertEqual(form2.errors['pattern'], ['Endzeichen darf nicht im Muster enthalten sein'])
+
+# test für OverlapForm
+class TestOverlapForm(TestCase):
+
+    def test_latin_letters(self):
+        form = OverlapForm(data={'sequence1': 'ABGX$', 'sequence2': 'Ö%ll'}) # Nicht latinische Buchstaben
+        form.is_valid()
+        self.assertEqual(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
+        self.assertEqual(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
 
 
