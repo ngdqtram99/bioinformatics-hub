@@ -66,7 +66,7 @@ def create_digraph(trie: TrieNode, hits_pos:list):
             
         dot.node(name=f"{current_id}", label=' ')
 
-        for edge_label, child_node in node.children.items():
+        for edge_label, child_node in sorted(node.children.items()):
 
             child_id = generate_dot(child_node,current_id)
             # Färbt die Kanten, die zur Position der Treffer leiten
@@ -78,7 +78,7 @@ def create_digraph(trie: TrieNode, hits_pos:list):
         return current_id
     
     generate_dot(trie, -1)
-
+    #dot.render(filename='suffixtrie',format='png',cleanup=True,view=True)
     return dot
 
 '''import base64
