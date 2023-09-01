@@ -225,6 +225,7 @@ class UpgmaNjForm (forms.Form):
     names = forms.CharField(label='Namen', required=False)
     csv_data = forms.CharField(
         label='CSV Data',
+        max_length=2000,
         widget=forms.Textarea(),
         initial="0;\t;\t;\t;\t;\n3;\t0;\t;\t;\t;\n7;\t8;\t0;\t;\t;\n9;\t10;\t10;\t0;\t;\n8;\t9;\t9;\t5;\t0;")
      
@@ -232,7 +233,7 @@ class UpgmaNjForm (forms.Form):
         cleaned_data = super().clean()
         csv_data = cleaned_data.get('csv_data')
         names = cleaned_data.get('names')
-
+        csv_data = csv_data.replace(',','.')
         rows = [row.strip().split(';') for row in csv_data.split('\n') if row.strip()]
         def parse(cell):
             try:
@@ -270,6 +271,9 @@ class UpgmaNjForm (forms.Form):
             if len(names) != len(csv_data):
                 self.add_error('names', "Die Anzahl von Namen sollte mit der Anzahl von Spalten/Zeilen übereinstimmen. Bitte geben Sie die Namen ein, separiert mit Semikolon oder lassen Sie das Eingabefeld frei, dann werden die Namen automatisch generiert")
                 valid = False
+            if len(csv_data) > 20:
+                self.add_error('csv_data', "Die Anzahl der Zeilen darf maximal 20 sein") 
+                valid = False  
             if len(csv_data) != len (csv_data[-1]):
                 self.add_error('csv_data', "Die Anzahl der Zeilen soll gleich der Anzahl der Spalten sein") 
                 valid = False  
