@@ -67,7 +67,18 @@ Die Länge von \( i \) , \( j \) zu \( k \) (\( k \) ist ein Objekt in der neuen
   <h2>Output</h2>
   <p>Newick-String: {{newick}}</p>
   <br>
-  <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom-container@0.6.1"></script>
+  <div id="svg-container" data-pan-on-drag="" data-zoom-on-wheel="min-scale: 0.1; max-scale: 1000;">{{svg|safe}}</div>
+  <p>Plot als <a href="data:image/svg;base64,{{base64_plot}}" download="upgma_plot.png">png</a> oder <a id="downloadSvg" href="#" download="upgma.svg">svg</a> herunterladen</p>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var svgContent = `{{ svg|safe }}`;
+      svgContent = window.btoa(svgContent); //in base 64 umwandeln
+     
+      var downloadLink = document.getElementById('downloadSvg');
+      downloadLink.href = 'data:image/svg+xml;base64,' + svgContent;
+    });
+    </script>
 
 <div id="tables-container"></div>
 <script>  
