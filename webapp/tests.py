@@ -323,7 +323,7 @@ class TestNeedlemanWunsch(TestCase):
         result = needleman_wunsch.get_result('GCTAGC', 'GC', 0, 1, 1, False)
         self.assertEquals(len(result['alignments']), 3)
 
-        # Es soll die Grenze von 100 Alignments erreicht werden
+        # Es sollen nur 100 Alignments zurück gegeben werden, obwohl es mehr gibt
         result = needleman_wunsch.get_result('GCTAGCCTTGAACTGCATGCATGCCGCTAGCG', 'GCG', 0, 1, 1, False)
         self.assertEquals(len(result['alignments']), 100)
 
@@ -432,8 +432,7 @@ class TestSmithWaterman(TestCase):
         result = smith_waterman.get_result('ATGGTGCAT', 'ATGCGGTGC', 1, -1, 1)
         self.assertEquals(len(result['alignments']), 4)
 
-        #TODO:
-        # es soll die Grenze von 100 Alignments erreicht werden
+        # es sollen nur 100 ALignments zurück gegeben werden, obwohl es mehr gibt
         longSeq = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
         result = smith_waterman.get_result(longSeq, 'C', 1, -1, 1)
         print(len(result['alignments']))
