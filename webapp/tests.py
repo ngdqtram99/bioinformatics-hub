@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining
-from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm
+from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm, UpgmaNjForm
 
 
 class TestDotplot(TestCase):
@@ -587,3 +587,37 @@ class TestNeighbourJoining(TestCase):
         result = neighbour_joining.get_results(['A', 'B', 'C', 'D', 'E'], matrix)
         self.assertEquals(result['newick'], '(((E:14.5,((((D:17.0,C:11.0):7.0),A:5.0):4.5)):0),B:6.75)')
 
+# test upgma,nj Form
+class TestUpgmaNjForm(TestCase):
+    def test_number_of_names(self):
+        form = UpgmaNjForm(data={'names': 'a;b;c',
+                        'csv_data': '0; ; ; \n1; 2; ; \n2;3;0; \n3;6;5;0'})
+        form.is_valid()
+        self.assertEqual(form.errors['names'],["Die Anzahl von Namen sollte mit der Anzahl von Spalten/Zeilen übereinstimmen. Bitte geben Sie die Namen ein, separiert mit Semikolon oder lassen Sie das Eingabefeld frei, dann werden die Namen automatisch generiert"])
+
+    def test_number_of_columns_and_rows(self):
+        form = UpgmaNjForm(data={
+                        'csv_data': '1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n'})
+        form.is_valid()
+        self.assertTrue("Die Anzahl der Zeilen soll gleich der Anzahl der Spalten sein" in form.errors['csv_data'])
+
+    def test_diagonal_0_values(self):
+        form = UpgmaNjForm(data={
+                        'csv_data': '0; ; ; \n1; 2; ; \n2;3;0; '})
+        form.is_valid()
+        self.assertEqual(form.errors['csv_data'],["Auf der Diagonale dürfen nur 0 stehen"])
+
+    def test_maximal_number_of_sequence(self):
+        form = UpgmaNjForm(data={'csv_data': '1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0\n1;0'})
+        form.is_valid()
+        self.assertTrue("Die Anzahl der Zeilen darf maximal 20 sein" in form.errors['csv_data'])
+
+    def test_size_of_csv_data(self):
+        form = UpgmaNjForm(data={'csv_data': '1;0\n'})
+        form.is_valid()
+        self.assertTrue("Die Matrix soll aus mindestens zwei Zeilen bestehen" in form.errors['csv_data'])
+    
+    def test_csv_data_is_complete(self):
+        form = UpgmaNjForm(data={'csv_data': '2;0\n1;1;0\n0;5\n'})
+        form.is_valid()
+        self.assertTrue("Die Matrix ist nicht diagonal oder nicht vollständig" in form.errors['csv_data'])

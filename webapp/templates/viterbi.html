@@ -40,6 +40,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
 
     {% if sequence and states %}
         <h3>Übergangsmatrix</h3>
+        <div class 'transition-input-container'>
         <table class = "transition-input">
             <tr>
                 <th></th>
@@ -60,8 +61,9 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
                 </tr>
             {% endfor %}
         </table>
-
+    </div>
         <h3>Emissionsmatrix</h3>
+        <div class 'emission-input-container'>
         <table class = "emission-input">
             <tr>
                 <th></th>
@@ -75,11 +77,12 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
                         {{ state }} 
                     </td>
                     {% for probability in probabilities %}
-                        <td><input type="number" step="any" max="1" min="0" name="symbol_probabilities" value="{{ probability }}"></td>
+                        <td><input type="number" step="any" max="1" min="0" name="symbol_probabilities" value="{{ probability }}"class="matrix-input-field"></td>
                     {% endfor %}
                 </tr>
             {% endfor %}
         </table>
+    </div>
     {% endif %}
 
     <button type="submit">Submit</button>
