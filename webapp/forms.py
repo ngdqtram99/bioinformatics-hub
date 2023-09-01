@@ -302,8 +302,8 @@ class SuffixArrayForm(forms.Form):
         return valid 
     
 class SuffixTreeTrieForm(forms.Form):
-    sequence = forms.CharField(label='Text', widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    pattern = forms.CharField(label='Muster', required=False, strip=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Text', widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    pattern = forms.CharField(label='Muster', required=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
     endchar = forms.CharField(label='Endzeichen', max_length=1, min_length=1, initial='$', widget=forms.TextInput(attrs={'size': '10'}))
 
     def is_valid(self):
@@ -311,9 +311,16 @@ class SuffixTreeTrieForm(forms.Form):
 
         pattern = self.cleaned_data.get('pattern', '')
         sequence = self.cleaned_data.get('sequence', '')
+        endchar = self.cleaned_data.get('endchar', '')
+        if endchar in sequence:
+            valid = False
+            self.add_error('sequence', 'Endzeichen darf nicht im Text enthalten sein')
+        if endchar in pattern:
+            valid = False
+            self.add_error('pattern', 'Endzeichen darf nicht im Muster enthalten sein')
 
         if len(pattern) > len(sequence):
-                valid = False
-                self.add_error('pattern', 'Pattern darf nicht länger als Sequenz sein')
+            valid = False
+            self.add_error('pattern', 'Pattern darf nicht länger als Sequenz sein')
 
         return valid 
