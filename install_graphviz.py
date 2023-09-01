@@ -20,10 +20,10 @@ def install_graphviz():
         update_settings()
         print("Graphviz wurde erfolgreich installiert und zu PATH hinzugefügt")
     elif system == "linux":
+        print("Graphviz wird installiert.")
         subprocess.run(["sudo", "apt-get", "install", "graphviz"], check=True)
-        print("Graphviz wurde erfolgreich installiert.")
     else:
-        print("graphviz konnte auf Ihrem System nicht automatisch installiert werden. Besuchen Sie https://graphviz.org/download/ und installieren Sie bitte graphviz auf Ihrem System")
+        print("graphviz konnte auf Ihrem System nicht automatisch installiert werden. Besuchen Sie https://graphviz.org/download/ und installieren Sie graphviz auf Ihrem System")
 
 def update_settings():
     settings_path = "swtp/settings.py"  

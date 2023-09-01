@@ -1,3 +1,13 @@
+/**
+ * Dieses Skript wird verwendet, um Paths und  die probability matrix Tabellen  zu zeichnen.
+ * Dieses Skript ermöglicht auch, dass ein Pfad in der Pfad-Tabelle ausgewählt werden kann und der dazugehörige Pfad wird in der Matrix-Tabelle gezeichnet.
+ * Im Template müssen folgende Elemente vorhanden sein:
+ * tables mit ids probabilityMatrixTable und logProbabilityMatrixTable, paths-table
+ * Im Template-Skript müssen außerdem folgende Variablen deklariert werden:
+ * seq - die vom user eingegebene sequenz
+ * data - daten aus dem backend, enthalt eine liste von dictionaries die jeweils einen 'states' key mit einer liste von states und 'path' key, der eine liste aus [zeile,spalte] koordinaten enthält 
+ * pathTable - document.getElementById('paths-table')
+ */
 var selectedPathRow = document.querySelector(".path-element.selected");
       
 for (var i = 0; i < data.length; i++) {

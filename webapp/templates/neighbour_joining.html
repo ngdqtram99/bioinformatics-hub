@@ -103,12 +103,12 @@ Danach wird die korrigierte Distanzmatrix \( M \) mithilfe folgender Formel bere
       downloadLink.href = 'data:image/svg+xml;base64,' + svgContent;
     });
     </script>
-<div id="tables-container"></div>
-<script>  
-var iterations = {{iterations|safe}}
-</script>
-
-<script src="{% static 'js/phylo.js' %}"></script> 
-{% endif %}
-{% endblock %}
-
+    <div id="tables-container"></div>
+    <script>  
+    var iterations = {{iterations|safe}};
+    var algorithm = "nj";
+    </script>
+    
+    <script src="{% static 'js/phylo.js' %}"></script> 
+    {% endif %}
+    {% endblock %}
