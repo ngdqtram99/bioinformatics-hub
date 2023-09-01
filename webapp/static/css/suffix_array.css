@@ -20,7 +20,11 @@
     font-family: Arial, sans-serif;
     }
 
-    .has-error .textarea-input {
+.has-error .textarea-input {
         border: 1px solid red; 
       }
+
+p {
+        text-align: justify;
+    }
       

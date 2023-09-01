@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('horspool/', horspool_view, name='horspool'),
     path('', base_view, name='base'),
+    path('homepage/', homepage_view, name='homepage'), 
     path('dotplot/', dotplot_view, name='dotplot'),
     path('simple_search/', simple_search_view, name='simple_search'),
     path('overlap/', overlap_view, name='overlap'),
