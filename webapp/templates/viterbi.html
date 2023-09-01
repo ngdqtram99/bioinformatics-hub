@@ -98,7 +98,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
     {% if sum_is_valid %}
 
     <input type="checkbox" id="logCheckbox" onclick="toggleTableVisibility()"> Logarithmische Skala
-
+    <div class = 'result-matrix-container'>
     <table id="probabilityMatrixTable">
         {% for row in probability_matrix_result %}
         <tr>
@@ -108,9 +108,9 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
         </tr>
         {% endfor %}
     </table>
-
+</div>
     <br>
-
+    <div class = 'result-matrix-container'>
     <table  id="logProbabilityMatrixTable" style="display: none;">
         {% for row in log_probability_matrix_result %}
         <tr>
@@ -120,6 +120,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
         </tr>
         {% endfor %}
     </table>
+</div>
 <br>
 <div id="pathsContainer"  oninput="resizeContainer()"> <table id="paths-table"> </table></div>
 

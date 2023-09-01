@@ -64,3 +64,10 @@ color: white;
     display: block;  
     overflow: auto;
 }
+.result-matrix-container{
+    width: fit-content;   
+    max-width: 95%;
+    max-height: 70vh;
+    display: block;  
+    overflow: auto;
+}
