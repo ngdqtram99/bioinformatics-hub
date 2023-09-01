@@ -102,6 +102,9 @@ def dotplot_view(request):
 def base_view(request):
     return render(request, 'base.html')
 
+def homepage_view(request):
+    return render(request, 'homepage.html')
+
 def needleman_wunsch_view(request):
     form = NeedlemanWunschForm()
 

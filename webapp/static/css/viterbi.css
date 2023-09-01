@@ -45,3 +45,6 @@ color: white;
       border: 1px solid red; 
     }
     
+  p {
+      text-align: justify;
+  }

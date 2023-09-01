@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%} Homepage {% endblock %}
+{% block extra_head %} <link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endblock %}
+{% block content %}
+    
+<h1> Wilkommen  </h1>
+    <div class ="description"> 
+
+        <p>
+            Der Webservice bietet eine breite Palette von Algorithmen für Stringvergleiche und -analysen. Das Ziel dieses Projekts ist es, Studierende in den kommenden Semestern bei der Überprüfung ihrer Algorithmen auf Korrektheit zu unterstützen.
+        
+        <p>
+            In der aufregenden Welt der Bioinformatik spielen verschiedene Algorithmen und Methoden eine entscheidende Rolle bei der Analyse von Sequenzen und der Entschlüsselung genetischer Informationen. Diese Tools dienen dazu, Muster in DNA-, RNA- oder Proteinsequenzen zu erkennen, Evolutionäre Verwandtschaften zu untersuchen und biologische Informationen effizient zu verarbeiten. Hier sind die in dem Webservice verwendeten bioinformatischen Algorithmen und ihre Anwendungen:
+        </p>
+       
+
+        <p><strong>Mustersuche in Texten:</strong></p>
+        <ul>
+            <li>
+                <p>
+                    Die <strong>Simple Search </strong>ist eine grundlegende Methode zur exakten Mustersuche in Texten. Sie vergleicht das Muster schrittweise mit dem Text und speichert die Positionen von Übereinstimmungen.
+            </li>
+            <li>
+                <p>
+                    Der <strong> Horspool-Algorithmus </strong>ist eine verbesserte Version der Simple Search und verwendet die "Bad Character"-Heuristik, um das Muster schneller im Text zu verschieben. 
+                </p>
+            </li>
+           
+        </ul>
+
+        <p><strong>Global und Lokal Alignment:</strong></p>
+<ul>
+    <li>
+        <p>
+            Der <strong>Needleman-Wunsch-Algorithmus </strong> ist ein leistungsstarker Algorithmus zur globalen Sequenzalignment-Analyse.
+            Er optimiert das Alignment von zwei Sequenzen unter Berücksichtigung von Match-, Mismatch- und Gap-Penalty-Werten.
+        </p>
+    </li>
+    <li>
+        <p>
+            Varianten wie das <strong> Überlapp-Alignment </strong> und <strong>Globale Alignment </strong>erweitern die Anwendungsbereiche des Needleman-Wunsch-Algorithmus.
+        </p>
+    </li>
+    <li>
+        <p>
+            Der <strong>Smith-Waterman-Algorithmus </strong> hingegen ist auf lokales Sequenzalignment spezialisiert und findet das optimale lokale Alignment, ohne die gesamte Sequenz zu betrachten.
+        </p>
+    </li>
+</ul>
+
+<p><strong>Hierarchisches Clustering:</strong></p>
+<ul>
+    <li>
+        <p>
+        <strong>UPGMA (Unweighted Pair Group Method with Arithmetic Mean) </strong> und <strong> Neighbour Joining </strong> sind Methoden des hierarchischen Clusterings in der Phylogenetik, um evolutionäre Beziehungen zwischen Spezies oder Sequenzen zu untersuchen.
+        </p>
+    </li>
+</ul>
+
+<p><strong>Mustersuche durch Suffix-Strukturen:</strong></p>
+<ul>
+    <li>
+        <p>
+            Die Mustersuche durch Suffix-Strukturen ermöglicht die effiziente Identifizierung von Mustern in Textdaten.
+        </p>
+    </li>
+    <li>
+        <p>
+            Es gibt drei Haupttypen von Suffix-Strukturen: <strong>Suffix Array </strong>, <strong>Suffix Trie</strong> und <strong>Suffix Baum</strong>, die je nach den Anforderungen an Speicherplatz und Suchgeschwindigkeit ausgewählt werden können.
+        </p>
+    </li>
+</ul>
+
+<p><strong>Hidden Markov Model (HMM) und Viterbi-Algorithmus:</strong></p>
+<ul>
+    <li>
+        <p>
+            Das <strong>Hidden Markov Model (HMM) </strong>ist ein probabilistisches Modell, das in der Genomik und Spracherkennung verwendet wird.
+        </p>
+    </li>
+    <li>
+        <p>
+            Der <strong> Viterbi-Algorithmus </strong> wird in Kombination mit HMMs eingesetzt, um versteckte Zustände aus beobachtbaren Daten herauszufinden.
+        </p>
+    </li>
+</ul>
+
+           
+            
+        <p>
+            Diese Algorithmen und Methoden sind entscheidend für die Bioinformatik und die Analyse biologischer Daten in Bereichen wie Genetik, Phylogenetik, Textverarbeitung und Mustererkennung. Sie ermöglichen die Extraktion wichtiger Informationen aus Sequenzen und Texten für biologische und technologische Fortschritte.
+            
+            
+            
+        </p>
+        <h2>Unser Team</h2>
+         <p>Unser engagiertes Team (Nikolai, Tram, Jana, Thao) hat an der Entwicklung dieses Webservices in Sommersemester 2023 gearbeitet. </p>
+
+        
+    </div>
+    
+     
+
+{% endblock %}
+
+
