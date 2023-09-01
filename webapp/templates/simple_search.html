@@ -14,7 +14,11 @@
     </p>
     </div>
     <h2>Input</h2>
-    
+    <ul>
+        <li>
+      <p class="custom-paragraph">
+        Die Position in der Sequenz startet an 0.
+    </ul>
     <form method="POST" action="{% url 'simple_search' %}">
         {% csrf_token %}
         <div class="form-field {% if form.pattern.errors %}has-error{% endif %}">
