@@ -333,8 +333,9 @@ def suffix_tree_view(request):
             if result is not None:
                 context = {
                     'form': form,
-                    'base64_plot' : result['image'],
-                    'found': result['found']                
+                    'base64_plot' : result['png'],
+                    'found': result['found'],
+                    'svg': result['svg']              
                 } 
 
                 return render(request, 'suffix_tree.html', context)
@@ -357,8 +358,9 @@ def suffix_trie_view(request):
             if result is not None:
                 context = {
                     'form': form,
-                    'base64_plot' : result['image'],
-                    'found': result['found']                
+                    'base64_plot' : result['png'],
+                    'found': result['found'],
+                    'svg': result['svg']              
                 } 
 
                 return render(request, 'suffix_trie.html', context)
