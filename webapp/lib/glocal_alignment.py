@@ -127,7 +127,11 @@ def get_result(sequence1: str, sequence2: str, match: float, mismatch: float, ga
     list_start_pos = [[i,len(sequence2)] for i in best_scores_pos] 
     
     # Findet Pafde 
-    unmodified_paths = [_get_paths(traceback, start_pos) for start_pos in list_start_pos]
+    available_paths = 0
+    unmodified_paths = []
+    for start_pos in list_start_pos:
+        unmodified_paths.append(_get_paths(traceback,start_pos, available_paths))
+        available_paths += len(unmodified_paths[-1])
 
     '''
     print('unmodified_paths')

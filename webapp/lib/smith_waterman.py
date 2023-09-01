@@ -127,7 +127,11 @@ def get_result(sequence1: str, sequence2: str, match: float, missmatch: float, g
     #print(start_pos)
 
     # Findet Pfade 
-    unmodified_paths = [_get_paths(traceback, pos) for pos in start_pos]
+    available_paths = 0
+    unmodified_paths = []
+    for pos in start_pos:
+        unmodified_paths.append(_get_paths(traceback,pos, available_paths))
+        available_paths += len(unmodified_paths[-1])
 
     #print('unmodified_paths', unmodified_paths)
 

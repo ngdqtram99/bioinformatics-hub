@@ -8,7 +8,7 @@ def _pos(pos : list, direction : str):
     if direction == 'hor': return [pos[0],pos[1]-1]
 
 # Gibt Liste aller Pfäder von einer Startposition zurück
-def _get_paths(traceback,start_pos):
+def _get_paths(traceback,start_pos, available_paths: int):
     result = []
     path = []
 
@@ -41,7 +41,7 @@ def _get_paths(traceback,start_pos):
         else:
             while pos[0] >= 0 and pos[1] >= 0:
                 if traceback[pos[0]][pos[1]] == None: break
-                if len(result) >= 100: break # Ergibt maximal nur 100 Pfäder
+                if len(result) + available_paths >= 100: break # Ergibt maximal nur 100 Pfäder
 
                 path.append(traceback[pos[0]][pos[1]])
                 #print('hier1',path)
@@ -64,7 +64,7 @@ traceback = [[None,'hor', 'hor', 'hor', 'hor',],
              ['vert', 'diag',[None, 'diag'],'hor','hor'],
              ['vert', 'vert',['vert','hor'],'diag','hor']]
 
-paths = _get_paths(traceback,pos)
+paths = _get_paths(traceback,pos,0)
 #print('result',paths)
 '''
 [['hor', 'hor', 'vert', 'diag', 'diag'], 

@@ -102,7 +102,8 @@ def get_result(sequence1: str, sequence2: str, match : int, mismatch : int, gap_
     for i in traceback: print(i)
     '''
 
-    unmodified_paths = _get_paths(traceback, start_pos)
+    # Findet Pfade
+    unmodified_paths = _get_paths(traceback, start_pos, 0)
 
     '''
     print('unmodified_paths')
