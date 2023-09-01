@@ -49,7 +49,7 @@ Die Länge von \( i \) , \( j \) zu \( k \) (\( k \) ist ein Objekt in der neuen
         {{form.names}}
       </div>
       <div class = "form-field">
-        <label for="{{ form.csv_data.id_for_label }}">Mismatch:</label>
+        <label for="{{ form.csv_data.id_for_label }}">CSV-Data:</label>
         <br>
         {{form.csv_data}}
       </div>
@@ -59,8 +59,12 @@ Die Länge von \( i \) , \( j \) zu \( k \) (\( k \) ist ein Objekt in der neuen
         <button type="submit">Ausführen</button>
     </div>
   </form>
-    
+
+
+
+
   {% if newick is not None %} 
+  <h2>Output</h2>
   <p>Newick-String: {{newick}}</p>
   <br>
   <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>

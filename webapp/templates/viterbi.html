@@ -32,6 +32,7 @@ Die Formel zur Berechnung der Wahrscheinlichkeit eines Symbols an der Position \
     \( P_{a(i),s} = \max_{x \in M} \left( P_{a(i-1),x} \cdot Ü(x,s) \cdot E(a(i),s) \right) \)
 </p>
 
+<h2> Input </h2>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}

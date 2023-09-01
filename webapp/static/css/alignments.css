@@ -90,7 +90,7 @@
           }
 
             
-    .main_output {
+    .matrixContainer  {
       width: fit-content;
       background-color: #f2f3f1;    
       text-align: left;
@@ -100,7 +100,19 @@
       overflow: auto;
    
     }
+    #alignmentsContainer{
+      width: 35%;
+    max-width:max-content;
+    resize: both;
+    display: inline-block;
+    height: 195px;
+    max-height: 50vh;
+    display: block;
+    overflow: auto;
+    }
 
-    .max-width-input {
+    .textarea-input {
+      height: 50px;
+      font-family: Arial, sans-serif;
       width: 100%; 
     }

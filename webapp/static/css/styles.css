@@ -126,24 +126,26 @@ div.algo {
   font-size: small;
 }
 
-.has-error .max-width-input {
-  border: 1px solid red; /* Optionally, add a red border to the input field on error */
+.has-error .textarea-input {
+  border: 1px solid red; 
 }
 
-/* Add margin or padding to the container element that wraps the form fields */
+
 .form-field {
-  margin-bottom: 10px; /* Add space between each form field */
+  margin-bottom: 10px; 
 }
 
 .button-container {
-  margin-top: 20px; /* Add space between the form fields and the button */
+  margin-top: 20px; 
 }
 
-.max-width-input {
+.textarea-input {
   font-family: Arial, sans-serif;
   font-size: inherit;
   font-weight: inherit;
   width: 100%; 
+  height: 50px;
+ 
 }
 
 .form-group {

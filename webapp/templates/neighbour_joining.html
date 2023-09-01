@@ -64,7 +64,7 @@ Danach wird die korrigierte Distanzmatrix \( M \) mithilfe folgender Formel bere
         {{form.names}}
       </div>
       <div class = "form-field">
-        <label for="{{ form.csv_data.id_for_label }}">Mismatch:</label>
+        <label for="{{ form.csv_data.id_for_label }}">CSV-Data:</label>
         <br>
         {{form.csv_data}}
       </div>
@@ -74,7 +74,9 @@ Danach wird die korrigierte Distanzmatrix \( M \) mithilfe folgender Formel bere
     </div>
   </form>
 
-  {% if newick is not None %} 
+
+  {% if newick is not None %}
+  <h2>Output</h2> 
   <p>Newick-String: {{newick}}</p>
   <br>
   <img class= "tree-plot" src="data:image/svg;base64, {{base64_plot}}"/>

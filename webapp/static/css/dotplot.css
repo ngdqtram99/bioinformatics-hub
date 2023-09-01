@@ -3,7 +3,9 @@
   }
   
   
-  .max-width-input {
+  .textarea-input {
+    height: 50px;
+    font-family: Arial, sans-serif;  
   width: 100%; 
   }
   
