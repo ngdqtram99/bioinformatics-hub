@@ -209,7 +209,6 @@ class ViterbiForm(forms.Form):
         valid = super().is_valid()
         if valid:
             sequence = self.cleaned_data.get('sequence', '')
-            print('seq ',sequence)
             if sequence:
                 if not sequence.isalpha():
                     self.add_error('sequence', "Nur Buchstaben sind erlaubt.")
