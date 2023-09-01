@@ -7,12 +7,15 @@
 
      
     <h1>Suffix-Trie</h1>
-    <p>
-      Beschreibung
-      <ul> 
-     
-    </ul>
-    </p>
+    <div class ="description"> 
+      <p>
+        Ein Suffix Trie ist ein Baum, in dem jeder Pfad von der Wurzel zu einem Blatt einem Suffix des Texts entspricht. Es ermöglicht schnelle Musterabfrage, aber der Speicherbedarf kann hoch sein, insbesondere für lange Texte.
+      </p>
+
+      <p>Die Methode erfordert neben einem Text und einem Muster auch ein Endzeichen. Dieses Endzeichen markiert das Ende eines Suffixes, damit ein längerer Suffix nicht versehentlich einen überlappenden kürzeren Suffix verdeckt. Das Endzeichen sollte sich von den Buchstaben im Text und im Muster unterscheiden.
+      </p>
+   
+      </div>
     <h2> Input </h2>
     <form method="POST" action="{% url 'suffix_trie' %}">
       {% csrf_token %}

@@ -5,12 +5,15 @@
 {% block content %}
 
     <h1> Suffixarray</h1>
-    <p>
-      Beschreibung
-      <ul> 
-      
-    </ul>
-    </p>
+    <div class ="description"> 
+      <p>
+        Das Suffix Array ist eine sortierte Liste aller Suffixe eines Texts. Durch eine binäre Suche in diesem Array können die Positionen der Muster im Text gefunden werden. Es benötigt weniger Speicherplatz im Vergleich zu anderen Strukturen wie dem Suffix-Trie und -Baum und eignet sich gut für Anwendungen mit begrenztem Speicher.
+      </p>
+
+      <p>Bitte beachte: Die folgende Methode führt eine binäre Suche durch und gibt eine Vorhersage darüber ab, ob das Muster im Text vorhanden ist. Die Positionen, an denen das Muster im Text auftritt, werden hierbei jedoch nicht ermittelt.
+       
+      </p>
+      </div>
     <h2> Input </h2>
     <form method="POST" action="{% url 'suffix_array' %}">
       {% csrf_token %}

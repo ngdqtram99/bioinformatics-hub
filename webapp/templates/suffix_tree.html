@@ -6,12 +6,18 @@
 
 
     <h1> Suffixtree</h1>
-    <p>
-      Beschreibung
-      <ul> 
-      
-    </ul>
-    </p>
+    <div class ="description"> 
+      <p>
+        Ein Suffix-Baum ist eine kompakte Datenstruktur, die alle Suffixe eines Texts darstellt. Er optimiert den Speicherbedarf im Vergleich zu einem Suffix-Trie, während er immer noch schnelle Musterabfragen ermöglicht.
+      </p>
+
+      <p>In der folgenden Methode wird der Baum aus einem Trie aufgebaut, wobei die Knoten, die Einzelbuchstaben repräsentieren, mit ihren Nachbarn zu einem neuen Knoten zusammengeführt werden. Dadurch wird weniger Speicherplatz benötigt.
+       
+      </p>
+      <p>
+        Die Methode erfordert neben einem Text und einem Muster auch ein Endzeichen. Dieses Endzeichen markiert das Ende eines Suffixes, damit ein längeres Suffix nicht versehentlich einen überlappenden kürzeren Suffix verdeckt. Das Endzeichen sollte sich von den Buchstaben im Text und im Muster unterscheiden.
+      </p>
+      </div>
     <h2> Input </h2>
     <form method="POST" action="{% url 'suffix_tree' %}">
       {% csrf_token %}
