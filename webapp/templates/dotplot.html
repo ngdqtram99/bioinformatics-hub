@@ -52,7 +52,7 @@
 
     {% if results is not None %}
         <h2>Output</h2>
-        <div class = "main_output">
+        <div class = "dotplotContainer">
           <table class = "calculation">
             <thead>
               <tr>                
@@ -78,7 +78,7 @@
           </table>
         </div>
         <p>
-            <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Tabelle herunterladen</a>
+            <a href="data:text/plain;charset=utf-8,{% for row in results %} {% for item in row %}{{item}};{% endfor %} %0A {% endfor %}" download="results.csv">Dotplot-Matrix als csv herunterladen</a>
         </p>
     {% endif %}
     </div>
