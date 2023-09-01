@@ -33,8 +33,8 @@ class HorspoolForm(forms.Form):
         return valid 
 
 class DotplotForm(forms.Form):
-    sequence1 = forms.CharField(label = "Sequenz 1", max_length=200,  widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label = "Sequenz 2", max_length=200,  widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label = "Sequenz 1", max_length=200,  widget=forms.Textarea(attrs={"class": "textarea-input"}))
+    sequence2 = forms.CharField(label = "Sequenz 2", max_length=200,  widget=forms.Textarea(attrs={"class": "textarea-input"}))
 
     def is_valid(self):
         valid = super().is_valid()
@@ -54,8 +54,8 @@ class DotplotForm(forms.Form):
         return valid and sequence1_valid and sequence2_valid
     
 class SimpleSearchForm(forms.Form):
-    pattern = forms.CharField(label='Muster', strip=False,widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    sequence = forms.CharField(label='Sequenz', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    pattern = forms.CharField(label='Muster', strip=False,widget=forms.TextInput(attrs={"class": "textarea-input"}))
+    sequence = forms.CharField(label='Sequenz', strip = False, widget=forms.Textarea(attrs={"class": "textarea-input"}))
     ignore_case_choice = forms.BooleanField(label='Groß-/Kleinschreibung ignorieren', required=False, initial=False, widget=forms.CheckboxInput())
     
     def clean(self):
@@ -81,8 +81,8 @@ class SimpleSearchForm(forms.Form):
         return valid 
     
 class OverlapForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "textarea-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "textarea-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1, widget=forms.TextInput(attrs={'size': '10'}))
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
@@ -107,8 +107,8 @@ class OverlapForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class SmithWatermanForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1',  widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1',  widget=forms.Textarea(attrs={"class": "textarea-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "textarea-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=1)
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=-1)
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1)
@@ -131,8 +131,8 @@ class SmithWatermanForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class NeedlemanWunschForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2',  widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "textarea-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2',  widget=forms.Textarea(attrs={"class": "textarea-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=0, widget=forms.TextInput(attrs={'size': '10'}))
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
@@ -157,8 +157,8 @@ class NeedlemanWunschForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class GlocalAlignmentForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "textarea-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "textarea-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1, widget=forms.TextInput(attrs={'size': '10'}))
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1,widget=forms.TextInput(attrs={'size': '10'}))
@@ -184,7 +184,7 @@ class GlocalAlignmentForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid    
 
 class ViterbiForm(forms.Form):
-    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "textarea-input"}))
     states = forms.CharField(label='Zustände',  widget=forms.TextInput(attrs={'size': '10'}))
 
     def clean(self):
@@ -286,8 +286,8 @@ class UpgmaNjForm (forms.Form):
         return valid
     
 class SuffixArrayForm(forms.Form):
-    sequence = forms.CharField(label='Text',widget=forms.Textarea(attrs={"class": "max-width-input"}), strip=False)
-    pattern = forms.CharField(label='Muster', required=False, strip=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Text',widget=forms.Textarea(attrs={"class": "textarea-input"}), strip=False)
+    pattern = forms.CharField(label='Muster', required=False, strip=False, widget=forms.TextInput(attrs={"class": "textarea-input"}))
 
     def is_valid(self):
         valid = super().is_valid()
@@ -302,8 +302,8 @@ class SuffixArrayForm(forms.Form):
         return valid 
     
 class SuffixTreeTrieForm(forms.Form):
-    sequence = forms.CharField(label='Text', widget=forms.TextInput(attrs={"class": "max-width-input"}))
-    pattern = forms.CharField(label='Muster', required=False, widget=forms.TextInput(attrs={"class": "max-width-input"}))
+    sequence = forms.CharField(label='Text', widget=forms.TextInput(attrs={"class": "textarea-input"}))
+    pattern = forms.CharField(label='Muster', required=False, widget=forms.TextInput(attrs={"class": "textarea-input"}))
     endchar = forms.CharField(label='Endzeichen', max_length=1, min_length=1, initial='$', widget=forms.TextInput(attrs={'size': '10'}))
 
     def is_valid(self):
