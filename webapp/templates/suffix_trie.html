@@ -38,7 +38,16 @@
   <br>  
   <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom-container@0.6.1"></script>
   <div id="svg-container" data-pan-on-drag="" data-zoom-on-wheel="min-scale: 0.1; max-scale: 1000;">{{svg|safe}}</div>
-  <p>Suffix-Trie als <a href="data:image/png;base64,{{base64_plot}}" download="suffix_trie_plot.png">png</a> herunterladen</p>
-  {% endif %} 
-
+  <p>Suffix-Trie als <a href="data:image/png;base64,{{base64_plot}}" download="suffix_trie_plot.png">png</a> oder <a id="downloadSvg" href="#" download="suffix_trie_plot.svg">svg</a> herunterladen</p>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var svgContent = `{{ svg|safe }}`;
+        svgContent = window.btoa(svgContent); //in base 64 umwandeln
+       
+        var downloadLink = document.getElementById('downloadSvg');
+        downloadLink.href = 'data:image/svg+xml;base64,' + svgContent;
+      });
+      </script>
+    {% endif %}
+  
 {% endblock %}
