@@ -1,6 +1,6 @@
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman
-from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining
+from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm
 
 
 class TestDotplot(TestCase):
@@ -323,7 +323,7 @@ class TestNeedlemanWunsch(TestCase):
         result = needleman_wunsch.get_result('GCTAGC', 'GC', 0, 1, 1, False)
         self.assertEquals(len(result['alignments']), 3)
 
-        # Es soll die Grenze von 100 Alignments erreicht werden
+        # Es sollen nur 100 Alignments zurück gegeben werden, obwohl es mehr gibt
         result = needleman_wunsch.get_result('GCTAGCCTTGAACTGCATGCATGCCGCTAGCG', 'GCG', 0, 1, 1, False)
         self.assertEquals(len(result['alignments']), 100)
 
@@ -432,8 +432,7 @@ class TestSmithWaterman(TestCase):
         result = smith_waterman.get_result('ATGGTGCAT', 'ATGCGGTGC', 1, -1, 1)
         self.assertEquals(len(result['alignments']), 4)
 
-        #TODO:
-        # es soll die Grenze von 100 Alignments erreicht werden
+        # es sollen nur 100 ALignments zurück gegeben werden, obwohl es mehr gibt
         longSeq = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
         result = smith_waterman.get_result(longSeq, 'C', 1, -1, 1)
         print(len(result['alignments']))
@@ -517,6 +516,74 @@ class TestSmithWatermanForm(TestCase):
         self.assertEquals(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
         self.assertEquals(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
 
+# test für ViterbiForm
+class TestViterbiForm(TestCase):
+    
+    def test_sequence_is_alphabet(self):
+        form = ViterbiForm(data={'sequence': 'XazÄ*', 'states': '+;-'}) # * ist keine Buchstabe
+        form2 = ViterbiForm(data={'sequence': 'XazÄ2', 'states': '+;-' }) # 2 ist keine Buchstabe
+        form3 = ViterbiForm(data={'sequence': '', 'states': '+;-' }) # leer nicht erlaubt
 
+        form.is_valid()
+        form2.is_valid()
+        form3.is_valid()
+        self.assertEqual(form.errors['sequence'],["Nur Buchstaben sind erlaubt."] ) 
+        self.assertEqual(form2.errors['sequence'],["Nur Buchstaben sind erlaubt."] )
+        self.assertEqual(form3.errors['sequence'],["This field is required."] ) 
 
+    def test_number_of_states(self):
+        form = ViterbiForm(data={'sequence':'abcd', 'states': 'q;w;e;r;T;%&;$;i;o;s;tr;sr;er'}) # Mehr als 10 Zustände
+        form2 = ViterbiForm(data={'sequence':'abcd', 'states': 'a' }) # Weniger als 2 Zutände
+        form3 = ViterbiForm(data={'sequence':'abcd', 'states': 'a,b,v,c' }) # Zustände werden nicht durch Semikolon getrennt
+        form.is_valid()
+        form2.is_valid()
+        form3.is_valid()
+        self.assertEqual(form.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
+        self.assertEqual(form2.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
+        self.assertEqual(form3.errors['states'], ['Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.'])
+
+# test für SuffixTreeTrieForm
+class TestSuffixTreeTrieForm(TestCase):
+    
+    def test_endchar_not_in_sequence(self):
+        form = SuffixTreeTrieForm({'sequence': 'anaRna', 'endchar':'R'}) 
+        form.is_valid()
+        self.assertEqual(form.errors['sequence'], ['Endzeichen darf nicht im Text enthalten sein'])
+    
+    def test_endchar_not_in_pattern(self):
+        form2 = SuffixTreeTrieForm({'pattern':'Alf§f', 'endchar':'§'})
+        form2.is_valid()
+        self.assertEqual(form2.errors['pattern'], ['Endzeichen darf nicht im Muster enthalten sein'])
+
+# test für OverlapForm
+class TestOverlapForm(TestCase):
+
+    def test_latin_letters(self):
+        form = OverlapForm(data={'sequence1': 'ABGX$', 'sequence2': 'Ö%ll'}) # Nicht latinische Buchstaben
+        form.is_valid()
+        self.assertEqual(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
+        self.assertEqual(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
+
+# tests für Neighbour joining
+class TestNeighbourJoining(TestCase):
+
+    # testet newick
+    def test_newick(self):
+        matrix = [[0],
+                  [5, 0],
+                  [9, 10, 0],
+                  [9, 10, 8, 0],
+                  [8, 9, 7, 3, 0]]
+
+        result = neighbour_joining.get_results(['A', 'B', 'C', 'D', 'E'], matrix)
+        self.assertEquals(result['newick'], '(((((((A:2.0,B:3.0):3.0),C:4.0):2.0),D:2.0):0),E:1.0)')
+
+        matrix = [[0],
+                  [17, 0],
+                  [21, 30, 0],
+                  [31, 34, 28, 0],
+                  [23, 21, 39, 43, 0]]
+
+        result = neighbour_joining.get_results(['A', 'B', 'C', 'D', 'E'], matrix)
+        self.assertEquals(result['newick'], '(((E:14.5,((((D:17.0,C:11.0):7.0),A:5.0):4.5)):0),B:6.75)')
 

@@ -294,13 +294,6 @@ class SuffixArrayForm(forms.Form):
     def is_valid(self):
         valid = super().is_valid()
 
-        pattern = self.cleaned_data.get('pattern', '')
-        sequence = self.cleaned_data.get('sequence', '')
-
-        if len(pattern) > len(sequence):
-                valid = False
-                self.add_error('pattern', 'Pattern darf nicht länger als Sequenz sein')
-
         return valid 
     
 class SuffixTreeTrieForm(forms.Form):
@@ -320,9 +313,5 @@ class SuffixTreeTrieForm(forms.Form):
         if endchar in pattern:
             valid = False
             self.add_error('pattern', 'Endzeichen darf nicht im Muster enthalten sein')
-
-        if len(pattern) > len(sequence):
-            valid = False
-            self.add_error('pattern', 'Pattern darf nicht länger als Sequenz sein')
 
         return valid 
