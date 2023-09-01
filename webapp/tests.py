@@ -591,6 +591,15 @@ class TestSuffixTreeTRie(TestCase):
         self.assertTrue(tree1['found'])
         self.assertFalse(tree2['found'])
 
+    def test_found_suffix_trie(self):
+        p1 = 'si'
+        p2 = 'pip'
+        trie1 = suffix_trie.get_results('mississippi', p1, '§')
+        trie2 = suffix_trie.get_results('mississippi', p2, '§')
+
+        self.assertTrue(trie1['found'])
+        self.assertFalse(trie2['found'])
+
 # test für SuffixTreeTrieForm
 class TestSuffixTreeTrieForm(TestCase):
     
