@@ -44,7 +44,23 @@ color: white;
     .has-error .textarea-input {
       border: 1px solid red; 
     }
-    
-  p {
-      text-align: justify;
-  }
+    p {
+        text-align: justify;
+    } 
+.matrix-input-field {
+    width: 45px;
+}
+.transition-input-container{
+    width: fit-content;   
+    max-width: 95%;
+    max-height: 70vh;
+    display: block;  
+    overflow: auto;
+}
+.emission-input-container{
+    width: fit-content;   
+    max-width: 95%;
+    max-height: 70vh;
+    display: block;  
+    overflow: auto;
+}
