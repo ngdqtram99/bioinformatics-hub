@@ -33,8 +33,8 @@ class HorspoolForm(forms.Form):
         return valid 
 
 class DotplotForm(forms.Form):
-    sequence1 = forms.CharField(label = "Sequenz 1", max_length=200, strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label = "Sequenz 2", max_length=200, strip = False , widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label = "Sequenz 1", max_length=200,  widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label = "Sequenz 2", max_length=200,  widget=forms.Textarea(attrs={"class": "max-width-input"}))
 
     def is_valid(self):
         valid = super().is_valid()
@@ -81,8 +81,8 @@ class SimpleSearchForm(forms.Form):
         return valid 
     
 class OverlapForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "max-width-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1, widget=forms.TextInput(attrs={'size': '10'}))
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
@@ -107,8 +107,8 @@ class OverlapForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class SmithWatermanForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1',  widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "max-width-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=1)
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=-1)
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1)
@@ -131,8 +131,8 @@ class SmithWatermanForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class NeedlemanWunschForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2',  widget=forms.Textarea(attrs={"class": "max-width-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=0, widget=forms.TextInput(attrs={'size': '10'}))
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
@@ -157,8 +157,8 @@ class NeedlemanWunschForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid
     
 class GlocalAlignmentForm(forms.Form):
-    sequence1 = forms.CharField(label='Sequenz 1', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    sequence2 = forms.CharField(label='Sequenz 2', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence1 = forms.CharField(label='Sequenz 1', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    sequence2 = forms.CharField(label='Sequenz 2', widget=forms.Textarea(attrs={"class": "max-width-input"}))
     match = forms.FloatField(label='Match', min_value=-1000, max_value=1000, initial=-1, widget=forms.TextInput(attrs={'size': '10'}))
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1,widget=forms.TextInput(attrs={'size': '10'}))
@@ -184,8 +184,8 @@ class GlocalAlignmentForm(forms.Form):
             return valid and sequence1_valid and sequence2_valid    
 
 class ViterbiForm(forms.Form):
-    sequence = forms.CharField(label='Sequenz', strip = False, widget=forms.Textarea(attrs={"class": "max-width-input"}))
-    states = forms.CharField(label='Zustände', strip=False, widget=forms.TextInput(attrs={'size': '10'}))
+    sequence = forms.CharField(label='Sequenz', widget=forms.Textarea(attrs={"class": "max-width-input"}))
+    states = forms.CharField(label='Zustände',  widget=forms.TextInput(attrs={'size': '10'}))
 
     def clean(self):
         cleaned_data = super().clean()
