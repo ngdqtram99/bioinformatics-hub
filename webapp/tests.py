@@ -1,6 +1,6 @@
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman
-from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi
+from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm
 
 
 class TestDotplot(TestCase):
@@ -517,6 +517,37 @@ class TestSmithWatermanForm(TestCase):
         self.assertEquals(form.errors['sequence1'], ['Nur lateinische Buchstaben sind erlaubt.'])
         self.assertEquals(form.errors['sequence2'], ['Nur lateinische Buchstaben sind erlaubt.'])
 
+# test für ViterbiForm
+class TestViterbiForm(TestCase):
+    
+    def test_sequence_is_alphabet(self):
+        form = ViterbiForm(data={'sequence': 'XazÄ*'}) # * ist keine Buchstabe
+        form2 = ViterbiForm(data={'sequence': 'XazÄ2' }) # 2 ist keine Buchstabe
+        form3 = ViterbiForm(data={'sequence': '' }) # leer nicht erlaubt, weil es kein Buchstabe gibt
+        form4 = ViterbiForm(data={'sequence': 'ÄRAEdfea' }) # Erlaubt Umlaut-Buchstabe
+
+        form.is_valid()
+        form2.is_valid()
+        form3.is_valid()
+        form4.is_valid()
+        self.assertEqual(form.errors['sequence'],["Nur Buchstaben sind erlaubt."] ) 
+        self.assertEqual(form2.errors['sequence'],["Nur Buchstaben sind erlaubt."] )
+        self.assertEqual(form3.errors['sequence'],["Nur Buchstaben sind erlaubt."] ) 
+        self.assertNotEqual(form4.errors['sequence'],["Nur Buchstaben sind erlaubt."] )  
+
+    def test_number_of_states(self):
+        form = ViterbiForm(data={ 'states': 'q;w;e;r;T;%&;$;i;o;s;tr;sr;er'}) # Mehr als 10 Zustände
+        form2 = ViterbiForm(data={'states': '1;' }) # Weniger als 2 Zutände
+        form3 = ViterbiForm(data={'states': 'a,b,v,c' }) # Zustände werden nicht durch Semikolon getrennt
+        form4 = ViterbiForm(data={'states': '' }) # nichts eingegeben
+        form.is_valid()
+        form2.is_valid()
+        form3.is_valid()
+        form4.is_valid()
+        self.assertEqual(form.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
+        self.assertEqual(form2.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
+        self.assertEqual(form3.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
+        self.assertEqual(form4.errors['states'], 'Geben Sie nicht mehr als 10  und nicht weniger als 2 Zustände ein, separiert mit Semikolon. Eingegebener \'Start\'-Zustand wird nicht berücksichtigt.')
 
 
 
