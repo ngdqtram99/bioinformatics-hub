@@ -89,7 +89,8 @@
       <div class="matrixContainer ">
       <table id="matrixTable"> </table>
       </div>
-      
+      <br>
+      <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
       <br>
       {% if alignments|length >= 100 %}
       <p>Anzahl der Alignments >= 100</p>
@@ -104,7 +105,7 @@
       <br>
       <a href="data:text/plain;charset=utf-8,{{fasta_content}}" download="alignments.fasta">Alignments im FASTA-Format herunterladen</a>
       <br>
-      <input type="checkbox" id="showArrows"> <label for="showArrows">Alle Pfeile anzeigen</label>  
+
         
         <script> 
           var tracebackMatrix = {{ traceback|safe}};
