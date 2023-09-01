@@ -290,7 +290,8 @@ def upgma_view(request):
                     'form': form,
                     'newick' : result['newick'],
                     'base64_plot' : result['base64_plot'],
-                    'iterations' : result['intermatrixes']
+                    'iterations' : result['intermatrixes'],
+                    'svg' : result['svg']
                 } 
 
                 return render(request, 'upgma.html', context)
@@ -307,13 +308,14 @@ def neighbour_joining_view(request):
             csv_data = form.cleaned_data['csv_data']
             names = form.cleaned_data['names']
             result = neighbour_joining.get_results(names, csv_data)
-            print(result['intermatrixes'])
+
             if result is not None:
                 context = {
                     'form': form,
                     'newick' : result['newick'],
                     'base64_plot' : result['base64_plot'],
-                    'iterations' : result['intermatrixes']
+                    'iterations' : result['intermatrixes'],
+                    'svg' : result['svg']
                 } 
                 return render(request, 'neighbour_joining.html', context)
     context = {
@@ -335,7 +337,7 @@ def suffix_tree_view(request):
                     'form': form,
                     'base64_plot' : result['png'],
                     'found': result['found'],
-                    'svg': result['svg']              
+                    'svg': str(result['svg'])             
                 } 
 
                 return render(request, 'suffix_tree.html', context)

@@ -149,19 +149,24 @@ def get_results(names: list, matrix: list):
         fig.savefig(plot_file_path, format="png")
         temp_plot_path = Path(plot_file_path)
 
+    svg_io = io.StringIO()
+    fig.savefig(svg_io, format="svg")
+    svg_content = svg_io.getvalue()
+    svg_io.close()
+
     plt.close(fig)  # Schließt den Plot
 
     # Liest den Plot aus der Datei ein und konvertiert ihn in Base64
     with open(plot_file_path, "rb") as plot_file:
         plot_data = plot_file.read()
     base64_plot = base64.b64encode(plot_data).decode()
-
     # Löscht die temporäre Plot-Datei
     temp_plot_path.unlink()
 
     return {'intermatrixes': upgma_res['intermatrixes'],
             'newick': newwick(tree),
-            'base64_plot': base64_plot}
+            'base64_plot': base64_plot,
+            'svg' : svg_content}
    
 get_results(names, matrix)
 

@@ -211,6 +211,10 @@ def get_results(names: list, matrix: list):
         plot_file_path = temp_plot_file.name
         fig.savefig(plot_file_path, format="png")
         temp_plot_path = Path(plot_file_path)
+    svg_io = io.StringIO()
+    fig.savefig(svg_io, format="svg")
+    svg_content = svg_io.getvalue()
+    svg_io.close()
 
     plt.close(fig)  # Schließt den Plot
 
@@ -224,7 +228,8 @@ def get_results(names: list, matrix: list):
 
     return {'intermatrixes': nj_res['intermatrixes'],
             'newick': newwick(tree),
-            'base64_plot': base64_plot}
+            'base64_plot': base64_plot,
+            'svg' : svg_content}
 
 get_results(names, matrix)
 

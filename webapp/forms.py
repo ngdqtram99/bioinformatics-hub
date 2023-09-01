@@ -163,7 +163,7 @@ class GlocalAlignmentForm(forms.Form):
     mismatch = forms.FloatField(label='Mismatch', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
     gap_penalty = forms.FloatField(label='Gap-Score', min_value=-1000, max_value=1000, initial=1,widget=forms.TextInput(attrs={'size': '10'}))
     threshold = forms.FloatField(label='Schwellenwert', min_value=-1000, max_value=1000, initial=1, widget=forms.TextInput(attrs={'size': '10'}))
-    choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')]
+    choices = [('distance', 'Distanz'), ('similarity', 'Ähnlichkeit')] 
     optimization_field = forms.ChoiceField(widget=forms.RadioSelect, choices=choices, initial='distance', label='Optimieren nach:')
 
     def is_valid(self):
@@ -239,7 +239,7 @@ class UpgmaNjForm (forms.Form):
             except ValueError or TypeError:
                  return None             
         cleaned_csv = [[parse(cell) for cell in row if parse(cell) is not None] for row in rows]
-        if len(cleaned_csv[0]) == len(cleaned_csv):
+        if len(cleaned_csv[0]) == len(cleaned_csv) and len(cleaned_csv[-1])==1:
             cleaned_csv = cleaned_csv[::-1]
             cleaned_csv = [row.reverse() for row in cleaned_csv]
         cleaned_csv = [[cell for cell in row[:i+1]] for i, row in enumerate(cleaned_csv)]
