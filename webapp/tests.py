@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining, suffix_array
+from .lib import dotplot, simple_search, horspool, glocal_alignment, needleman_wunsch, smith_waterman, viterbi, neighbour_joining, suffix_array,suffix_tree, suffix_trie
 from .forms import DotplotForm, GlocalAlignmentForm, NeedlemanWunschForm, SmithWatermanForm, ViterbiForm, SuffixTreeTrieForm, OverlapForm, UpgmaNjForm
 
 
@@ -579,6 +579,17 @@ class TestSuffixArray(TestCase):
         pattern4 = ''
         res4 = suffix_array.get_results(pattern4,text)
         self.assertIsNone(res4['found'])  
+
+# test für SuffixTree und SuffixTrie
+class TestSuffixTreeTRie(TestCase):
+    def test_found_suffix_tree(self):
+        p1 = 'si'
+        p2 = 'pip'
+        tree1 = suffix_tree.get_results('mississippi', p1, '§')
+        tree2 = suffix_tree.get_results('mississippi', p2, '§')
+
+        self.assertTrue(tree1['found'])
+        self.assertFalse(tree2['found'])
 
 # test für SuffixTreeTrieForm
 class TestSuffixTreeTrieForm(TestCase):
