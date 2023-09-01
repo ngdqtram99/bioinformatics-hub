@@ -307,9 +307,9 @@ class SuffixTreeTrieForm(forms.Form):
         endchar = self.cleaned_data.get('endchar', '')
         if endchar in sequence:
             valid = False
-            self.add_error('endchar', 'Endzeichen darf nicht im Text enthalten sein')
+            self.add_error('sequence', 'Endzeichen darf nicht im Text enthalten sein')
         if endchar in pattern:
             valid = False
-            self.add_error('endchar', 'Endzeichen darf nicht im Muster enthalten sein')
+            self.add_error('pattern', 'Endzeichen darf nicht im Muster enthalten sein')
 
         return valid 
