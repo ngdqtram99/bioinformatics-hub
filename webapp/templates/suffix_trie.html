@@ -21,7 +21,35 @@
     <h2> Input </h2>
     <form method="POST" action="{% url 'suffix_trie' %}">
       {% csrf_token %}
-      {{ form.as_p }}
+      <div class="form-field {% if form.sequence.errors %}has-error{% endif %}">
+        <label for="{{ form.sequence.id_for_label }}">Text:</label>
+        {{ form.sequence }}
+        {% if form.sequence.errors %}
+            <div class="error-message">
+                {{ form.sequence.errors.as_text }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-field {% if form.pattern.errors %}has-error{% endif %}">
+        <label for="{{ form.pattern.id_for_label }}">Muster:</label>
+        {{ form.pattern }}
+        {% if form.pattern.errors %}
+            <div class="error-message">
+                {{ form.pattern.errors.as_text }}
+            </div>
+        {% endif %}
+    </div>
+     
+    <div class="form-field {% if form.endchar.errors %}has-error{% endif %}">
+      <label for="{{ form.endchar.id_for_label }}">Endzeichen:</label>
+      {{ form.endchar }}
+      {% if form.endchar.errors %}
+          <div class="error-message">
+              {{ form.endchar.errors.as_text }}
+          </div>
+      {% endif %}
+  </div>
+
       
       <div class="button-container">
         <button type="submit">Ausführen</button>

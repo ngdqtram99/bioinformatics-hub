@@ -42,6 +42,20 @@ Die Länge von \( i \) , \( j \) zu \( k \) (\( k \) ist ein Objekt in der neuen
         \)
     </p>
     <h2> Input </h2>
+    <ul>
+      <li>
+    <p class="custom-paragraph">
+      Die Namen sollten durch Semikolon (;) getrennt werden und die Anzahl der Spalten und Zeilen in der Distanzmatrix entsprechen. Sollten keine Namen eingegeben werden, werden sie automatisch generiert.
+    </p> </li>
+    <li> 
+    <p class="custom-paragraph">
+      Die Distanzmatrix wird im CSV-Format eingegeben, wobei die Werte durch Semikolon (;) getrennt sind. Die Anzahl der Zeilen und Spalten ist identisch und darf nicht kleiner als zwei sein. Die Distanzmatrix kann entweder recht- oder linksdiagonal eingegeben werden. Im Falle einer rechtsdiagonalen Matrix wird sie in der Methode automatisch in eine Linkdiagonale umgewandelt.
+    </p> </li>
+    <li>
+    <p class="custom-paragraph">
+      Distanzwerte dürfen in der Matrix nicht negativ sein .
+    </p> </li>
+    </ul>
     <form method="POST" action="{% url 'upgma' %}">
       {% csrf_token %}
       <div class = "form-field">
