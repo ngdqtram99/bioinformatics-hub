@@ -194,19 +194,13 @@ class ViterbiForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         states = cleaned_data.get('states')
-        states = states.split(';')
-        states = list(set(states))
+        states = list(dict.fromkeys(states.split(';')))
         states = [state.strip() for state in states if len(state.strip()) > 0]
-        states_to_remove = []
         for state in states:
             if state.lower() == 'start':
-                states_to_remove.append(state)
+                states.remove(state) 
 
-        for state in states_to_remove:
-            states.remove(state)    
-        modified_states = states  
-
-        cleaned_data['states'] = modified_states
+        cleaned_data['states'] = states
         return cleaned_data
 
     def is_valid(self):
