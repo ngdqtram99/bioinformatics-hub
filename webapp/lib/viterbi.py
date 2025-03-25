@@ -146,10 +146,10 @@ def get_results(seq, transition, emission):
     # Prüft jede Wahrscheinlichkeit in beiden Matrizen: Wert in (0,1)
     for tup in transition[1:]: # außer der Kopfzeile 
         for pro in tup[1]: 
-            assert pro > 0 and pro < 1, f"Die Wahrscheinlichkeit von {pro} in der Übergangsmatrix ist unpassend"
+            assert pro >= 0 and pro <= 1, f"Die Wahrscheinlichkeit von {pro} in der Übergangsmatrix ist unpassend"
     for tup in emission[1:]: # außer der Kopfzeile
         for pro in tup[1]: 
-            assert pro > 0 and pro < 1, f"Die Wahrscheinlichkeit von {pro} in der Emissionsmatrix ist unpassend"
+            assert pro >= 0 and pro <= 1, f"Die Wahrscheinlichkeit von {pro} in der Emissionsmatrix ist unpassend"
     
     # Initialisierung
     #----------------
@@ -191,8 +191,8 @@ def get_results(seq, transition, emission):
                 pro_df.loc[state][id_symbol] = max(tem_pro)
                 traceback_df.loc[state][id_symbol] = get_id_pre_state(tem_pro)         
 
-    # Erzeugt die log-Wahrscheinlichkeitsmatrix
-    logpro_df = np.log(pro_df)
+    # Erzeugt die log-Wahrscheinlichkeitsmatrix, dabei wird die Wahrscheinlichkeitsmatrix gerundet
+    logpro_df = round(np.log(pro_df),2)
 
     '''print(pro_df)
     print(logpro_df)
@@ -228,6 +228,10 @@ def get_results(seq, transition, emission):
 
     #for i in states: print(i)
     
+    # Format the DataFrame values to scientific notation
+    pro_df = pro_df.applymap(lambda x: f"{x:.2e}" if 0 < x < 0.01  else f'{x:.2f}')
+
+
     return {'probability': to_nestedlist(pro_df), 'log_probability': to_nestedlist(logpro_df),
             'states': states,
             'traceback': to_nestedlist(traceback_df)}
@@ -249,4 +253,4 @@ em = [(' ',[*'ATGC']),
 
 seq = 'TGTACAA'
 res = get_results(seq,trans,em)
-#print((res['states']))
+print((res['probability']))
